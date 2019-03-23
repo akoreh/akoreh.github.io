@@ -30,7 +30,7 @@ webpackEmptyAsyncContext.id = "./src/$$_lazy_route_resource lazy recursive";
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<app-nav></app-nav>\r\n"
+module.exports = "<app-nav></app-nav>\r\n<div class=\"parallax--noScroll\">\r\n    <div class=\"parallax\">\r\n        <div class=\"parallax__layer parallax__layer__0\">\r\n            <img src=\"./assets/images/layer_0.png\" />\r\n        </div>\r\n        <div class=\"parallax__layer parallax__layer__1\">\r\n            <img src=\"./assets/images/layer_1.png\" />\r\n        </div>\r\n        <div class=\"parallax__layer parallax__layer__2\">\r\n            <img src=\"./assets/images/layer_2.png\" />\r\n        </div>\r\n        <div class=\"parallax__layer parallax__layer__3\">\r\n            <img src=\"./assets/images/layer_3.png\" />\r\n        </div>\r\n        <div class=\"parallax__layer parallax__layer__4\">\r\n            <img src=\"./assets/images/layer_4.png\" />\r\n        </div>\r\n        <div class=\"parallax__layer parallax__layer__5\">\r\n            <img src=\"./assets/images/layer_5.png\" />\r\n        </div>\r\n        <div class=\"parallax__layer parallax__layer__6\">\r\n            <img src=\"./assets/images/layer_6.png\" />\r\n        </div>\r\n    <a href=\"#\" class=\"scrollIndicator\"></a>\r\n    <div class=\"parallax__cover\"></div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -41,7 +41,7 @@ module.exports = "<app-nav></app-nav>\r\n"
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2FwcC5jb21wb25lbnQuc2NzcyJ9 */"
+module.exports = ".parallax--noScroll {\n  overflow: hidden;\n  /* Adjust the size to resize the indicator. */ }\n  .parallax--noScroll .parallax {\n    overflow-y: scroll;\n    -webkit-perspective: 100px;\n            perspective: 100px;\n    height: 100vh;\n    overflow-x: hidden;\n    position: absolute;\n    top: 0;\n    left: 50%;\n    right: 0;\n    bottom: 0;\n    margin-left: -1500px; }\n  .parallax--noScroll .parallax__layer {\n    position: absolute;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    left: 0; }\n  .parallax--noScroll .parallax__layer img {\n      display: block;\n      position: absolute;\n      bottom: 0; }\n  .parallax--noScroll .scrollIndicator {\n    position: fixed;\n    left: calc(60% - 1em);\n    width: 2em;\n    height: 3.8em;\n    bottom: 3em;\n    border: 0.2em solid rgba(255, 255, 255, 0.8);\n    border-radius: 5em; }\n  .parallax--noScroll .scrollIndicator:before {\n      content: '';\n      position: absolute;\n      left: calc(50% - .2em);\n      top: .4em;\n      width: .4em;\n      height: .4em;\n      background: rgba(255, 255, 255, 0.8);\n      border-radius: 50%;\n      -webkit-animation: fadeTo 1.4s ease-in infinite;\n      animation: fadeTo 1.4s ease-in infinite; }\n  @-webkit-keyframes fadeTo {\n  from { }\n  to {\n    -webkit-transform: translateY(1em);\n            transform: translateY(1em);\n    opacity: 0; } }\n  @keyframes fadeTo {\n  from { }\n  to {\n    -webkit-transform: translateY(1em);\n            transform: translateY(1em);\n    opacity: 0; } }\n  .parallax--noScroll .parallax__cover {\n    background: #2D112B;\n    display: block;\n    position: absolute;\n    top: 100%;\n    left: 0;\n    right: 0;\n    height: 2000px;\n    z-index: 2; }\n  .parallax--noScroll .parallax__layer__0 {\n    -webkit-transform: translateZ(-300px) scale(4);\n            transform: translateZ(-300px) scale(4); }\n  .parallax--noScroll .parallax__layer__1 {\n    -webkit-transform: translateZ(-250px) scale(3.5);\n            transform: translateZ(-250px) scale(3.5); }\n  .parallax--noScroll .parallax__layer__2 {\n    -webkit-transform: translateZ(-200px) scale(3);\n            transform: translateZ(-200px) scale(3); }\n  .parallax--noScroll .parallax__layer__3 {\n    -webkit-transform: translateZ(-150px) scale(2.5);\n            transform: translateZ(-150px) scale(2.5); }\n  .parallax--noScroll .parallax__layer__4 {\n    -webkit-transform: translateZ(-100px) scale(2);\n            transform: translateZ(-100px) scale(2); }\n  .parallax--noScroll .parallax__layer__5 {\n    -webkit-transform: translateZ(-50px) scale(1.5);\n            transform: translateZ(-50px) scale(1.5); }\n  .parallax--noScroll .parallax__layer__6 {\n    -webkit-transform: translateZ(0px) scale(1);\n            transform: translateZ(0px) scale(1); }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvRDpcXFByb2plY3RzXFxQb3J0Zm9saW8vc3JjXFxhcHBcXGFwcC5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLGdCQUFnQjtFQThCSCw2Q0FBQSxFQUE4QztFQS9CN0Q7SUFJSSxrQkFBa0I7SUFDbEIsMEJBQWtCO1lBQWxCLGtCQUFrQjtJQUNsQixhQUFhO0lBQ2Isa0JBQWtCO0lBQ2xCLGtCQUFrQjtJQUNsQixNQUFNO0lBQ04sU0FBUztJQUNULFFBQVE7SUFDUixTQUFTO0lBQ1Qsb0JBQW9CLEVBQUE7RUFieEI7SUFpQkksa0JBQWtCO0lBQ2xCLE1BQU07SUFDTixRQUFRO0lBQ1IsU0FBUztJQUNULE9BQU8sRUFBQTtFQXJCWDtNQXdCTSxjQUFjO01BQ2Qsa0JBQWtCO01BQ2xCLFNBQVMsRUFBQTtFQTFCZjtJQWtDSSxlQUFlO0lBQ2YscUJBQXFCO0lBQ3JCLFVBQVU7SUFDVixhQUFhO0lBQ2IsV0FBVztJQUNYLDRDQVQ2QjtJQVU3QixrQkFBa0IsRUFBQTtFQXhDdEI7TUEyQ00sV0FBVztNQUNYLGtCQUFrQjtNQUNsQixzQkFBc0I7TUFDdEIsU0FBUztNQUNULFdBQVc7TUFDWCxZQUFZO01BQ1osb0NBbkIyQjtNQW9CM0Isa0JBQWtCO01BQ2xCLCtDQUErQztNQUMvQyx1Q0FBdUMsRUFBQTtFQUd6QztFQUNFLE9BQUk7RUFFSjtJQUNFLGtDQUEwQjtZQUExQiwwQkFBMEI7SUFDMUIsVUFBVSxFQUFBLEVBQUE7RUFJZDtFQUNFLE9BQUk7RUFFSjtJQUNFLGtDQUEwQjtZQUExQiwwQkFBMEI7SUFDMUIsVUFBVSxFQUFBLEVBQUE7RUFyRWxCO0lBMkVJLG1CQUFtQjtJQUNuQixjQUFjO0lBQ2Qsa0JBQWtCO0lBQ2xCLFNBQVM7SUFDVCxPQUFPO0lBQ1AsUUFBUTtJQUNSLGNBQWM7SUFDZCxVQUFVLEVBQUE7RUFsRmQ7SUEyRk0sOENBQXFEO1lBQXJELHNDQUFxRCxFQUFBO0VBM0YzRDtJQTJGTSxnREFBcUQ7WUFBckQsd0NBQXFELEVBQUE7RUEzRjNEO0lBMkZNLDhDQUFxRDtZQUFyRCxzQ0FBcUQsRUFBQTtFQTNGM0Q7SUEyRk0sZ0RBQXFEO1lBQXJELHdDQUFxRCxFQUFBO0VBM0YzRDtJQTJGTSw4Q0FBcUQ7WUFBckQsc0NBQXFELEVBQUE7RUEzRjNEO0lBMkZNLCtDQUFxRDtZQUFyRCx1Q0FBcUQsRUFBQTtFQTNGM0Q7SUEyRk0sMkNBQXFEO1lBQXJELG1DQUFxRCxFQUFBIiwiZmlsZSI6InNyYy9hcHAvYXBwLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLnBhcmFsbGF4LS1ub1Njcm9sbCB7XHJcbiAgb3ZlcmZsb3c6IGhpZGRlbjtcclxuXHJcbiAgLnBhcmFsbGF4IHtcclxuICAgIG92ZXJmbG93LXk6IHNjcm9sbDtcclxuICAgIHBlcnNwZWN0aXZlOiAxMDBweDtcclxuICAgIGhlaWdodDogMTAwdmg7XHJcbiAgICBvdmVyZmxvdy14OiBoaWRkZW47XHJcbiAgICBwb3NpdGlvbjogYWJzb2x1dGU7XHJcbiAgICB0b3A6IDA7XHJcbiAgICBsZWZ0OiA1MCU7XHJcbiAgICByaWdodDogMDtcclxuICAgIGJvdHRvbTogMDtcclxuICAgIG1hcmdpbi1sZWZ0OiAtMTUwMHB4O1xyXG4gIH1cclxuXHJcbiAgLnBhcmFsbGF4X19sYXllciB7XHJcbiAgICBwb3NpdGlvbjogYWJzb2x1dGU7XHJcbiAgICB0b3A6IDA7XHJcbiAgICByaWdodDogMDtcclxuICAgIGJvdHRvbTogMDtcclxuICAgIGxlZnQ6IDA7XHJcblxyXG4gICAgaW1nIHtcclxuICAgICAgZGlzcGxheTogYmxvY2s7XHJcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcclxuICAgICAgYm90dG9tOiAwO1xyXG4gICAgfVxyXG4gIH1cclxuXHJcbiAgJHNvbGlkOiByZ2JhKDI1NSwgMjU1LCAyNTUsIC44KTtcclxuICAkc2l6ZTogNDBweDsgLyogQWRqdXN0IHRoZSBzaXplIHRvIHJlc2l6ZSB0aGUgaW5kaWNhdG9yLiAqL1xyXG5cclxuICAuc2Nyb2xsSW5kaWNhdG9yIHtcclxuICAgIHBvc2l0aW9uOiBmaXhlZDtcclxuICAgIGxlZnQ6IGNhbGMoNjAlIC0gMWVtKTtcclxuICAgIHdpZHRoOiAyZW07XHJcbiAgICBoZWlnaHQ6IDMuOGVtO1xyXG4gICAgYm90dG9tOiAzZW07XHJcbiAgICBib3JkZXI6IC4yZW0gc29saWQgJHNvbGlkO1xyXG4gICAgYm9yZGVyLXJhZGl1czogNWVtO1xyXG5cclxuICAgICY6YmVmb3JlIHtcclxuICAgICAgY29udGVudDogJyc7XHJcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcclxuICAgICAgbGVmdDogY2FsYyg1MCUgLSAuMmVtKTtcclxuICAgICAgdG9wOiAuNGVtO1xyXG4gICAgICB3aWR0aDogLjRlbTtcclxuICAgICAgaGVpZ2h0OiAuNGVtO1xyXG4gICAgICBiYWNrZ3JvdW5kOiAkc29saWQ7XHJcbiAgICAgIGJvcmRlci1yYWRpdXM6IDUwJTtcclxuICAgICAgLXdlYmtpdC1hbmltYXRpb246IGZhZGVUbyAxLjRzIGVhc2UtaW4gaW5maW5pdGU7XHJcbiAgICAgIGFuaW1hdGlvbjogZmFkZVRvIDEuNHMgZWFzZS1pbiBpbmZpbml0ZTtcclxuICAgIH1cclxuXHJcbiAgICBALXdlYmtpdC1rZXlmcmFtZXMgZmFkZVRvIHtcclxuICAgICAgZnJvbSB7fVxyXG5cclxuICAgICAgdG8ge1xyXG4gICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxZW0pO1xyXG4gICAgICAgIG9wYWNpdHk6IDA7XHJcbiAgICAgIH1cclxuICAgIH1cclxuXHJcbiAgICBAa2V5ZnJhbWVzIGZhZGVUbyB7XHJcbiAgICAgIGZyb20ge31cclxuXHJcbiAgICAgIHRvIHtcclxuICAgICAgICB0cmFuc2Zvcm06IHRyYW5zbGF0ZVkoMWVtKTtcclxuICAgICAgICBvcGFjaXR5OiAwO1xyXG4gICAgICB9XHJcbiAgICB9XHJcbiAgfVxyXG5cclxuICAucGFyYWxsYXhfX2NvdmVyIHtcclxuICAgIGJhY2tncm91bmQ6ICMyRDExMkI7XHJcbiAgICBkaXNwbGF5OiBibG9jaztcclxuICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcclxuICAgIHRvcDogMTAwJTtcclxuICAgIGxlZnQ6IDA7XHJcbiAgICByaWdodDogMDtcclxuICAgIGhlaWdodDogMjAwMHB4O1xyXG4gICAgei1pbmRleDogMjtcclxuICB9XHJcblxyXG4gICRwYXJhbGxheF9fbGF5ZXJzOiA2O1xyXG5cclxuICBAZm9yICRpIGZyb20gMCB0aHJvdWdoICRwYXJhbGxheF9fbGF5ZXJzIHtcclxuICAgICR4OiAoJHBhcmFsbGF4X19sYXllcnMgLSAkaSkgLyAyO1xyXG5cclxuICAgIC5wYXJhbGxheF9fbGF5ZXJfXyN7JGl9IHtcclxuICAgICAgdHJhbnNmb3JtOiB0cmFuc2xhdGVaKC0xMDAgKiAkeCN7cHh9KSBzY2FsZSgkeCArIDEpO1xyXG4gICAgfVxyXG4gIH1cclxufVxyXG4iXX0= */"
 
 /***/ }),
 
@@ -57,6 +57,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppComponent", function() { return AppComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+
 
 
 var AppComponent = /** @class */ (function () {
@@ -69,16 +71,32 @@ var AppComponent = /** @class */ (function () {
             //  this.initBackgroundChange();
         }
     };
+    AppComponent.prototype.ngAfterViewInit = function () {
+        var content = document.querySelector('.parallax');
+        var scroll$ = Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["fromEvent"])(content, 'scroll');
+        scroll$.subscribe(this.handleScroll.bind(this));
+    };
     AppComponent.prototype.ngAfterViewChecked = function () {
     };
-    AppComponent.prototype.initBackgroundChange = function () {
-        var _this = this;
-        this.isBackgroundChangeInit = true;
-        var body = document.getElementsByTagName("body")[0];
-        setInterval(function () {
-            body.style.backgroundImage = _this.isBackground ? "url('background2.gif')" : "url('background.gif')";
-            _this.isBackground = !_this.isBackground;
-        }, 4000);
+    AppComponent.prototype.handleScroll = function (event) {
+        var scrollIndicator = document.getElementsByClassName("scrollIndicator")[0];
+        var distance = this.getDistanceBetweenElements(document.getElementsByClassName("navbar")[0], scrollIndicator);
+        console.log('distance', distance);
+        if (distance < 800) {
+            scrollIndicator.style.display = "none";
+        }
+    };
+    AppComponent.prototype.getDistanceBetweenElements = function (a, b) {
+        var aPosition = this.getPositionAtCenter(a);
+        var bPosition = this.getPositionAtCenter(b);
+        return Math.hypot(aPosition.x - bPosition.x, aPosition.y - bPosition.y);
+    };
+    AppComponent.prototype.getPositionAtCenter = function (element) {
+        var _a = element.getBoundingClientRect(), top = _a.top, left = _a.left, width = _a.width, height = _a.height;
+        return {
+            x: left + width / 2,
+            y: top + height / 2
+        };
     };
     AppComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -144,7 +162,7 @@ var AppModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"navbar\">\r\n  <div class=\"navbar__left\">\r\n    <h4 class=\"navbar__brand\">Koreh Andrei</h4>\r\n  </div>\r\n  <div class=\"navbar__center\">\r\n\r\n  </div>\r\n  <div class=\"navbar__right\">\r\n    <h4 class=\"navbar__email\">koreh.andrei20@gmail.com</h4>\r\n  </div>\r\n</div>"
+module.exports = "<div class=\"navbar\">\r\n  <div class=\"navbar__left\">\r\n    <h4 class=\"navbar__brand\">Koreh Andrei</h4>\r\n  </div>\r\n  <div class=\"navbar__center\">\r\n\r\n  </div>\r\n  <div class=\"navbar__right\">\r\n    <h4 class=\"navbar__email\">akoreh@gmail.com</h4>\r\n  </div>\r\n</div>"
 
 /***/ }),
 
