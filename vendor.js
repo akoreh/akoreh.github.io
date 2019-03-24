@@ -1,5 +1,13133 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([["vendor"],{
 
+/***/ "./node_modules/@angular/animations/fesm5/animations.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/@angular/animations/fesm5/animations.js ***!
+  \**************************************************************/
+/*! exports provided: AnimationBuilder, AnimationFactory, AUTO_STYLE, animate, animateChild, animation, group, keyframes, query, sequence, stagger, state, style, transition, trigger, useAnimation, NoopAnimationPlayer, ɵPRE_STYLE, ɵAnimationGroupPlayer */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AnimationBuilder", function() { return AnimationBuilder; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AnimationFactory", function() { return AnimationFactory; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AUTO_STYLE", function() { return AUTO_STYLE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "animate", function() { return animate; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "animateChild", function() { return animateChild; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "animation", function() { return animation; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "group", function() { return group; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "keyframes", function() { return keyframes; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "query", function() { return query; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sequence", function() { return sequence; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "stagger", function() { return stagger; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "state", function() { return state; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "style", function() { return style; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "transition", function() { return transition; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "trigger", function() { return trigger; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useAnimation", function() { return useAnimation; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NoopAnimationPlayer", function() { return NoopAnimationPlayer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵPRE_STYLE", function() { return ɵPRE_STYLE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵAnimationGroupPlayer", function() { return AnimationGroupPlayer; });
+/**
+ * @license Angular v7.2.2
+ * (c) 2010-2018 Google, Inc. https://angular.io/
+ * License: MIT
+ */
+
+/**
+ * An injectable service that produces an animation sequence programmatically within an
+ * Angular component or directive.
+ * Provided by the `BrowserAnimationsModule` or `NoopAnimationsModule`.
+ *
+ * @usageNotes
+ *
+ * To use this service, add it to your component or directive as a dependency.
+ * The service is instantiated along with your component.
+ *
+ * Apps do not typically need to create their own animation players, but if you
+ * do need to, follow these steps:
+ *
+ * 1. Use the `build()` method to create a programmatic animation using the
+ * `animate()` function. The method returns an `AnimationFactory` instance.
+ *
+ * 2. Use the factory object to create an `AnimationPlayer` and attach it to a DOM element.
+ *
+ * 3. Use the player object to control the animation programmatically.
+ *
+ * For example:
+ *
+ * ```ts
+ * // import the service from BrowserAnimationsModule
+ * import {AnimationBuilder} from '@angular/animations';
+ * // require the service as a dependency
+ * class MyCmp {
+ *   constructor(private _builder: AnimationBuilder) {}
+ *
+ *   makeAnimation(element: any) {
+ *     // first define a reusable animation
+ *     const myAnimation = this._builder.build([
+ *       style({ width: 0 }),
+ *       animate(1000, style({ width: '100px' }))
+ *     ]);
+ *
+ *     // use the returned factory object to create a player
+ *     const player = myAnimation.create(element);
+ *
+ *     player.play();
+ *   }
+ * }
+ * ```
+ *
+ * @publicApi
+ */
+var AnimationBuilder = /** @class */ (function () {
+    function AnimationBuilder() {
+    }
+    return AnimationBuilder;
+}());
+/**
+ * A factory object returned from the `AnimationBuilder`.`build()` method.
+ *
+ * @publicApi
+ */
+var AnimationFactory = /** @class */ (function () {
+    function AnimationFactory() {
+    }
+    return AnimationFactory;
+}());
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * Specifies automatic styling.
+ *
+ * @publicApi
+ */
+var AUTO_STYLE = '*';
+/**
+ * Creates a named animation trigger, containing a  list of `state()`
+ * and `transition()` entries to be evaluated when the expression
+ * bound to the trigger changes.
+ *
+ * @param name An identifying string.
+ * @param definitions  An animation definition object, containing an array of `state()`
+ * and `transition()` declarations.
+ *
+ * @return An object that encapsulates the trigger data.
+ *
+ * @usageNotes
+ * Define an animation trigger in the `animations` section of `@Component` metadata.
+ * In the template, reference the trigger by name and bind it to a trigger expression that
+ * evaluates to a defined animation state, using the following format:
+ *
+ * `[@triggerName]="expression"`
+ *
+ * Animation trigger bindings convert all values to strings, and then match the
+ * previous and current values against any linked transitions.
+ * Booleans can be specified as `1` or `true` and `0` or `false`.
+ *
+ * ### Usage Example
+ *
+ * The following example creates an animation trigger reference based on the provided
+ * name value.
+ * The provided animation value is expected to be an array consisting of state and
+ * transition declarations.
+ *
+ * ```typescript
+ * @Component({
+ *   selector: "my-component",
+ *   templateUrl: "my-component-tpl.html",
+ *   animations: [
+ *     trigger("myAnimationTrigger", [
+ *       state(...),
+ *       state(...),
+ *       transition(...),
+ *       transition(...)
+ *     ])
+ *   ]
+ * })
+ * class MyComponent {
+ *   myStatusExp = "something";
+ * }
+ * ```
+ *
+ * The template associated with this component makes use of the defined trigger
+ * by binding to an element within its template code.
+ *
+ * ```html
+ * <!-- somewhere inside of my-component-tpl.html -->
+ * <div [@myAnimationTrigger]="myStatusExp">...</div>
+ * ```
+ *
+ * ### Using an inline function
+ * The `transition` animation method also supports reading an inline function which can decide
+ * if its associated animation should be run.
+ *
+ * ```typescript
+ * // this method is run each time the `myAnimationTrigger` trigger value changes.
+ * function myInlineMatcherFn(fromState: string, toState: string, element: any, params: {[key:
+ string]: any}): boolean {
+ *   // notice that `element` and `params` are also available here
+ *   return toState == 'yes-please-animate';
+ * }
+ *
+ * @Component({
+ *   selector: 'my-component',
+ *   templateUrl: 'my-component-tpl.html',
+ *   animations: [
+ *     trigger('myAnimationTrigger', [
+ *       transition(myInlineMatcherFn, [
+ *         // the animation sequence code
+ *       ]),
+ *     ])
+ *   ]
+ * })
+ * class MyComponent {
+ *   myStatusExp = "yes-please-animate";
+ * }
+ * ```
+ *
+ * ### Disabling Animations
+ * When true, the special animation control binding `@.disabled` binding prevents
+ * all animations from rendering.
+ * Place the  `@.disabled` binding on an element to disable
+ * animations on the element itself, as well as any inner animation triggers
+ * within the element.
+ *
+ * The following example shows how to use this feature:
+ *
+ * ```typescript
+ * @Component({
+ *   selector: 'my-component',
+ *   template: `
+ *     <div [@.disabled]="isDisabled">
+ *       <div [@childAnimation]="exp"></div>
+ *     </div>
+ *   `,
+ *   animations: [
+ *     trigger("childAnimation", [
+ *       // ...
+ *     ])
+ *   ]
+ * })
+ * class MyComponent {
+ *   isDisabled = true;
+ *   exp = '...';
+ * }
+ * ```
+ *
+ * When `@.disabled` is true, it prevents the `@childAnimation` trigger from animating,
+ * along with any inner animations.
+ *
+ * ### Disable animations application-wide
+ * When an area of the template is set to have animations disabled,
+ * **all** inner components have their animations disabled as well.
+ * This means that you can disable all animations for an app
+ * by placing a host binding set on `@.disabled` on the topmost Angular component.
+ *
+ * ```typescript
+ * import {Component, HostBinding} from '@angular/core';
+ *
+ * @Component({
+ *   selector: 'app-component',
+ *   templateUrl: 'app.component.html',
+ * })
+ * class AppComponent {
+ *   @HostBinding('@.disabled')
+ *   public animationsDisabled = true;
+ * }
+ * ```
+ *
+ * ### Overriding disablement of inner animations
+ * Despite inner animations being disabled, a parent animation can `query()`
+ * for inner elements located in disabled areas of the template and still animate
+ * them if needed. This is also the case for when a sub animation is
+ * queried by a parent and then later animated using `animateChild()`.
+ *
+ * ### Detecting when an animation is disabled
+ * If a region of the DOM (or the entire application) has its animations disabled, the animation
+ * trigger callbacks still fire, but for zero seconds. When the callback fires, it provides
+ * an instance of an `AnimationEvent`. If animations are disabled,
+ * the `.disabled` flag on the event is true.
+ *
+ * @publicApi
+ */
+function trigger(name, definitions) {
+    return { type: 7 /* Trigger */, name: name, definitions: definitions, options: {} };
+}
+/**
+ * Defines an animation step that combines styling information with timing information.
+ *
+ * @param timings Sets `AnimateTimings` for the parent animation.
+ * A string in the format "duration [delay] [easing]".
+ *  - Duration and delay are expressed as a number and optional time unit,
+ * such as "1s" or "10ms" for one second and 10 milliseconds, respectively.
+ * The default unit is milliseconds.
+ *  - The easing value controls how the animation accelerates and decelerates
+ * during its runtime. Value is one of  `ease`, `ease-in`, `ease-out`,
+ * `ease-in-out`, or a `cubic-bezier()` function call.
+ * If not supplied, no easing is applied.
+ *
+ * For example, the string "1s 100ms ease-out" specifies a duration of
+ * 1000 milliseconds, and delay of 100 ms, and the "ease-out" easing style,
+ * which decelerates near the end of the duration.
+ * @param styles Sets AnimationStyles for the parent animation.
+ * A function call to either `style()` or `keyframes()`
+ * that returns a collection of CSS style entries to be applied to the parent animation.
+ * When null, uses the styles from the destination state.
+ * This is useful when describing an animation step that will complete an animation;
+ * see "Animating to the final state" in `transitions()`.
+ * @returns An object that encapsulates the animation step.
+ *
+ * @usageNotes
+ * Call within an animation `sequence()`, `{@link animations/group group()}`, or
+ * `transition()` call to specify an animation step
+ * that applies given style data to the parent animation for a given amount of time.
+ *
+ * ### Syntax Examples
+ * **Timing examples**
+ *
+ * The following examples show various `timings` specifications.
+ * - `animate(500)` : Duration is 500 milliseconds.
+ * - `animate("1s")` : Duration is 1000 milliseconds.
+ * - `animate("100ms 0.5s")` : Duration is 100 milliseconds, delay is 500 milliseconds.
+ * - `animate("5s ease-in")` : Duration is 5000 milliseconds, easing in.
+ * - `animate("5s 10ms cubic-bezier(.17,.67,.88,.1)")` : Duration is 5000 milliseconds, delay is 10
+ * milliseconds, easing according to a bezier curve.
+ *
+ * **Style examples**
+ *
+ * The following example calls `style()` to set a single CSS style.
+ * ```typescript
+ * animate(500, style({ background: "red" }))
+ * ```
+ * The following example calls `keyframes()` to set a CSS style
+ * to different values for successive keyframes.
+ * ```typescript
+ * animate(500, keyframes(
+ *  [
+ *   style({ background: "blue" })),
+ *   style({ background: "red" }))
+ *  ])
+ * ```
+ *
+ * @publicApi
+ */
+function animate(timings, styles) {
+    if (styles === void 0) { styles = null; }
+    return { type: 4 /* Animate */, styles: styles, timings: timings };
+}
+/**
+ * @description Defines a list of animation steps to be run in parallel.
+ *
+ * @param steps An array of animation step objects.
+ * - When steps are defined by `style()` or `animate()`
+ * function calls, each call within the group is executed instantly.
+ * - To specify offset styles to be applied at a later time, define steps with
+ * `keyframes()`, or use `animate()` calls with a delay value.
+ * For example:
+ *
+ * ```typescript
+ * group([
+ *   animate("1s", { background: "black" }))
+ *   animate("2s", { color: "white" }))
+ * ])
+ * ```
+ *
+ * @param options An options object containing a delay and
+ * developer-defined parameters that provide styling defaults and
+ * can be overridden on invocation.
+ *
+ * @return An object that encapsulates the group data.
+ *
+ * @usageNotes
+ * Grouped animations are useful when a series of styles must be
+ * animated at different starting times and closed off at different ending times.
+ *
+ * When called within a `sequence()` or a
+ * `transition()` call, does not continue to the next
+ * instruction until all of the inner animation steps have completed.
+ *
+ * @publicApi
+ */
+function group(steps, options) {
+    if (options === void 0) { options = null; }
+    return { type: 3 /* Group */, steps: steps, options: options };
+}
+/**
+ * Defines a list of animation steps to be run sequentially, one by one.
+ *
+ * @param steps An array of animation step objects.
+ * - Steps defined by `style()` calls apply the styling data immediately.
+ * - Steps defined by `animate()` calls apply the styling data over time
+ *   as specified by the timing data.
+ *
+ * ```typescript
+ * sequence([
+ *   style({ opacity: 0 })),
+ *   animate("1s", { opacity: 1 }))
+ * ])
+ * ```
+ *
+ * @param options An options object containing a delay and
+ * developer-defined parameters that provide styling defaults and
+ * can be overridden on invocation.
+ *
+ * @return An object that encapsulates the sequence data.
+ *
+ * @usageNotes
+ * When you pass an array of steps to a
+ * `transition()` call, the steps run sequentially by default.
+ * Compare this to the `{@link animations/group group()}` call, which runs animation steps in parallel.
+ *
+ * When a sequence is used within a `{@link animations/group group()}` or a `transition()` call,
+ * execution continues to the next instruction only after each of the inner animation
+ * steps have completed.
+ *
+ * @publicApi
+ **/
+function sequence(steps, options) {
+    if (options === void 0) { options = null; }
+    return { type: 2 /* Sequence */, steps: steps, options: options };
+}
+/**
+ * Declares a key/value object containing CSS properties/styles that
+ * can then be used for an animation `state`, within an animation `sequence`,
+ * or as styling data for calls to `animate()` and `keyframes()`.
+ *
+ * @param tokens A set of CSS styles or HTML styles associated with an animation state.
+ * The value can be any of the following:
+ * - A key-value style pair associating a CSS property with a value.
+ * - An array of key-value style pairs.
+ * - An asterisk (*), to use auto-styling, where styles are derived from the element
+ * being animated and applied to the animation when it starts.
+ *
+ * Auto-styling can be used to define a state that depends on layout or other
+ * environmental factors.
+ *
+ * @return An object that encapsulates the style data.
+ *
+ * @usageNotes
+ * The following examples create animation styles that collect a set of
+ * CSS property values:
+ *
+ * ```typescript
+ * // string values for CSS properties
+ * style({ background: "red", color: "blue" })
+ *
+ * // numerical pixel values
+ * style({ width: 100, height: 0 })
+ * ```
+ *
+ * The following example uses auto-styling to allow a component to animate from
+ * a height of 0 up to the height of the parent element:
+ *
+ * ```
+ * style({ height: 0 }),
+ * animate("1s", style({ height: "*" }))
+ * ```
+ *
+ * @publicApi
+ **/
+function style(tokens) {
+    return { type: 6 /* Style */, styles: tokens, offset: null };
+}
+/**
+ * Declares an animation state within a trigger attached to an element.
+ *
+ * @param name One or more names for the defined state in a comma-separated string.
+ * The following reserved state names can be supplied to define a style for specific use
+ * cases:
+ *
+ * - `void` You can associate styles with this name to be used when
+ * the element is detached from the application. For example, when an `ngIf` evaluates
+ * to false, the state of the associated element is void.
+ *  - `*` (asterisk) Indicates the default state. You can associate styles with this name
+ * to be used as the fallback when the state that is being animated is not declared
+ * within the trigger.
+ *
+ * @param styles A set of CSS styles associated with this state, created using the
+ * `style()` function.
+ * This set of styles persists on the element once the state has been reached.
+ * @param options Parameters that can be passed to the state when it is invoked.
+ * 0 or more key-value pairs.
+ * @return An object that encapsulates the new state data.
+ *
+ * @usageNotes
+ * Use the `trigger()` function to register states to an animation trigger.
+ * Use the `transition()` function to animate between states.
+ * When a state is active within a component, its associated styles persist on the element,
+ * even when the animation ends.
+ *
+ * @publicApi
+ **/
+function state(name, styles, options) {
+    return { type: 0 /* State */, name: name, styles: styles, options: options };
+}
+/**
+ * Defines a set of animation styles, associating each style with an optional `offset` value.
+ *
+ * @param steps A set of animation styles with optional offset data.
+ * The optional `offset` value for a style specifies a percentage of the total animation
+ * time at which that style is applied.
+ * @returns An object that encapsulates the keyframes data.
+ *
+ * @usageNotes
+ * Use with the `animate()` call. Instead of applying animations
+ * from the current state
+ * to the destination state, keyframes describe how each style entry is applied and at what point
+ * within the animation arc.
+ * Compare [CSS Keyframe Animations](https://www.w3schools.com/css/css3_animations.asp).
+ *
+ * ### Usage
+ *
+ * In the following example, the offset values describe
+ * when each `backgroundColor` value is applied. The color is red at the start, and changes to
+ * blue when 20% of the total time has elapsed.
+ *
+ * ```typescript
+ * // the provided offset values
+ * animate("5s", keyframes([
+ *   style({ backgroundColor: "red", offset: 0 }),
+ *   style({ backgroundColor: "blue", offset: 0.2 }),
+ *   style({ backgroundColor: "orange", offset: 0.3 }),
+ *   style({ backgroundColor: "black", offset: 1 })
+ * ]))
+ * ```
+ *
+ * If there are no `offset` values specified in the style entries, the offsets
+ * are calculated automatically.
+ *
+ * ```typescript
+ * animate("5s", keyframes([
+ *   style({ backgroundColor: "red" }) // offset = 0
+ *   style({ backgroundColor: "blue" }) // offset = 0.33
+ *   style({ backgroundColor: "orange" }) // offset = 0.66
+ *   style({ backgroundColor: "black" }) // offset = 1
+ * ]))
+ *```
+
+ * @publicApi
+ */
+function keyframes(steps) {
+    return { type: 5 /* Keyframes */, steps: steps };
+}
+/**
+ * Declares an animation transition as a sequence of animation steps to run when a given
+ * condition is satisfied. The condition is a Boolean expression or function that compares
+ * the previous and current animation states, and returns true if this transition should occur.
+ * When the state criteria of a defined transition are met, the associated animation is
+ * triggered.
+ *
+ * @param stateChangeExpr A Boolean expression or function that compares the previous and current
+ * animation states, and returns true if this transition should occur. Note that  "true" and "false"
+ * match 1 and 0, respectively. An expression is evaluated each time a state change occurs in the
+ * animation trigger element.
+ * The animation steps run when the expression evaluates to true.
+ *
+ * - A state-change string takes the form "state1 => state2", where each side is a defined animation
+ * state, or an asterix (*) to refer to a dynamic start or end state.
+ *   - The expression string can contain multiple comma-separated statements;
+ * for example "state1 => state2, state3 => state4".
+ *   - Special values `:enter` and `:leave` initiate a transition on the entry and exit states,
+ * equivalent to  "void => *"  and "* => void".
+ *   - Special values `:increment` and `:decrement` initiate a transition when a numeric value has
+ * increased or decreased in value.
+ * - A function is executed each time a state change occurs in the animation trigger element.
+ * The animation steps run when the function returns true.
+ *
+ * @param steps One or more animation objects, as returned by the `animate()` or
+ * `sequence()` function, that form a transformation from one state to another.
+ * A sequence is used by default when you pass an array.
+ * @param options An options object that can contain a delay value for the start of the animation,
+ * and additional developer-defined parameters. Provided values for additional parameters are used
+ * as defaults, and override values can be passed to the caller on invocation.
+ * @returns An object that encapsulates the transition data.
+ *
+ * @usageNotes
+ * The template associated with a component binds an animation trigger to an element.
+ *
+ * ```HTML
+ * <!-- somewhere inside of my-component-tpl.html -->
+ * <div [@myAnimationTrigger]="myStatusExp">...</div>
+ * ```
+ *
+ * All transitions are defined within an animation trigger,
+ * along with named states that the transitions change to and from.
+ *
+ * ```typescript
+ * trigger("myAnimationTrigger", [
+ *  // define states
+ *  state("on", style({ background: "green" })),
+ *  state("off", style({ background: "grey" })),
+ *  ...]
+ * ```
+ *
+ * Note that when you call the `sequence()` function within a `{@link animations/group group()}`
+ * or a `transition()` call, execution does not continue to the next instruction
+ * until each of the inner animation steps have completed.
+ *
+ * ### Syntax examples
+ *
+ * The following examples define transitions between the two defined states (and default states),
+ * using various options:
+ *
+ * ```typescript
+ * // Transition occurs when the state value
+ * // bound to "myAnimationTrigger" changes from "on" to "off"
+ * transition("on => off", animate(500))
+ * // Run the same animation for both directions
+ * transition("on <=> off", animate(500))
+ * // Define multiple state-change pairs separated by commas
+ * transition("on => off, off => void", animate(500))
+ * ```
+ *
+ * ### Special values for state-change expressions
+ *
+ * - Catch-all state change for when an element is inserted into the page and the
+ * destination state is unknown:
+ *
+ * ```typescript
+ * transition("void => *", [
+ *  style({ opacity: 0 }),
+ *  animate(500)
+ *  ])
+ * ```
+ *
+ * - Capture a state change between any states:
+ *
+ *  `transition("* => *", animate("1s 0s"))`
+ *
+ * - Entry and exit transitions:
+ *
+ * ```typescript
+ * transition(":enter", [
+ *   style({ opacity: 0 }),
+ *   animate(500, style({ opacity: 1 }))
+ *   ]),
+ * transition(":leave", [
+ *   animate(500, style({ opacity: 0 }))
+ *   ])
+ * ```
+ *
+ * - Use `:increment` and `:decrement` to initiate transitions:
+ *
+ * ```typescript
+ * transition(":increment", group([
+ *  query(':enter', [
+ *     style({ left: '100%' }),
+ *     animate('0.5s ease-out', style('*'))
+ *   ]),
+ *  query(':leave', [
+ *     animate('0.5s ease-out', style({ left: '-100%' }))
+ *  ])
+ * ]))
+ *
+ * transition(":decrement", group([
+ *  query(':enter', [
+ *     style({ left: '100%' }),
+ *     animate('0.5s ease-out', style('*'))
+ *   ]),
+ *  query(':leave', [
+ *     animate('0.5s ease-out', style({ left: '-100%' }))
+ *  ])
+ * ]))
+ * ```
+ *
+ * ### State-change functions
+ *
+ * Here is an example of a `fromState` specified as a state-change function that invokes an
+ * animation when true:
+ *
+ * ```typescript
+ * transition((fromState, toState) =>
+ *  {
+ *   return fromState == "off" && toState == "on";
+ *  },
+ *  animate("1s 0s"))
+ * ```
+ *
+ * ### Animating to the final state
+ *
+ * If the final step in a transition is a call to `animate()` that uses a timing value
+ * with no style data, that step is automatically considered the final animation arc,
+ * for the element to reach the final state. Angular automatically adds or removes
+ * CSS styles to ensure that the element is in the correct final state.
+ *
+ * The following example defines a transition that starts by hiding the element,
+ * then makes sure that it animates properly to whatever state is currently active for trigger:
+ *
+ * ```typescript
+ * transition("void => *", [
+ *   style({ opacity: 0 }),
+ *   animate(500)
+ *  ])
+ * ```
+ * ### Boolean value matching
+ * If a trigger binding value is a Boolean, it can be matched using a transition expression
+ * that compares true and false or 1 and 0. For example:
+ *
+ * ```
+ * // in the template
+ * <div [@openClose]="open ? true : false">...</div>
+ * // in the component metadata
+ * trigger('openClose', [
+ *   state('true', style({ height: '*' })),
+ *   state('false', style({ height: '0px' })),
+ *   transition('false <=> true', animate(500))
+ * ])
+ * ```
+ *
+ * @publicApi
+ **/
+function transition(stateChangeExpr, steps, options) {
+    if (options === void 0) { options = null; }
+    return { type: 1 /* Transition */, expr: stateChangeExpr, animation: steps, options: options };
+}
+/**
+ * Produces a reusable animation that can be invoked in another animation or sequence,
+ * by calling the `useAnimation()` function.
+ *
+ * @param steps One or more animation objects, as returned by the `animate()`
+ * or `sequence()` function, that form a transformation from one state to another.
+ * A sequence is used by default when you pass an array.
+ * @param options An options object that can contain a delay value for the start of the
+ * animation, and additional developer-defined parameters.
+ * Provided values for additional parameters are used as defaults,
+ * and override values can be passed to the caller on invocation.
+ * @returns An object that encapsulates the animation data.
+ *
+ * @usageNotes
+ * The following example defines a reusable animation, providing some default parameter
+ * values.
+ *
+ * ```typescript
+ * var fadeAnimation = animation([
+ *   style({ opacity: '{{ start }}' }),
+ *   animate('{{ time }}',
+ *   style({ opacity: '{{ end }}'}))
+ *   ],
+ *   { params: { time: '1000ms', start: 0, end: 1 }});
+ * ```
+ *
+ * The following invokes the defined animation with a call to `useAnimation()`,
+ * passing in override parameter values.
+ *
+ * ```js
+ * useAnimation(fadeAnimation, {
+ *   params: {
+ *     time: '2s',
+ *     start: 1,
+ *     end: 0
+ *   }
+ * })
+ * ```
+ *
+ * If any of the passed-in parameter values are missing from this call,
+ * the default values are used. If one or more parameter values are missing before a step is
+ * animated, `useAnimation()` throws an error.
+ *
+ * @publicApi
+ */
+function animation(steps, options) {
+    if (options === void 0) { options = null; }
+    return { type: 8 /* Reference */, animation: steps, options: options };
+}
+/**
+ * Executes a queried inner animation element within an animation sequence.
+ *
+ * @param options An options object that can contain a delay value for the start of the
+ * animation, and additional override values for developer-defined parameters.
+ * @return An object that encapsulates the child animation data.
+ *
+ * @usageNotes
+ * Each time an animation is triggered in Angular, the parent animation
+ * has priority and any child animations are blocked. In order
+ * for a child animation to run, the parent animation must query each of the elements
+ * containing child animations, and run them using this function.
+ *
+ * Note that this feature designed to be used with `query()` and it will only work
+ * with animations that are assigned using the Angular animation library. CSS keyframes
+ * and transitions are not handled by this API.
+ *
+ * @publicApi
+ */
+function animateChild(options) {
+    if (options === void 0) { options = null; }
+    return { type: 9 /* AnimateChild */, options: options };
+}
+/**
+ * Starts a reusable animation that is created using the `animation()` function.
+ *
+ * @param animation The reusable animation to start.
+ * @param options An options object that can contain a delay value for the start of
+ * the animation, and additional override values for developer-defined parameters.
+ * @return An object that contains the animation parameters.
+ *
+ * @publicApi
+ */
+function useAnimation(animation, options) {
+    if (options === void 0) { options = null; }
+    return { type: 10 /* AnimateRef */, animation: animation, options: options };
+}
+/**
+ * Finds one or more inner elements within the current element that is
+ * being animated within a sequence. Use with `animate()`.
+ *
+ * @param selector The element to query, or a set of elements that contain Angular-specific
+ * characteristics, specified with one or more of the following tokens.
+ *  - `query(":enter")` or `query(":leave")` : Query for newly inserted/removed elements.
+ *  - `query(":animating")` : Query all currently animating elements.
+ *  - `query("@triggerName")` : Query elements that contain an animation trigger.
+ *  - `query("@*")` : Query all elements that contain an animation triggers.
+ *  - `query(":self")` : Include the current element into the animation sequence.
+ *
+ * @param animation One or more animation steps to apply to the queried element or elements.
+ * An array is treated as an animation sequence.
+ * @param options An options object. Use the 'limit' field to limit the total number of
+ * items to collect.
+ * @return An object that encapsulates the query data.
+ *
+ * @usageNotes
+ * Tokens can be merged into a combined query selector string. For example:
+ *
+ * ```typescript
+ *  query(':self, .record:enter, .record:leave, @subTrigger', [...])
+ * ```
+ *
+ * The `query()` function collects multiple elements and works internally by using
+ * `element.querySelectorAll`. Use the `limit` field of an options object to limit
+ * the total number of items to be collected. For example:
+ *
+ * ```js
+ * query('div', [
+ *   animate(...),
+ *   animate(...)
+ * ], { limit: 1 })
+ * ```
+ *
+ * By default, throws an error when zero items are found. Set the
+ * `optional` flag to ignore this error. For example:
+ *
+ * ```js
+ * query('.some-element-that-may-not-be-there', [
+ *   animate(...),
+ *   animate(...)
+ * ], { optional: true })
+ * ```
+ *
+ * ### Usage Example
+ *
+ * The following example queries for inner elements and animates them
+ * individually using `animate()`.
+ *
+ * ```typescript
+ * @Component({
+ *   selector: 'inner',
+ *   template: `
+ *     <div [@queryAnimation]="exp">
+ *       <h1>Title</h1>
+ *       <div class="content">
+ *         Blah blah blah
+ *       </div>
+ *     </div>
+ *   `,
+ *   animations: [
+ *    trigger('queryAnimation', [
+ *      transition('* => goAnimate', [
+ *        // hide the inner elements
+ *        query('h1', style({ opacity: 0 })),
+ *        query('.content', style({ opacity: 0 })),
+ *
+ *        // animate the inner elements in, one by one
+ *        query('h1', animate(1000, style({ opacity: 1 })),
+ *        query('.content', animate(1000, style({ opacity: 1 })),
+ *      ])
+ *    ])
+ *  ]
+ * })
+ * class Cmp {
+ *   exp = '';
+ *
+ *   goAnimate() {
+ *     this.exp = 'goAnimate';
+ *   }
+ * }
+ * ```
+ *
+ * @publicApi
+ */
+function query(selector, animation, options) {
+    if (options === void 0) { options = null; }
+    return { type: 11 /* Query */, selector: selector, animation: animation, options: options };
+}
+/**
+ * Use within an animation `query()` call to issue a timing gap after
+ * each queried item is animated.
+ *
+ * @param timings A delay value.
+ * @param animation One ore more animation steps.
+ * @returns An object that encapsulates the stagger data.
+ *
+ * @usageNotes
+ * In the following example, a container element wraps a list of items stamped out
+ * by an `ngFor`. The container element contains an animation trigger that will later be set
+ * to query for each of the inner items.
+ *
+ * Each time items are added, the opacity fade-in animation runs,
+ * and each removed item is faded out.
+ * When either of these animations occur, the stagger effect is
+ * applied after each item's animation is started.
+ *
+ * ```html
+ * <!-- list.component.html -->
+ * <button (click)="toggle()">Show / Hide Items</button>
+ * <hr />
+ * <div [@listAnimation]="items.length">
+ *   <div *ngFor="let item of items">
+ *     {{ item }}
+ *   </div>
+ * </div>
+ * ```
+ *
+ * Here is the component code:
+ *
+ * ```typescript
+ * import {trigger, transition, style, animate, query, stagger} from '@angular/animations';
+ * @Component({
+ *   templateUrl: 'list.component.html',
+ *   animations: [
+ *     trigger('listAnimation', [
+ *     ...
+ *     ])
+ *   ]
+ * })
+ * class ListComponent {
+ *   items = [];
+ *
+ *   showItems() {
+ *     this.items = [0,1,2,3,4];
+ *   }
+ *
+ *   hideItems() {
+ *     this.items = [];
+ *   }
+ *
+ *   toggle() {
+ *     this.items.length ? this.hideItems() : this.showItems();
+ *    }
+ *  }
+ * ```
+ *
+ * Here is the animation trigger code:
+ *
+ * ```typescript
+ * trigger('listAnimation', [
+ *   transition('* => *', [ // each time the binding value changes
+ *     query(':leave', [
+ *       stagger(100, [
+ *         animate('0.5s', style({ opacity: 0 }))
+ *       ])
+ *     ]),
+ *     query(':enter', [
+ *       style({ opacity: 0 }),
+ *       stagger(100, [
+ *         animate('0.5s', style({ opacity: 1 }))
+ *       ])
+ *     ])
+ *   ])
+ * ])
+ * ```
+ *
+ * @publicApi
+ */
+function stagger(timings, animation) {
+    return { type: 12 /* Stagger */, timings: timings, animation: animation };
+}
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+function scheduleMicroTask(cb) {
+    Promise.resolve(null).then(cb);
+}
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * An empty programmatic controller for reusable animations.
+ * Used internally when animations are disabled, to avoid
+ * checking for the null case when an animation player is expected.
+ *
+ * @see `animate()`
+ * @see `AnimationPlayer`
+ * @see `GroupPlayer`
+ *
+ * @publicApi
+ */
+var NoopAnimationPlayer = /** @class */ (function () {
+    function NoopAnimationPlayer(duration, delay) {
+        if (duration === void 0) { duration = 0; }
+        if (delay === void 0) { delay = 0; }
+        this._onDoneFns = [];
+        this._onStartFns = [];
+        this._onDestroyFns = [];
+        this._started = false;
+        this._destroyed = false;
+        this._finished = false;
+        this.parentPlayer = null;
+        this.totalTime = duration + delay;
+    }
+    NoopAnimationPlayer.prototype._onFinish = function () {
+        if (!this._finished) {
+            this._finished = true;
+            this._onDoneFns.forEach(function (fn) { return fn(); });
+            this._onDoneFns = [];
+        }
+    };
+    NoopAnimationPlayer.prototype.onStart = function (fn) { this._onStartFns.push(fn); };
+    NoopAnimationPlayer.prototype.onDone = function (fn) { this._onDoneFns.push(fn); };
+    NoopAnimationPlayer.prototype.onDestroy = function (fn) { this._onDestroyFns.push(fn); };
+    NoopAnimationPlayer.prototype.hasStarted = function () { return this._started; };
+    NoopAnimationPlayer.prototype.init = function () { };
+    NoopAnimationPlayer.prototype.play = function () {
+        if (!this.hasStarted()) {
+            this._onStart();
+            this.triggerMicrotask();
+        }
+        this._started = true;
+    };
+    /** @internal */
+    NoopAnimationPlayer.prototype.triggerMicrotask = function () {
+        var _this = this;
+        scheduleMicroTask(function () { return _this._onFinish(); });
+    };
+    NoopAnimationPlayer.prototype._onStart = function () {
+        this._onStartFns.forEach(function (fn) { return fn(); });
+        this._onStartFns = [];
+    };
+    NoopAnimationPlayer.prototype.pause = function () { };
+    NoopAnimationPlayer.prototype.restart = function () { };
+    NoopAnimationPlayer.prototype.finish = function () { this._onFinish(); };
+    NoopAnimationPlayer.prototype.destroy = function () {
+        if (!this._destroyed) {
+            this._destroyed = true;
+            if (!this.hasStarted()) {
+                this._onStart();
+            }
+            this.finish();
+            this._onDestroyFns.forEach(function (fn) { return fn(); });
+            this._onDestroyFns = [];
+        }
+    };
+    NoopAnimationPlayer.prototype.reset = function () { };
+    NoopAnimationPlayer.prototype.setPosition = function (position) { };
+    NoopAnimationPlayer.prototype.getPosition = function () { return 0; };
+    /** @internal */
+    NoopAnimationPlayer.prototype.triggerCallback = function (phaseName) {
+        var methods = phaseName == 'start' ? this._onStartFns : this._onDoneFns;
+        methods.forEach(function (fn) { return fn(); });
+        methods.length = 0;
+    };
+    return NoopAnimationPlayer;
+}());
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * A programmatic controller for a group of reusable animations.
+ * Used internally to control animations.
+ *
+ * @see `AnimationPlayer`
+ * @see `{@link animations/group group()}`
+ *
+ */
+var AnimationGroupPlayer = /** @class */ (function () {
+    function AnimationGroupPlayer(_players) {
+        var _this = this;
+        this._onDoneFns = [];
+        this._onStartFns = [];
+        this._finished = false;
+        this._started = false;
+        this._destroyed = false;
+        this._onDestroyFns = [];
+        this.parentPlayer = null;
+        this.totalTime = 0;
+        this.players = _players;
+        var doneCount = 0;
+        var destroyCount = 0;
+        var startCount = 0;
+        var total = this.players.length;
+        if (total == 0) {
+            scheduleMicroTask(function () { return _this._onFinish(); });
+        }
+        else {
+            this.players.forEach(function (player) {
+                player.onDone(function () {
+                    if (++doneCount == total) {
+                        _this._onFinish();
+                    }
+                });
+                player.onDestroy(function () {
+                    if (++destroyCount == total) {
+                        _this._onDestroy();
+                    }
+                });
+                player.onStart(function () {
+                    if (++startCount == total) {
+                        _this._onStart();
+                    }
+                });
+            });
+        }
+        this.totalTime = this.players.reduce(function (time, player) { return Math.max(time, player.totalTime); }, 0);
+    }
+    AnimationGroupPlayer.prototype._onFinish = function () {
+        if (!this._finished) {
+            this._finished = true;
+            this._onDoneFns.forEach(function (fn) { return fn(); });
+            this._onDoneFns = [];
+        }
+    };
+    AnimationGroupPlayer.prototype.init = function () { this.players.forEach(function (player) { return player.init(); }); };
+    AnimationGroupPlayer.prototype.onStart = function (fn) { this._onStartFns.push(fn); };
+    AnimationGroupPlayer.prototype._onStart = function () {
+        if (!this.hasStarted()) {
+            this._started = true;
+            this._onStartFns.forEach(function (fn) { return fn(); });
+            this._onStartFns = [];
+        }
+    };
+    AnimationGroupPlayer.prototype.onDone = function (fn) { this._onDoneFns.push(fn); };
+    AnimationGroupPlayer.prototype.onDestroy = function (fn) { this._onDestroyFns.push(fn); };
+    AnimationGroupPlayer.prototype.hasStarted = function () { return this._started; };
+    AnimationGroupPlayer.prototype.play = function () {
+        if (!this.parentPlayer) {
+            this.init();
+        }
+        this._onStart();
+        this.players.forEach(function (player) { return player.play(); });
+    };
+    AnimationGroupPlayer.prototype.pause = function () { this.players.forEach(function (player) { return player.pause(); }); };
+    AnimationGroupPlayer.prototype.restart = function () { this.players.forEach(function (player) { return player.restart(); }); };
+    AnimationGroupPlayer.prototype.finish = function () {
+        this._onFinish();
+        this.players.forEach(function (player) { return player.finish(); });
+    };
+    AnimationGroupPlayer.prototype.destroy = function () { this._onDestroy(); };
+    AnimationGroupPlayer.prototype._onDestroy = function () {
+        if (!this._destroyed) {
+            this._destroyed = true;
+            this._onFinish();
+            this.players.forEach(function (player) { return player.destroy(); });
+            this._onDestroyFns.forEach(function (fn) { return fn(); });
+            this._onDestroyFns = [];
+        }
+    };
+    AnimationGroupPlayer.prototype.reset = function () {
+        this.players.forEach(function (player) { return player.reset(); });
+        this._destroyed = false;
+        this._finished = false;
+        this._started = false;
+    };
+    AnimationGroupPlayer.prototype.setPosition = function (p) {
+        var timeAtPosition = p * this.totalTime;
+        this.players.forEach(function (player) {
+            var position = player.totalTime ? Math.min(1, timeAtPosition / player.totalTime) : 1;
+            player.setPosition(position);
+        });
+    };
+    AnimationGroupPlayer.prototype.getPosition = function () {
+        var min = 0;
+        this.players.forEach(function (player) {
+            var p = player.getPosition();
+            min = Math.min(p, min);
+        });
+        return min;
+    };
+    AnimationGroupPlayer.prototype.beforeDestroy = function () {
+        this.players.forEach(function (player) {
+            if (player.beforeDestroy) {
+                player.beforeDestroy();
+            }
+        });
+    };
+    /** @internal */
+    AnimationGroupPlayer.prototype.triggerCallback = function (phaseName) {
+        var methods = phaseName == 'start' ? this._onStartFns : this._onDoneFns;
+        methods.forEach(function (fn) { return fn(); });
+        methods.length = 0;
+    };
+    return AnimationGroupPlayer;
+}());
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var ɵPRE_STYLE = '!';
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * Generated bundle index. Do not edit.
+ */
+
+
+//# sourceMappingURL=animations.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@angular/animations/fesm5/browser.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/@angular/animations/fesm5/browser.js ***!
+  \***********************************************************/
+/*! exports provided: AnimationDriver, ɵAnimationDriver, ɵAnimation, ɵAnimationStyleNormalizer, ɵNoopAnimationStyleNormalizer, ɵWebAnimationsStyleNormalizer, ɵNoopAnimationDriver, ɵAnimationEngine, ɵCssKeyframesDriver, ɵCssKeyframesPlayer, ɵcontainsElement, ɵinvokeQuery, ɵmatchesElement, ɵvalidateStyleProperty, ɵWebAnimationsDriver, ɵsupportsWebAnimations, ɵWebAnimationsPlayer, ɵallowPreviousPlayerStylesMerge */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AnimationDriver", function() { return AnimationDriver; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵAnimationDriver", function() { return AnimationDriver; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵAnimation", function() { return Animation; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵAnimationStyleNormalizer", function() { return AnimationStyleNormalizer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵNoopAnimationStyleNormalizer", function() { return NoopAnimationStyleNormalizer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵWebAnimationsStyleNormalizer", function() { return WebAnimationsStyleNormalizer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵNoopAnimationDriver", function() { return NoopAnimationDriver; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵAnimationEngine", function() { return AnimationEngine; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵCssKeyframesDriver", function() { return CssKeyframesDriver; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵCssKeyframesPlayer", function() { return CssKeyframesPlayer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵcontainsElement", function() { return containsElement; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵinvokeQuery", function() { return invokeQuery; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵmatchesElement", function() { return matchesElement; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵvalidateStyleProperty", function() { return validateStyleProperty; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵWebAnimationsDriver", function() { return WebAnimationsDriver; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵsupportsWebAnimations", function() { return supportsWebAnimations; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵWebAnimationsPlayer", function() { return WebAnimationsPlayer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵallowPreviousPlayerStylesMerge", function() { return allowPreviousPlayerStylesMerge; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_animations__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/animations */ "./node_modules/@angular/animations/fesm5/animations.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/**
+ * @license Angular v7.2.2
+ * (c) 2010-2018 Google, Inc. https://angular.io/
+ * License: MIT
+ */
+
+
+
+
+
+function isBrowser() {
+    return (typeof window !== 'undefined' && typeof window.document !== 'undefined');
+}
+function isNode() {
+    return (typeof process !== 'undefined');
+}
+function optimizeGroupPlayer(players) {
+    switch (players.length) {
+        case 0:
+            return new _angular_animations__WEBPACK_IMPORTED_MODULE_1__["NoopAnimationPlayer"]();
+        case 1:
+            return players[0];
+        default:
+            return new _angular_animations__WEBPACK_IMPORTED_MODULE_1__["ɵAnimationGroupPlayer"](players);
+    }
+}
+function normalizeKeyframes(driver, normalizer, element, keyframes, preStyles, postStyles) {
+    if (preStyles === void 0) { preStyles = {}; }
+    if (postStyles === void 0) { postStyles = {}; }
+    var errors = [];
+    var normalizedKeyframes = [];
+    var previousOffset = -1;
+    var previousKeyframe = null;
+    keyframes.forEach(function (kf) {
+        var offset = kf['offset'];
+        var isSameOffset = offset == previousOffset;
+        var normalizedKeyframe = (isSameOffset && previousKeyframe) || {};
+        Object.keys(kf).forEach(function (prop) {
+            var normalizedProp = prop;
+            var normalizedValue = kf[prop];
+            if (prop !== 'offset') {
+                normalizedProp = normalizer.normalizePropertyName(normalizedProp, errors);
+                switch (normalizedValue) {
+                    case _angular_animations__WEBPACK_IMPORTED_MODULE_1__["ɵPRE_STYLE"]:
+                        normalizedValue = preStyles[prop];
+                        break;
+                    case _angular_animations__WEBPACK_IMPORTED_MODULE_1__["AUTO_STYLE"]:
+                        normalizedValue = postStyles[prop];
+                        break;
+                    default:
+                        normalizedValue =
+                            normalizer.normalizeStyleValue(prop, normalizedProp, normalizedValue, errors);
+                        break;
+                }
+            }
+            normalizedKeyframe[normalizedProp] = normalizedValue;
+        });
+        if (!isSameOffset) {
+            normalizedKeyframes.push(normalizedKeyframe);
+        }
+        previousKeyframe = normalizedKeyframe;
+        previousOffset = offset;
+    });
+    if (errors.length) {
+        var LINE_START = '\n - ';
+        throw new Error("Unable to animate due to the following errors:" + LINE_START + errors.join(LINE_START));
+    }
+    return normalizedKeyframes;
+}
+function listenOnPlayer(player, eventName, event, callback) {
+    switch (eventName) {
+        case 'start':
+            player.onStart(function () { return callback(event && copyAnimationEvent(event, 'start', player)); });
+            break;
+        case 'done':
+            player.onDone(function () { return callback(event && copyAnimationEvent(event, 'done', player)); });
+            break;
+        case 'destroy':
+            player.onDestroy(function () { return callback(event && copyAnimationEvent(event, 'destroy', player)); });
+            break;
+    }
+}
+function copyAnimationEvent(e, phaseName, player) {
+    var totalTime = player.totalTime;
+    var disabled = player.disabled ? true : false;
+    var event = makeAnimationEvent(e.element, e.triggerName, e.fromState, e.toState, phaseName || e.phaseName, totalTime == undefined ? e.totalTime : totalTime, disabled);
+    var data = e['_data'];
+    if (data != null) {
+        event['_data'] = data;
+    }
+    return event;
+}
+function makeAnimationEvent(element, triggerName, fromState, toState, phaseName, totalTime, disabled) {
+    if (phaseName === void 0) { phaseName = ''; }
+    if (totalTime === void 0) { totalTime = 0; }
+    return { element: element, triggerName: triggerName, fromState: fromState, toState: toState, phaseName: phaseName, totalTime: totalTime, disabled: !!disabled };
+}
+function getOrSetAsInMap(map, key, defaultValue) {
+    var value;
+    if (map instanceof Map) {
+        value = map.get(key);
+        if (!value) {
+            map.set(key, value = defaultValue);
+        }
+    }
+    else {
+        value = map[key];
+        if (!value) {
+            value = map[key] = defaultValue;
+        }
+    }
+    return value;
+}
+function parseTimelineCommand(command) {
+    var separatorPos = command.indexOf(':');
+    var id = command.substring(1, separatorPos);
+    var action = command.substr(separatorPos + 1);
+    return [id, action];
+}
+var _contains = function (elm1, elm2) { return false; };
+var _matches = function (element, selector) {
+    return false;
+};
+var _query = function (element, selector, multi) {
+    return [];
+};
+// Define utility methods for browsers and platform-server(domino) where Element
+// and utility methods exist.
+var _isNode = isNode();
+if (_isNode || typeof Element !== 'undefined') {
+    // this is well supported in all browsers
+    _contains = function (elm1, elm2) { return elm1.contains(elm2); };
+    if (_isNode || Element.prototype.matches) {
+        _matches = function (element, selector) { return element.matches(selector); };
+    }
+    else {
+        var proto = Element.prototype;
+        var fn_1 = proto.matchesSelector || proto.mozMatchesSelector || proto.msMatchesSelector ||
+            proto.oMatchesSelector || proto.webkitMatchesSelector;
+        if (fn_1) {
+            _matches = function (element, selector) { return fn_1.apply(element, [selector]); };
+        }
+    }
+    _query = function (element, selector, multi) {
+        var results = [];
+        if (multi) {
+            results.push.apply(results, Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__spread"])(element.querySelectorAll(selector)));
+        }
+        else {
+            var elm = element.querySelector(selector);
+            if (elm) {
+                results.push(elm);
+            }
+        }
+        return results;
+    };
+}
+function containsVendorPrefix(prop) {
+    // Webkit is the only real popular vendor prefix nowadays
+    // cc: http://shouldiprefix.com/
+    return prop.substring(1, 6) == 'ebkit'; // webkit or Webkit
+}
+var _CACHED_BODY = null;
+var _IS_WEBKIT = false;
+function validateStyleProperty(prop) {
+    if (!_CACHED_BODY) {
+        _CACHED_BODY = getBodyNode() || {};
+        _IS_WEBKIT = _CACHED_BODY.style ? ('WebkitAppearance' in _CACHED_BODY.style) : false;
+    }
+    var result = true;
+    if (_CACHED_BODY.style && !containsVendorPrefix(prop)) {
+        result = prop in _CACHED_BODY.style;
+        if (!result && _IS_WEBKIT) {
+            var camelProp = 'Webkit' + prop.charAt(0).toUpperCase() + prop.substr(1);
+            result = camelProp in _CACHED_BODY.style;
+        }
+    }
+    return result;
+}
+function getBodyNode() {
+    if (typeof document != 'undefined') {
+        return document.body;
+    }
+    return null;
+}
+var matchesElement = _matches;
+var containsElement = _contains;
+var invokeQuery = _query;
+function hypenatePropsObject(object) {
+    var newObj = {};
+    Object.keys(object).forEach(function (prop) {
+        var newProp = prop.replace(/([a-z])([A-Z])/g, '$1-$2');
+        newObj[newProp] = object[prop];
+    });
+    return newObj;
+}
+
+/**
+ * @publicApi
+ */
+var NoopAnimationDriver = /** @class */ (function () {
+    function NoopAnimationDriver() {
+    }
+    NoopAnimationDriver.prototype.validateStyleProperty = function (prop) { return validateStyleProperty(prop); };
+    NoopAnimationDriver.prototype.matchesElement = function (element, selector) {
+        return matchesElement(element, selector);
+    };
+    NoopAnimationDriver.prototype.containsElement = function (elm1, elm2) { return containsElement(elm1, elm2); };
+    NoopAnimationDriver.prototype.query = function (element, selector, multi) {
+        return invokeQuery(element, selector, multi);
+    };
+    NoopAnimationDriver.prototype.computeStyle = function (element, prop, defaultValue) {
+        return defaultValue || '';
+    };
+    NoopAnimationDriver.prototype.animate = function (element, keyframes, duration, delay, easing, previousPlayers, scrubberAccessRequested) {
+        if (previousPlayers === void 0) { previousPlayers = []; }
+        return new _angular_animations__WEBPACK_IMPORTED_MODULE_1__["NoopAnimationPlayer"](duration, delay);
+    };
+    NoopAnimationDriver = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"])()
+    ], NoopAnimationDriver);
+    return NoopAnimationDriver;
+}());
+/**
+ * @publicApi
+ */
+var AnimationDriver = /** @class */ (function () {
+    function AnimationDriver() {
+    }
+    AnimationDriver.NOOP = new NoopAnimationDriver();
+    return AnimationDriver;
+}());
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var ONE_SECOND = 1000;
+var SUBSTITUTION_EXPR_START = '{{';
+var SUBSTITUTION_EXPR_END = '}}';
+var ENTER_CLASSNAME = 'ng-enter';
+var LEAVE_CLASSNAME = 'ng-leave';
+var NG_TRIGGER_CLASSNAME = 'ng-trigger';
+var NG_TRIGGER_SELECTOR = '.ng-trigger';
+var NG_ANIMATING_CLASSNAME = 'ng-animating';
+var NG_ANIMATING_SELECTOR = '.ng-animating';
+function resolveTimingValue(value) {
+    if (typeof value == 'number')
+        return value;
+    var matches = value.match(/^(-?[\.\d]+)(m?s)/);
+    if (!matches || matches.length < 2)
+        return 0;
+    return _convertTimeValueToMS(parseFloat(matches[1]), matches[2]);
+}
+function _convertTimeValueToMS(value, unit) {
+    switch (unit) {
+        case 's':
+            return value * ONE_SECOND;
+        default: // ms or something else
+            return value;
+    }
+}
+function resolveTiming(timings, errors, allowNegativeValues) {
+    return timings.hasOwnProperty('duration') ?
+        timings :
+        parseTimeExpression(timings, errors, allowNegativeValues);
+}
+function parseTimeExpression(exp, errors, allowNegativeValues) {
+    var regex = /^(-?[\.\d]+)(m?s)(?:\s+(-?[\.\d]+)(m?s))?(?:\s+([-a-z]+(?:\(.+?\))?))?$/i;
+    var duration;
+    var delay = 0;
+    var easing = '';
+    if (typeof exp === 'string') {
+        var matches = exp.match(regex);
+        if (matches === null) {
+            errors.push("The provided timing value \"" + exp + "\" is invalid.");
+            return { duration: 0, delay: 0, easing: '' };
+        }
+        duration = _convertTimeValueToMS(parseFloat(matches[1]), matches[2]);
+        var delayMatch = matches[3];
+        if (delayMatch != null) {
+            delay = _convertTimeValueToMS(parseFloat(delayMatch), matches[4]);
+        }
+        var easingVal = matches[5];
+        if (easingVal) {
+            easing = easingVal;
+        }
+    }
+    else {
+        duration = exp;
+    }
+    if (!allowNegativeValues) {
+        var containsErrors = false;
+        var startIndex = errors.length;
+        if (duration < 0) {
+            errors.push("Duration values below 0 are not allowed for this animation step.");
+            containsErrors = true;
+        }
+        if (delay < 0) {
+            errors.push("Delay values below 0 are not allowed for this animation step.");
+            containsErrors = true;
+        }
+        if (containsErrors) {
+            errors.splice(startIndex, 0, "The provided timing value \"" + exp + "\" is invalid.");
+        }
+    }
+    return { duration: duration, delay: delay, easing: easing };
+}
+function copyObj(obj, destination) {
+    if (destination === void 0) { destination = {}; }
+    Object.keys(obj).forEach(function (prop) { destination[prop] = obj[prop]; });
+    return destination;
+}
+function normalizeStyles(styles) {
+    var normalizedStyles = {};
+    if (Array.isArray(styles)) {
+        styles.forEach(function (data) { return copyStyles(data, false, normalizedStyles); });
+    }
+    else {
+        copyStyles(styles, false, normalizedStyles);
+    }
+    return normalizedStyles;
+}
+function copyStyles(styles, readPrototype, destination) {
+    if (destination === void 0) { destination = {}; }
+    if (readPrototype) {
+        // we make use of a for-in loop so that the
+        // prototypically inherited properties are
+        // revealed from the backFill map
+        for (var prop in styles) {
+            destination[prop] = styles[prop];
+        }
+    }
+    else {
+        copyObj(styles, destination);
+    }
+    return destination;
+}
+function getStyleAttributeString(element, key, value) {
+    // Return the key-value pair string to be added to the style attribute for the
+    // given CSS style key.
+    if (value) {
+        return key + ':' + value + ';';
+    }
+    else {
+        return '';
+    }
+}
+function writeStyleAttribute(element) {
+    // Read the style property of the element and manually reflect it to the
+    // style attribute. This is needed because Domino on platform-server doesn't
+    // understand the full set of allowed CSS properties and doesn't reflect some
+    // of them automatically.
+    var styleAttrValue = '';
+    for (var i = 0; i < element.style.length; i++) {
+        var key = element.style.item(i);
+        styleAttrValue += getStyleAttributeString(element, key, element.style.getPropertyValue(key));
+    }
+    for (var key in element.style) {
+        // Skip internal Domino properties that don't need to be reflected.
+        if (!element.style.hasOwnProperty(key) || key.startsWith('_')) {
+            continue;
+        }
+        var dashKey = camelCaseToDashCase(key);
+        styleAttrValue += getStyleAttributeString(element, dashKey, element.style[key]);
+    }
+    element.setAttribute('style', styleAttrValue);
+}
+function setStyles(element, styles) {
+    if (element['style']) {
+        Object.keys(styles).forEach(function (prop) {
+            var camelProp = dashCaseToCamelCase(prop);
+            element.style[camelProp] = styles[prop];
+        });
+        // On the server set the 'style' attribute since it's not automatically reflected.
+        if (isNode()) {
+            writeStyleAttribute(element);
+        }
+    }
+}
+function eraseStyles(element, styles) {
+    if (element['style']) {
+        Object.keys(styles).forEach(function (prop) {
+            var camelProp = dashCaseToCamelCase(prop);
+            element.style[camelProp] = '';
+        });
+        // On the server set the 'style' attribute since it's not automatically reflected.
+        if (isNode()) {
+            writeStyleAttribute(element);
+        }
+    }
+}
+function normalizeAnimationEntry(steps) {
+    if (Array.isArray(steps)) {
+        if (steps.length == 1)
+            return steps[0];
+        return Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["sequence"])(steps);
+    }
+    return steps;
+}
+function validateStyleParams(value, options, errors) {
+    var params = options.params || {};
+    var matches = extractStyleParams(value);
+    if (matches.length) {
+        matches.forEach(function (varName) {
+            if (!params.hasOwnProperty(varName)) {
+                errors.push("Unable to resolve the local animation param " + varName + " in the given list of values");
+            }
+        });
+    }
+}
+var PARAM_REGEX = new RegExp(SUBSTITUTION_EXPR_START + "\\s*(.+?)\\s*" + SUBSTITUTION_EXPR_END, 'g');
+function extractStyleParams(value) {
+    var params = [];
+    if (typeof value === 'string') {
+        var val = value.toString();
+        var match = void 0;
+        while (match = PARAM_REGEX.exec(val)) {
+            params.push(match[1]);
+        }
+        PARAM_REGEX.lastIndex = 0;
+    }
+    return params;
+}
+function interpolateParams(value, params, errors) {
+    var original = value.toString();
+    var str = original.replace(PARAM_REGEX, function (_, varName) {
+        var localVal = params[varName];
+        // this means that the value was never overridden by the data passed in by the user
+        if (!params.hasOwnProperty(varName)) {
+            errors.push("Please provide a value for the animation param " + varName);
+            localVal = '';
+        }
+        return localVal.toString();
+    });
+    // we do this to assert that numeric values stay as they are
+    return str == original ? value : str;
+}
+function iteratorToArray(iterator) {
+    var arr = [];
+    var item = iterator.next();
+    while (!item.done) {
+        arr.push(item.value);
+        item = iterator.next();
+    }
+    return arr;
+}
+var DASH_CASE_REGEXP = /-+([a-z0-9])/g;
+function dashCaseToCamelCase(input) {
+    return input.replace(DASH_CASE_REGEXP, function () {
+        var m = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            m[_i] = arguments[_i];
+        }
+        return m[1].toUpperCase();
+    });
+}
+function camelCaseToDashCase(input) {
+    return input.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+}
+function allowPreviousPlayerStylesMerge(duration, delay) {
+    return duration === 0 || delay === 0;
+}
+function balancePreviousStylesIntoKeyframes(element, keyframes, previousStyles) {
+    var previousStyleProps = Object.keys(previousStyles);
+    if (previousStyleProps.length && keyframes.length) {
+        var startingKeyframe_1 = keyframes[0];
+        var missingStyleProps_1 = [];
+        previousStyleProps.forEach(function (prop) {
+            if (!startingKeyframe_1.hasOwnProperty(prop)) {
+                missingStyleProps_1.push(prop);
+            }
+            startingKeyframe_1[prop] = previousStyles[prop];
+        });
+        if (missingStyleProps_1.length) {
+            var _loop_1 = function () {
+                var kf = keyframes[i];
+                missingStyleProps_1.forEach(function (prop) { kf[prop] = computeStyle(element, prop); });
+            };
+            // tslint:disable-next-line
+            for (var i = 1; i < keyframes.length; i++) {
+                _loop_1();
+            }
+        }
+    }
+    return keyframes;
+}
+function visitDslNode(visitor, node, context) {
+    switch (node.type) {
+        case 7 /* Trigger */:
+            return visitor.visitTrigger(node, context);
+        case 0 /* State */:
+            return visitor.visitState(node, context);
+        case 1 /* Transition */:
+            return visitor.visitTransition(node, context);
+        case 2 /* Sequence */:
+            return visitor.visitSequence(node, context);
+        case 3 /* Group */:
+            return visitor.visitGroup(node, context);
+        case 4 /* Animate */:
+            return visitor.visitAnimate(node, context);
+        case 5 /* Keyframes */:
+            return visitor.visitKeyframes(node, context);
+        case 6 /* Style */:
+            return visitor.visitStyle(node, context);
+        case 8 /* Reference */:
+            return visitor.visitReference(node, context);
+        case 9 /* AnimateChild */:
+            return visitor.visitAnimateChild(node, context);
+        case 10 /* AnimateRef */:
+            return visitor.visitAnimateRef(node, context);
+        case 11 /* Query */:
+            return visitor.visitQuery(node, context);
+        case 12 /* Stagger */:
+            return visitor.visitStagger(node, context);
+        default:
+            throw new Error("Unable to resolve animation metadata node #" + node.type);
+    }
+}
+function computeStyle(element, prop) {
+    return window.getComputedStyle(element)[prop];
+}
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var ANY_STATE = '*';
+function parseTransitionExpr(transitionValue, errors) {
+    var expressions = [];
+    if (typeof transitionValue == 'string') {
+        transitionValue
+            .split(/\s*,\s*/)
+            .forEach(function (str) { return parseInnerTransitionStr(str, expressions, errors); });
+    }
+    else {
+        expressions.push(transitionValue);
+    }
+    return expressions;
+}
+function parseInnerTransitionStr(eventStr, expressions, errors) {
+    if (eventStr[0] == ':') {
+        var result = parseAnimationAlias(eventStr, errors);
+        if (typeof result == 'function') {
+            expressions.push(result);
+            return;
+        }
+        eventStr = result;
+    }
+    var match = eventStr.match(/^(\*|[-\w]+)\s*(<?[=-]>)\s*(\*|[-\w]+)$/);
+    if (match == null || match.length < 4) {
+        errors.push("The provided transition expression \"" + eventStr + "\" is not supported");
+        return expressions;
+    }
+    var fromState = match[1];
+    var separator = match[2];
+    var toState = match[3];
+    expressions.push(makeLambdaFromStates(fromState, toState));
+    var isFullAnyStateExpr = fromState == ANY_STATE && toState == ANY_STATE;
+    if (separator[0] == '<' && !isFullAnyStateExpr) {
+        expressions.push(makeLambdaFromStates(toState, fromState));
+    }
+}
+function parseAnimationAlias(alias, errors) {
+    switch (alias) {
+        case ':enter':
+            return 'void => *';
+        case ':leave':
+            return '* => void';
+        case ':increment':
+            return function (fromState, toState) { return parseFloat(toState) > parseFloat(fromState); };
+        case ':decrement':
+            return function (fromState, toState) { return parseFloat(toState) < parseFloat(fromState); };
+        default:
+            errors.push("The transition alias value \"" + alias + "\" is not supported");
+            return '* => *';
+    }
+}
+// DO NOT REFACTOR ... keep the follow set instantiations
+// with the values intact (closure compiler for some reason
+// removes follow-up lines that add the values outside of
+// the constructor...
+var TRUE_BOOLEAN_VALUES = new Set(['true', '1']);
+var FALSE_BOOLEAN_VALUES = new Set(['false', '0']);
+function makeLambdaFromStates(lhs, rhs) {
+    var LHS_MATCH_BOOLEAN = TRUE_BOOLEAN_VALUES.has(lhs) || FALSE_BOOLEAN_VALUES.has(lhs);
+    var RHS_MATCH_BOOLEAN = TRUE_BOOLEAN_VALUES.has(rhs) || FALSE_BOOLEAN_VALUES.has(rhs);
+    return function (fromState, toState) {
+        var lhsMatch = lhs == ANY_STATE || lhs == fromState;
+        var rhsMatch = rhs == ANY_STATE || rhs == toState;
+        if (!lhsMatch && LHS_MATCH_BOOLEAN && typeof fromState === 'boolean') {
+            lhsMatch = fromState ? TRUE_BOOLEAN_VALUES.has(lhs) : FALSE_BOOLEAN_VALUES.has(lhs);
+        }
+        if (!rhsMatch && RHS_MATCH_BOOLEAN && typeof toState === 'boolean') {
+            rhsMatch = toState ? TRUE_BOOLEAN_VALUES.has(rhs) : FALSE_BOOLEAN_VALUES.has(rhs);
+        }
+        return lhsMatch && rhsMatch;
+    };
+}
+
+var SELF_TOKEN = ':self';
+var SELF_TOKEN_REGEX = new RegExp("s*" + SELF_TOKEN + "s*,?", 'g');
+/*
+ * [Validation]
+ * The visitor code below will traverse the animation AST generated by the animation verb functions
+ * (the output is a tree of objects) and attempt to perform a series of validations on the data. The
+ * following corner-cases will be validated:
+ *
+ * 1. Overlap of animations
+ * Given that a CSS property cannot be animated in more than one place at the same time, it's
+ * important that this behaviour is detected and validated. The way in which this occurs is that
+ * each time a style property is examined, a string-map containing the property will be updated with
+ * the start and end times for when the property is used within an animation step.
+ *
+ * If there are two or more parallel animations that are currently running (these are invoked by the
+ * group()) on the same element then the validator will throw an error. Since the start/end timing
+ * values are collected for each property then if the current animation step is animating the same
+ * property and its timing values fall anywhere into the window of time that the property is
+ * currently being animated within then this is what causes an error.
+ *
+ * 2. Timing values
+ * The validator will validate to see if a timing value of `duration delay easing` or
+ * `durationNumber` is valid or not.
+ *
+ * (note that upon validation the code below will replace the timing data with an object containing
+ * {duration,delay,easing}.
+ *
+ * 3. Offset Validation
+ * Each of the style() calls are allowed to have an offset value when placed inside of keyframes().
+ * Offsets within keyframes() are considered valid when:
+ *
+ *   - No offsets are used at all
+ *   - Each style() entry contains an offset value
+ *   - Each offset is between 0 and 1
+ *   - Each offset is greater to or equal than the previous one
+ *
+ * Otherwise an error will be thrown.
+ */
+function buildAnimationAst(driver, metadata, errors) {
+    return new AnimationAstBuilderVisitor(driver).build(metadata, errors);
+}
+var ROOT_SELECTOR = '';
+var AnimationAstBuilderVisitor = /** @class */ (function () {
+    function AnimationAstBuilderVisitor(_driver) {
+        this._driver = _driver;
+    }
+    AnimationAstBuilderVisitor.prototype.build = function (metadata, errors) {
+        var context = new AnimationAstBuilderContext(errors);
+        this._resetContextStyleTimingState(context);
+        return visitDslNode(this, normalizeAnimationEntry(metadata), context);
+    };
+    AnimationAstBuilderVisitor.prototype._resetContextStyleTimingState = function (context) {
+        context.currentQuerySelector = ROOT_SELECTOR;
+        context.collectedStyles = {};
+        context.collectedStyles[ROOT_SELECTOR] = {};
+        context.currentTime = 0;
+    };
+    AnimationAstBuilderVisitor.prototype.visitTrigger = function (metadata, context) {
+        var _this = this;
+        var queryCount = context.queryCount = 0;
+        var depCount = context.depCount = 0;
+        var states = [];
+        var transitions = [];
+        if (metadata.name.charAt(0) == '@') {
+            context.errors.push('animation triggers cannot be prefixed with an `@` sign (e.g. trigger(\'@foo\', [...]))');
+        }
+        metadata.definitions.forEach(function (def) {
+            _this._resetContextStyleTimingState(context);
+            if (def.type == 0 /* State */) {
+                var stateDef_1 = def;
+                var name_1 = stateDef_1.name;
+                name_1.toString().split(/\s*,\s*/).forEach(function (n) {
+                    stateDef_1.name = n;
+                    states.push(_this.visitState(stateDef_1, context));
+                });
+                stateDef_1.name = name_1;
+            }
+            else if (def.type == 1 /* Transition */) {
+                var transition = _this.visitTransition(def, context);
+                queryCount += transition.queryCount;
+                depCount += transition.depCount;
+                transitions.push(transition);
+            }
+            else {
+                context.errors.push('only state() and transition() definitions can sit inside of a trigger()');
+            }
+        });
+        return {
+            type: 7 /* Trigger */,
+            name: metadata.name, states: states, transitions: transitions, queryCount: queryCount, depCount: depCount,
+            options: null
+        };
+    };
+    AnimationAstBuilderVisitor.prototype.visitState = function (metadata, context) {
+        var styleAst = this.visitStyle(metadata.styles, context);
+        var astParams = (metadata.options && metadata.options.params) || null;
+        if (styleAst.containsDynamicStyles) {
+            var missingSubs_1 = new Set();
+            var params_1 = astParams || {};
+            styleAst.styles.forEach(function (value) {
+                if (isObject(value)) {
+                    var stylesObj_1 = value;
+                    Object.keys(stylesObj_1).forEach(function (prop) {
+                        extractStyleParams(stylesObj_1[prop]).forEach(function (sub) {
+                            if (!params_1.hasOwnProperty(sub)) {
+                                missingSubs_1.add(sub);
+                            }
+                        });
+                    });
+                }
+            });
+            if (missingSubs_1.size) {
+                var missingSubsArr = iteratorToArray(missingSubs_1.values());
+                context.errors.push("state(\"" + metadata.name + "\", ...) must define default values for all the following style substitutions: " + missingSubsArr.join(', '));
+            }
+        }
+        return {
+            type: 0 /* State */,
+            name: metadata.name,
+            style: styleAst,
+            options: astParams ? { params: astParams } : null
+        };
+    };
+    AnimationAstBuilderVisitor.prototype.visitTransition = function (metadata, context) {
+        context.queryCount = 0;
+        context.depCount = 0;
+        var animation = visitDslNode(this, normalizeAnimationEntry(metadata.animation), context);
+        var matchers = parseTransitionExpr(metadata.expr, context.errors);
+        return {
+            type: 1 /* Transition */,
+            matchers: matchers,
+            animation: animation,
+            queryCount: context.queryCount,
+            depCount: context.depCount,
+            options: normalizeAnimationOptions(metadata.options)
+        };
+    };
+    AnimationAstBuilderVisitor.prototype.visitSequence = function (metadata, context) {
+        var _this = this;
+        return {
+            type: 2 /* Sequence */,
+            steps: metadata.steps.map(function (s) { return visitDslNode(_this, s, context); }),
+            options: normalizeAnimationOptions(metadata.options)
+        };
+    };
+    AnimationAstBuilderVisitor.prototype.visitGroup = function (metadata, context) {
+        var _this = this;
+        var currentTime = context.currentTime;
+        var furthestTime = 0;
+        var steps = metadata.steps.map(function (step) {
+            context.currentTime = currentTime;
+            var innerAst = visitDslNode(_this, step, context);
+            furthestTime = Math.max(furthestTime, context.currentTime);
+            return innerAst;
+        });
+        context.currentTime = furthestTime;
+        return {
+            type: 3 /* Group */,
+            steps: steps,
+            options: normalizeAnimationOptions(metadata.options)
+        };
+    };
+    AnimationAstBuilderVisitor.prototype.visitAnimate = function (metadata, context) {
+        var timingAst = constructTimingAst(metadata.timings, context.errors);
+        context.currentAnimateTimings = timingAst;
+        var styleAst;
+        var styleMetadata = metadata.styles ? metadata.styles : Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["style"])({});
+        if (styleMetadata.type == 5 /* Keyframes */) {
+            styleAst = this.visitKeyframes(styleMetadata, context);
+        }
+        else {
+            var styleMetadata_1 = metadata.styles;
+            var isEmpty = false;
+            if (!styleMetadata_1) {
+                isEmpty = true;
+                var newStyleData = {};
+                if (timingAst.easing) {
+                    newStyleData['easing'] = timingAst.easing;
+                }
+                styleMetadata_1 = Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["style"])(newStyleData);
+            }
+            context.currentTime += timingAst.duration + timingAst.delay;
+            var _styleAst = this.visitStyle(styleMetadata_1, context);
+            _styleAst.isEmptyStep = isEmpty;
+            styleAst = _styleAst;
+        }
+        context.currentAnimateTimings = null;
+        return {
+            type: 4 /* Animate */,
+            timings: timingAst,
+            style: styleAst,
+            options: null
+        };
+    };
+    AnimationAstBuilderVisitor.prototype.visitStyle = function (metadata, context) {
+        var ast = this._makeStyleAst(metadata, context);
+        this._validateStyleAst(ast, context);
+        return ast;
+    };
+    AnimationAstBuilderVisitor.prototype._makeStyleAst = function (metadata, context) {
+        var styles = [];
+        if (Array.isArray(metadata.styles)) {
+            metadata.styles.forEach(function (styleTuple) {
+                if (typeof styleTuple == 'string') {
+                    if (styleTuple == _angular_animations__WEBPACK_IMPORTED_MODULE_1__["AUTO_STYLE"]) {
+                        styles.push(styleTuple);
+                    }
+                    else {
+                        context.errors.push("The provided style string value " + styleTuple + " is not allowed.");
+                    }
+                }
+                else {
+                    styles.push(styleTuple);
+                }
+            });
+        }
+        else {
+            styles.push(metadata.styles);
+        }
+        var containsDynamicStyles = false;
+        var collectedEasing = null;
+        styles.forEach(function (styleData) {
+            if (isObject(styleData)) {
+                var styleMap = styleData;
+                var easing = styleMap['easing'];
+                if (easing) {
+                    collectedEasing = easing;
+                    delete styleMap['easing'];
+                }
+                if (!containsDynamicStyles) {
+                    for (var prop in styleMap) {
+                        var value = styleMap[prop];
+                        if (value.toString().indexOf(SUBSTITUTION_EXPR_START) >= 0) {
+                            containsDynamicStyles = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        });
+        return {
+            type: 6 /* Style */,
+            styles: styles,
+            easing: collectedEasing,
+            offset: metadata.offset, containsDynamicStyles: containsDynamicStyles,
+            options: null
+        };
+    };
+    AnimationAstBuilderVisitor.prototype._validateStyleAst = function (ast, context) {
+        var _this = this;
+        var timings = context.currentAnimateTimings;
+        var endTime = context.currentTime;
+        var startTime = context.currentTime;
+        if (timings && startTime > 0) {
+            startTime -= timings.duration + timings.delay;
+        }
+        ast.styles.forEach(function (tuple) {
+            if (typeof tuple == 'string')
+                return;
+            Object.keys(tuple).forEach(function (prop) {
+                if (!_this._driver.validateStyleProperty(prop)) {
+                    context.errors.push("The provided animation property \"" + prop + "\" is not a supported CSS property for animations");
+                    return;
+                }
+                var collectedStyles = context.collectedStyles[context.currentQuerySelector];
+                var collectedEntry = collectedStyles[prop];
+                var updateCollectedStyle = true;
+                if (collectedEntry) {
+                    if (startTime != endTime && startTime >= collectedEntry.startTime &&
+                        endTime <= collectedEntry.endTime) {
+                        context.errors.push("The CSS property \"" + prop + "\" that exists between the times of \"" + collectedEntry.startTime + "ms\" and \"" + collectedEntry.endTime + "ms\" is also being animated in a parallel animation between the times of \"" + startTime + "ms\" and \"" + endTime + "ms\"");
+                        updateCollectedStyle = false;
+                    }
+                    // we always choose the smaller start time value since we
+                    // want to have a record of the entire animation window where
+                    // the style property is being animated in between
+                    startTime = collectedEntry.startTime;
+                }
+                if (updateCollectedStyle) {
+                    collectedStyles[prop] = { startTime: startTime, endTime: endTime };
+                }
+                if (context.options) {
+                    validateStyleParams(tuple[prop], context.options, context.errors);
+                }
+            });
+        });
+    };
+    AnimationAstBuilderVisitor.prototype.visitKeyframes = function (metadata, context) {
+        var _this = this;
+        var ast = { type: 5 /* Keyframes */, styles: [], options: null };
+        if (!context.currentAnimateTimings) {
+            context.errors.push("keyframes() must be placed inside of a call to animate()");
+            return ast;
+        }
+        var MAX_KEYFRAME_OFFSET = 1;
+        var totalKeyframesWithOffsets = 0;
+        var offsets = [];
+        var offsetsOutOfOrder = false;
+        var keyframesOutOfRange = false;
+        var previousOffset = 0;
+        var keyframes = metadata.steps.map(function (styles) {
+            var style$$1 = _this._makeStyleAst(styles, context);
+            var offsetVal = style$$1.offset != null ? style$$1.offset : consumeOffset(style$$1.styles);
+            var offset = 0;
+            if (offsetVal != null) {
+                totalKeyframesWithOffsets++;
+                offset = style$$1.offset = offsetVal;
+            }
+            keyframesOutOfRange = keyframesOutOfRange || offset < 0 || offset > 1;
+            offsetsOutOfOrder = offsetsOutOfOrder || offset < previousOffset;
+            previousOffset = offset;
+            offsets.push(offset);
+            return style$$1;
+        });
+        if (keyframesOutOfRange) {
+            context.errors.push("Please ensure that all keyframe offsets are between 0 and 1");
+        }
+        if (offsetsOutOfOrder) {
+            context.errors.push("Please ensure that all keyframe offsets are in order");
+        }
+        var length = metadata.steps.length;
+        var generatedOffset = 0;
+        if (totalKeyframesWithOffsets > 0 && totalKeyframesWithOffsets < length) {
+            context.errors.push("Not all style() steps within the declared keyframes() contain offsets");
+        }
+        else if (totalKeyframesWithOffsets == 0) {
+            generatedOffset = MAX_KEYFRAME_OFFSET / (length - 1);
+        }
+        var limit = length - 1;
+        var currentTime = context.currentTime;
+        var currentAnimateTimings = context.currentAnimateTimings;
+        var animateDuration = currentAnimateTimings.duration;
+        keyframes.forEach(function (kf, i) {
+            var offset = generatedOffset > 0 ? (i == limit ? 1 : (generatedOffset * i)) : offsets[i];
+            var durationUpToThisFrame = offset * animateDuration;
+            context.currentTime = currentTime + currentAnimateTimings.delay + durationUpToThisFrame;
+            currentAnimateTimings.duration = durationUpToThisFrame;
+            _this._validateStyleAst(kf, context);
+            kf.offset = offset;
+            ast.styles.push(kf);
+        });
+        return ast;
+    };
+    AnimationAstBuilderVisitor.prototype.visitReference = function (metadata, context) {
+        return {
+            type: 8 /* Reference */,
+            animation: visitDslNode(this, normalizeAnimationEntry(metadata.animation), context),
+            options: normalizeAnimationOptions(metadata.options)
+        };
+    };
+    AnimationAstBuilderVisitor.prototype.visitAnimateChild = function (metadata, context) {
+        context.depCount++;
+        return {
+            type: 9 /* AnimateChild */,
+            options: normalizeAnimationOptions(metadata.options)
+        };
+    };
+    AnimationAstBuilderVisitor.prototype.visitAnimateRef = function (metadata, context) {
+        return {
+            type: 10 /* AnimateRef */,
+            animation: this.visitReference(metadata.animation, context),
+            options: normalizeAnimationOptions(metadata.options)
+        };
+    };
+    AnimationAstBuilderVisitor.prototype.visitQuery = function (metadata, context) {
+        var parentSelector = context.currentQuerySelector;
+        var options = (metadata.options || {});
+        context.queryCount++;
+        context.currentQuery = metadata;
+        var _a = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__read"])(normalizeSelector(metadata.selector), 2), selector = _a[0], includeSelf = _a[1];
+        context.currentQuerySelector =
+            parentSelector.length ? (parentSelector + ' ' + selector) : selector;
+        getOrSetAsInMap(context.collectedStyles, context.currentQuerySelector, {});
+        var animation = visitDslNode(this, normalizeAnimationEntry(metadata.animation), context);
+        context.currentQuery = null;
+        context.currentQuerySelector = parentSelector;
+        return {
+            type: 11 /* Query */,
+            selector: selector,
+            limit: options.limit || 0,
+            optional: !!options.optional, includeSelf: includeSelf, animation: animation,
+            originalSelector: metadata.selector,
+            options: normalizeAnimationOptions(metadata.options)
+        };
+    };
+    AnimationAstBuilderVisitor.prototype.visitStagger = function (metadata, context) {
+        if (!context.currentQuery) {
+            context.errors.push("stagger() can only be used inside of query()");
+        }
+        var timings = metadata.timings === 'full' ?
+            { duration: 0, delay: 0, easing: 'full' } :
+            resolveTiming(metadata.timings, context.errors, true);
+        return {
+            type: 12 /* Stagger */,
+            animation: visitDslNode(this, normalizeAnimationEntry(metadata.animation), context), timings: timings,
+            options: null
+        };
+    };
+    return AnimationAstBuilderVisitor;
+}());
+function normalizeSelector(selector) {
+    var hasAmpersand = selector.split(/\s*,\s*/).find(function (token) { return token == SELF_TOKEN; }) ? true : false;
+    if (hasAmpersand) {
+        selector = selector.replace(SELF_TOKEN_REGEX, '');
+    }
+    // the :enter and :leave selectors are filled in at runtime during timeline building
+    selector = selector.replace(/@\*/g, NG_TRIGGER_SELECTOR)
+        .replace(/@\w+/g, function (match) { return NG_TRIGGER_SELECTOR + '-' + match.substr(1); })
+        .replace(/:animating/g, NG_ANIMATING_SELECTOR);
+    return [selector, hasAmpersand];
+}
+function normalizeParams(obj) {
+    return obj ? copyObj(obj) : null;
+}
+var AnimationAstBuilderContext = /** @class */ (function () {
+    function AnimationAstBuilderContext(errors) {
+        this.errors = errors;
+        this.queryCount = 0;
+        this.depCount = 0;
+        this.currentTransition = null;
+        this.currentQuery = null;
+        this.currentQuerySelector = null;
+        this.currentAnimateTimings = null;
+        this.currentTime = 0;
+        this.collectedStyles = {};
+        this.options = null;
+    }
+    return AnimationAstBuilderContext;
+}());
+function consumeOffset(styles) {
+    if (typeof styles == 'string')
+        return null;
+    var offset = null;
+    if (Array.isArray(styles)) {
+        styles.forEach(function (styleTuple) {
+            if (isObject(styleTuple) && styleTuple.hasOwnProperty('offset')) {
+                var obj = styleTuple;
+                offset = parseFloat(obj['offset']);
+                delete obj['offset'];
+            }
+        });
+    }
+    else if (isObject(styles) && styles.hasOwnProperty('offset')) {
+        var obj = styles;
+        offset = parseFloat(obj['offset']);
+        delete obj['offset'];
+    }
+    return offset;
+}
+function isObject(value) {
+    return !Array.isArray(value) && typeof value == 'object';
+}
+function constructTimingAst(value, errors) {
+    var timings = null;
+    if (value.hasOwnProperty('duration')) {
+        timings = value;
+    }
+    else if (typeof value == 'number') {
+        var duration = resolveTiming(value, errors).duration;
+        return makeTimingAst(duration, 0, '');
+    }
+    var strValue = value;
+    var isDynamic = strValue.split(/\s+/).some(function (v) { return v.charAt(0) == '{' && v.charAt(1) == '{'; });
+    if (isDynamic) {
+        var ast = makeTimingAst(0, 0, '');
+        ast.dynamic = true;
+        ast.strValue = strValue;
+        return ast;
+    }
+    timings = timings || resolveTiming(strValue, errors);
+    return makeTimingAst(timings.duration, timings.delay, timings.easing);
+}
+function normalizeAnimationOptions(options) {
+    if (options) {
+        options = copyObj(options);
+        if (options['params']) {
+            options['params'] = normalizeParams(options['params']);
+        }
+    }
+    else {
+        options = {};
+    }
+    return options;
+}
+function makeTimingAst(duration, delay, easing) {
+    return { duration: duration, delay: delay, easing: easing };
+}
+
+function createTimelineInstruction(element, keyframes, preStyleProps, postStyleProps, duration, delay, easing, subTimeline) {
+    if (easing === void 0) { easing = null; }
+    if (subTimeline === void 0) { subTimeline = false; }
+    return {
+        type: 1 /* TimelineAnimation */,
+        element: element,
+        keyframes: keyframes,
+        preStyleProps: preStyleProps,
+        postStyleProps: postStyleProps,
+        duration: duration,
+        delay: delay,
+        totalTime: duration + delay, easing: easing, subTimeline: subTimeline
+    };
+}
+
+var ElementInstructionMap = /** @class */ (function () {
+    function ElementInstructionMap() {
+        this._map = new Map();
+    }
+    ElementInstructionMap.prototype.consume = function (element) {
+        var instructions = this._map.get(element);
+        if (instructions) {
+            this._map.delete(element);
+        }
+        else {
+            instructions = [];
+        }
+        return instructions;
+    };
+    ElementInstructionMap.prototype.append = function (element, instructions) {
+        var existingInstructions = this._map.get(element);
+        if (!existingInstructions) {
+            this._map.set(element, existingInstructions = []);
+        }
+        existingInstructions.push.apply(existingInstructions, Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__spread"])(instructions));
+    };
+    ElementInstructionMap.prototype.has = function (element) { return this._map.has(element); };
+    ElementInstructionMap.prototype.clear = function () { this._map.clear(); };
+    return ElementInstructionMap;
+}());
+
+var ONE_FRAME_IN_MILLISECONDS = 1;
+var ENTER_TOKEN = ':enter';
+var ENTER_TOKEN_REGEX = new RegExp(ENTER_TOKEN, 'g');
+var LEAVE_TOKEN = ':leave';
+var LEAVE_TOKEN_REGEX = new RegExp(LEAVE_TOKEN, 'g');
+/*
+ * The code within this file aims to generate web-animations-compatible keyframes from Angular's
+ * animation DSL code.
+ *
+ * The code below will be converted from:
+ *
+ * ```
+ * sequence([
+ *   style({ opacity: 0 }),
+ *   animate(1000, style({ opacity: 0 }))
+ * ])
+ * ```
+ *
+ * To:
+ * ```
+ * keyframes = [{ opacity: 0, offset: 0 }, { opacity: 1, offset: 1 }]
+ * duration = 1000
+ * delay = 0
+ * easing = ''
+ * ```
+ *
+ * For this operation to cover the combination of animation verbs (style, animate, group, etc...) a
+ * combination of prototypical inheritance, AST traversal and merge-sort-like algorithms are used.
+ *
+ * [AST Traversal]
+ * Each of the animation verbs, when executed, will return an string-map object representing what
+ * type of action it is (style, animate, group, etc...) and the data associated with it. This means
+ * that when functional composition mix of these functions is evaluated (like in the example above)
+ * then it will end up producing a tree of objects representing the animation itself.
+ *
+ * When this animation object tree is processed by the visitor code below it will visit each of the
+ * verb statements within the visitor. And during each visit it will build the context of the
+ * animation keyframes by interacting with the `TimelineBuilder`.
+ *
+ * [TimelineBuilder]
+ * This class is responsible for tracking the styles and building a series of keyframe objects for a
+ * timeline between a start and end time. The builder starts off with an initial timeline and each
+ * time the AST comes across a `group()`, `keyframes()` or a combination of the two wihtin a
+ * `sequence()` then it will generate a sub timeline for each step as well as a new one after
+ * they are complete.
+ *
+ * As the AST is traversed, the timing state on each of the timelines will be incremented. If a sub
+ * timeline was created (based on one of the cases above) then the parent timeline will attempt to
+ * merge the styles used within the sub timelines into itself (only with group() this will happen).
+ * This happens with a merge operation (much like how the merge works in mergesort) and it will only
+ * copy the most recently used styles from the sub timelines into the parent timeline. This ensures
+ * that if the styles are used later on in another phase of the animation then they will be the most
+ * up-to-date values.
+ *
+ * [How Missing Styles Are Updated]
+ * Each timeline has a `backFill` property which is responsible for filling in new styles into
+ * already processed keyframes if a new style shows up later within the animation sequence.
+ *
+ * ```
+ * sequence([
+ *   style({ width: 0 }),
+ *   animate(1000, style({ width: 100 })),
+ *   animate(1000, style({ width: 200 })),
+ *   animate(1000, style({ width: 300 }))
+ *   animate(1000, style({ width: 400, height: 400 })) // notice how `height` doesn't exist anywhere
+ * else
+ * ])
+ * ```
+ *
+ * What is happening here is that the `height` value is added later in the sequence, but is missing
+ * from all previous animation steps. Therefore when a keyframe is created it would also be missing
+ * from all previous keyframes up until where it is first used. For the timeline keyframe generation
+ * to properly fill in the style it will place the previous value (the value from the parent
+ * timeline) or a default value of `*` into the backFill object. Given that each of the keyframe
+ * styles are objects that prototypically inhert from the backFill object, this means that if a
+ * value is added into the backFill then it will automatically propagate any missing values to all
+ * keyframes. Therefore the missing `height` value will be properly filled into the already
+ * processed keyframes.
+ *
+ * When a sub-timeline is created it will have its own backFill property. This is done so that
+ * styles present within the sub-timeline do not accidentally seep into the previous/future timeline
+ * keyframes
+ *
+ * (For prototypically-inherited contents to be detected a `for(i in obj)` loop must be used.)
+ *
+ * [Validation]
+ * The code in this file is not responsible for validation. That functionality happens with within
+ * the `AnimationValidatorVisitor` code.
+ */
+function buildAnimationTimelines(driver, rootElement, ast, enterClassName, leaveClassName, startingStyles, finalStyles, options, subInstructions, errors) {
+    if (startingStyles === void 0) { startingStyles = {}; }
+    if (finalStyles === void 0) { finalStyles = {}; }
+    if (errors === void 0) { errors = []; }
+    return new AnimationTimelineBuilderVisitor().buildKeyframes(driver, rootElement, ast, enterClassName, leaveClassName, startingStyles, finalStyles, options, subInstructions, errors);
+}
+var AnimationTimelineBuilderVisitor = /** @class */ (function () {
+    function AnimationTimelineBuilderVisitor() {
+    }
+    AnimationTimelineBuilderVisitor.prototype.buildKeyframes = function (driver, rootElement, ast, enterClassName, leaveClassName, startingStyles, finalStyles, options, subInstructions, errors) {
+        if (errors === void 0) { errors = []; }
+        subInstructions = subInstructions || new ElementInstructionMap();
+        var context = new AnimationTimelineContext(driver, rootElement, subInstructions, enterClassName, leaveClassName, errors, []);
+        context.options = options;
+        context.currentTimeline.setStyles([startingStyles], null, context.errors, options);
+        visitDslNode(this, ast, context);
+        // this checks to see if an actual animation happened
+        var timelines = context.timelines.filter(function (timeline) { return timeline.containsAnimation(); });
+        if (timelines.length && Object.keys(finalStyles).length) {
+            var tl = timelines[timelines.length - 1];
+            if (!tl.allowOnlyTimelineStyles()) {
+                tl.setStyles([finalStyles], null, context.errors, options);
+            }
+        }
+        return timelines.length ? timelines.map(function (timeline) { return timeline.buildKeyframes(); }) :
+            [createTimelineInstruction(rootElement, [], [], [], 0, 0, '', false)];
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitTrigger = function (ast, context) {
+        // these values are not visited in this AST
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitState = function (ast, context) {
+        // these values are not visited in this AST
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitTransition = function (ast, context) {
+        // these values are not visited in this AST
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitAnimateChild = function (ast, context) {
+        var elementInstructions = context.subInstructions.consume(context.element);
+        if (elementInstructions) {
+            var innerContext = context.createSubContext(ast.options);
+            var startTime = context.currentTimeline.currentTime;
+            var endTime = this._visitSubInstructions(elementInstructions, innerContext, innerContext.options);
+            if (startTime != endTime) {
+                // we do this on the upper context because we created a sub context for
+                // the sub child animations
+                context.transformIntoNewTimeline(endTime);
+            }
+        }
+        context.previousNode = ast;
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitAnimateRef = function (ast, context) {
+        var innerContext = context.createSubContext(ast.options);
+        innerContext.transformIntoNewTimeline();
+        this.visitReference(ast.animation, innerContext);
+        context.transformIntoNewTimeline(innerContext.currentTimeline.currentTime);
+        context.previousNode = ast;
+    };
+    AnimationTimelineBuilderVisitor.prototype._visitSubInstructions = function (instructions, context, options) {
+        var startTime = context.currentTimeline.currentTime;
+        var furthestTime = startTime;
+        // this is a special-case for when a user wants to skip a sub
+        // animation from being fired entirely.
+        var duration = options.duration != null ? resolveTimingValue(options.duration) : null;
+        var delay = options.delay != null ? resolveTimingValue(options.delay) : null;
+        if (duration !== 0) {
+            instructions.forEach(function (instruction) {
+                var instructionTimings = context.appendInstructionToTimeline(instruction, duration, delay);
+                furthestTime =
+                    Math.max(furthestTime, instructionTimings.duration + instructionTimings.delay);
+            });
+        }
+        return furthestTime;
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitReference = function (ast, context) {
+        context.updateOptions(ast.options, true);
+        visitDslNode(this, ast.animation, context);
+        context.previousNode = ast;
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitSequence = function (ast, context) {
+        var _this = this;
+        var subContextCount = context.subContextCount;
+        var ctx = context;
+        var options = ast.options;
+        if (options && (options.params || options.delay)) {
+            ctx = context.createSubContext(options);
+            ctx.transformIntoNewTimeline();
+            if (options.delay != null) {
+                if (ctx.previousNode.type == 6 /* Style */) {
+                    ctx.currentTimeline.snapshotCurrentStyles();
+                    ctx.previousNode = DEFAULT_NOOP_PREVIOUS_NODE;
+                }
+                var delay = resolveTimingValue(options.delay);
+                ctx.delayNextStep(delay);
+            }
+        }
+        if (ast.steps.length) {
+            ast.steps.forEach(function (s) { return visitDslNode(_this, s, ctx); });
+            // this is here just incase the inner steps only contain or end with a style() call
+            ctx.currentTimeline.applyStylesToKeyframe();
+            // this means that some animation function within the sequence
+            // ended up creating a sub timeline (which means the current
+            // timeline cannot overlap with the contents of the sequence)
+            if (ctx.subContextCount > subContextCount) {
+                ctx.transformIntoNewTimeline();
+            }
+        }
+        context.previousNode = ast;
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitGroup = function (ast, context) {
+        var _this = this;
+        var innerTimelines = [];
+        var furthestTime = context.currentTimeline.currentTime;
+        var delay = ast.options && ast.options.delay ? resolveTimingValue(ast.options.delay) : 0;
+        ast.steps.forEach(function (s) {
+            var innerContext = context.createSubContext(ast.options);
+            if (delay) {
+                innerContext.delayNextStep(delay);
+            }
+            visitDslNode(_this, s, innerContext);
+            furthestTime = Math.max(furthestTime, innerContext.currentTimeline.currentTime);
+            innerTimelines.push(innerContext.currentTimeline);
+        });
+        // this operation is run after the AST loop because otherwise
+        // if the parent timeline's collected styles were updated then
+        // it would pass in invalid data into the new-to-be forked items
+        innerTimelines.forEach(function (timeline) { return context.currentTimeline.mergeTimelineCollectedStyles(timeline); });
+        context.transformIntoNewTimeline(furthestTime);
+        context.previousNode = ast;
+    };
+    AnimationTimelineBuilderVisitor.prototype._visitTiming = function (ast, context) {
+        if (ast.dynamic) {
+            var strValue = ast.strValue;
+            var timingValue = context.params ? interpolateParams(strValue, context.params, context.errors) : strValue;
+            return resolveTiming(timingValue, context.errors);
+        }
+        else {
+            return { duration: ast.duration, delay: ast.delay, easing: ast.easing };
+        }
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitAnimate = function (ast, context) {
+        var timings = context.currentAnimateTimings = this._visitTiming(ast.timings, context);
+        var timeline = context.currentTimeline;
+        if (timings.delay) {
+            context.incrementTime(timings.delay);
+            timeline.snapshotCurrentStyles();
+        }
+        var style$$1 = ast.style;
+        if (style$$1.type == 5 /* Keyframes */) {
+            this.visitKeyframes(style$$1, context);
+        }
+        else {
+            context.incrementTime(timings.duration);
+            this.visitStyle(style$$1, context);
+            timeline.applyStylesToKeyframe();
+        }
+        context.currentAnimateTimings = null;
+        context.previousNode = ast;
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitStyle = function (ast, context) {
+        var timeline = context.currentTimeline;
+        var timings = context.currentAnimateTimings;
+        // this is a special case for when a style() call
+        // directly follows  an animate() call (but not inside of an animate() call)
+        if (!timings && timeline.getCurrentStyleProperties().length) {
+            timeline.forwardFrame();
+        }
+        var easing = (timings && timings.easing) || ast.easing;
+        if (ast.isEmptyStep) {
+            timeline.applyEmptyStep(easing);
+        }
+        else {
+            timeline.setStyles(ast.styles, easing, context.errors, context.options);
+        }
+        context.previousNode = ast;
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitKeyframes = function (ast, context) {
+        var currentAnimateTimings = context.currentAnimateTimings;
+        var startTime = (context.currentTimeline).duration;
+        var duration = currentAnimateTimings.duration;
+        var innerContext = context.createSubContext();
+        var innerTimeline = innerContext.currentTimeline;
+        innerTimeline.easing = currentAnimateTimings.easing;
+        ast.styles.forEach(function (step) {
+            var offset = step.offset || 0;
+            innerTimeline.forwardTime(offset * duration);
+            innerTimeline.setStyles(step.styles, step.easing, context.errors, context.options);
+            innerTimeline.applyStylesToKeyframe();
+        });
+        // this will ensure that the parent timeline gets all the styles from
+        // the child even if the new timeline below is not used
+        context.currentTimeline.mergeTimelineCollectedStyles(innerTimeline);
+        // we do this because the window between this timeline and the sub timeline
+        // should ensure that the styles within are exactly the same as they were before
+        context.transformIntoNewTimeline(startTime + duration);
+        context.previousNode = ast;
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitQuery = function (ast, context) {
+        var _this = this;
+        // in the event that the first step before this is a style step we need
+        // to ensure the styles are applied before the children are animated
+        var startTime = context.currentTimeline.currentTime;
+        var options = (ast.options || {});
+        var delay = options.delay ? resolveTimingValue(options.delay) : 0;
+        if (delay && (context.previousNode.type === 6 /* Style */ ||
+            (startTime == 0 && context.currentTimeline.getCurrentStyleProperties().length))) {
+            context.currentTimeline.snapshotCurrentStyles();
+            context.previousNode = DEFAULT_NOOP_PREVIOUS_NODE;
+        }
+        var furthestTime = startTime;
+        var elms = context.invokeQuery(ast.selector, ast.originalSelector, ast.limit, ast.includeSelf, options.optional ? true : false, context.errors);
+        context.currentQueryTotal = elms.length;
+        var sameElementTimeline = null;
+        elms.forEach(function (element, i) {
+            context.currentQueryIndex = i;
+            var innerContext = context.createSubContext(ast.options, element);
+            if (delay) {
+                innerContext.delayNextStep(delay);
+            }
+            if (element === context.element) {
+                sameElementTimeline = innerContext.currentTimeline;
+            }
+            visitDslNode(_this, ast.animation, innerContext);
+            // this is here just incase the inner steps only contain or end
+            // with a style() call (which is here to signal that this is a preparatory
+            // call to style an element before it is animated again)
+            innerContext.currentTimeline.applyStylesToKeyframe();
+            var endTime = innerContext.currentTimeline.currentTime;
+            furthestTime = Math.max(furthestTime, endTime);
+        });
+        context.currentQueryIndex = 0;
+        context.currentQueryTotal = 0;
+        context.transformIntoNewTimeline(furthestTime);
+        if (sameElementTimeline) {
+            context.currentTimeline.mergeTimelineCollectedStyles(sameElementTimeline);
+            context.currentTimeline.snapshotCurrentStyles();
+        }
+        context.previousNode = ast;
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitStagger = function (ast, context) {
+        var parentContext = context.parentContext;
+        var tl = context.currentTimeline;
+        var timings = ast.timings;
+        var duration = Math.abs(timings.duration);
+        var maxTime = duration * (context.currentQueryTotal - 1);
+        var delay = duration * context.currentQueryIndex;
+        var staggerTransformer = timings.duration < 0 ? 'reverse' : timings.easing;
+        switch (staggerTransformer) {
+            case 'reverse':
+                delay = maxTime - delay;
+                break;
+            case 'full':
+                delay = parentContext.currentStaggerTime;
+                break;
+        }
+        var timeline = context.currentTimeline;
+        if (delay) {
+            timeline.delayNextStep(delay);
+        }
+        var startingTime = timeline.currentTime;
+        visitDslNode(this, ast.animation, context);
+        context.previousNode = ast;
+        // time = duration + delay
+        // the reason why this computation is so complex is because
+        // the inner timeline may either have a delay value or a stretched
+        // keyframe depending on if a subtimeline is not used or is used.
+        parentContext.currentStaggerTime =
+            (tl.currentTime - startingTime) + (tl.startTime - parentContext.currentTimeline.startTime);
+    };
+    return AnimationTimelineBuilderVisitor;
+}());
+var DEFAULT_NOOP_PREVIOUS_NODE = {};
+var AnimationTimelineContext = /** @class */ (function () {
+    function AnimationTimelineContext(_driver, element, subInstructions, _enterClassName, _leaveClassName, errors, timelines, initialTimeline) {
+        this._driver = _driver;
+        this.element = element;
+        this.subInstructions = subInstructions;
+        this._enterClassName = _enterClassName;
+        this._leaveClassName = _leaveClassName;
+        this.errors = errors;
+        this.timelines = timelines;
+        this.parentContext = null;
+        this.currentAnimateTimings = null;
+        this.previousNode = DEFAULT_NOOP_PREVIOUS_NODE;
+        this.subContextCount = 0;
+        this.options = {};
+        this.currentQueryIndex = 0;
+        this.currentQueryTotal = 0;
+        this.currentStaggerTime = 0;
+        this.currentTimeline = initialTimeline || new TimelineBuilder(this._driver, element, 0);
+        timelines.push(this.currentTimeline);
+    }
+    Object.defineProperty(AnimationTimelineContext.prototype, "params", {
+        get: function () { return this.options.params; },
+        enumerable: true,
+        configurable: true
+    });
+    AnimationTimelineContext.prototype.updateOptions = function (options, skipIfExists) {
+        var _this = this;
+        if (!options)
+            return;
+        var newOptions = options;
+        var optionsToUpdate = this.options;
+        // NOTE: this will get patched up when other animation methods support duration overrides
+        if (newOptions.duration != null) {
+            optionsToUpdate.duration = resolveTimingValue(newOptions.duration);
+        }
+        if (newOptions.delay != null) {
+            optionsToUpdate.delay = resolveTimingValue(newOptions.delay);
+        }
+        var newParams = newOptions.params;
+        if (newParams) {
+            var paramsToUpdate_1 = optionsToUpdate.params;
+            if (!paramsToUpdate_1) {
+                paramsToUpdate_1 = this.options.params = {};
+            }
+            Object.keys(newParams).forEach(function (name) {
+                if (!skipIfExists || !paramsToUpdate_1.hasOwnProperty(name)) {
+                    paramsToUpdate_1[name] = interpolateParams(newParams[name], paramsToUpdate_1, _this.errors);
+                }
+            });
+        }
+    };
+    AnimationTimelineContext.prototype._copyOptions = function () {
+        var options = {};
+        if (this.options) {
+            var oldParams_1 = this.options.params;
+            if (oldParams_1) {
+                var params_1 = options['params'] = {};
+                Object.keys(oldParams_1).forEach(function (name) { params_1[name] = oldParams_1[name]; });
+            }
+        }
+        return options;
+    };
+    AnimationTimelineContext.prototype.createSubContext = function (options, element, newTime) {
+        if (options === void 0) { options = null; }
+        var target = element || this.element;
+        var context = new AnimationTimelineContext(this._driver, target, this.subInstructions, this._enterClassName, this._leaveClassName, this.errors, this.timelines, this.currentTimeline.fork(target, newTime || 0));
+        context.previousNode = this.previousNode;
+        context.currentAnimateTimings = this.currentAnimateTimings;
+        context.options = this._copyOptions();
+        context.updateOptions(options);
+        context.currentQueryIndex = this.currentQueryIndex;
+        context.currentQueryTotal = this.currentQueryTotal;
+        context.parentContext = this;
+        this.subContextCount++;
+        return context;
+    };
+    AnimationTimelineContext.prototype.transformIntoNewTimeline = function (newTime) {
+        this.previousNode = DEFAULT_NOOP_PREVIOUS_NODE;
+        this.currentTimeline = this.currentTimeline.fork(this.element, newTime);
+        this.timelines.push(this.currentTimeline);
+        return this.currentTimeline;
+    };
+    AnimationTimelineContext.prototype.appendInstructionToTimeline = function (instruction, duration, delay) {
+        var updatedTimings = {
+            duration: duration != null ? duration : instruction.duration,
+            delay: this.currentTimeline.currentTime + (delay != null ? delay : 0) + instruction.delay,
+            easing: ''
+        };
+        var builder = new SubTimelineBuilder(this._driver, instruction.element, instruction.keyframes, instruction.preStyleProps, instruction.postStyleProps, updatedTimings, instruction.stretchStartingKeyframe);
+        this.timelines.push(builder);
+        return updatedTimings;
+    };
+    AnimationTimelineContext.prototype.incrementTime = function (time) {
+        this.currentTimeline.forwardTime(this.currentTimeline.duration + time);
+    };
+    AnimationTimelineContext.prototype.delayNextStep = function (delay) {
+        // negative delays are not yet supported
+        if (delay > 0) {
+            this.currentTimeline.delayNextStep(delay);
+        }
+    };
+    AnimationTimelineContext.prototype.invokeQuery = function (selector, originalSelector, limit, includeSelf, optional, errors) {
+        var results = [];
+        if (includeSelf) {
+            results.push(this.element);
+        }
+        if (selector.length > 0) { // if :self is only used then the selector is empty
+            selector = selector.replace(ENTER_TOKEN_REGEX, '.' + this._enterClassName);
+            selector = selector.replace(LEAVE_TOKEN_REGEX, '.' + this._leaveClassName);
+            var multi = limit != 1;
+            var elements = this._driver.query(this.element, selector, multi);
+            if (limit !== 0) {
+                elements = limit < 0 ? elements.slice(elements.length + limit, elements.length) :
+                    elements.slice(0, limit);
+            }
+            results.push.apply(results, Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__spread"])(elements));
+        }
+        if (!optional && results.length == 0) {
+            errors.push("`query(\"" + originalSelector + "\")` returned zero elements. (Use `query(\"" + originalSelector + "\", { optional: true })` if you wish to allow this.)");
+        }
+        return results;
+    };
+    return AnimationTimelineContext;
+}());
+var TimelineBuilder = /** @class */ (function () {
+    function TimelineBuilder(_driver, element, startTime, _elementTimelineStylesLookup) {
+        this._driver = _driver;
+        this.element = element;
+        this.startTime = startTime;
+        this._elementTimelineStylesLookup = _elementTimelineStylesLookup;
+        this.duration = 0;
+        this._previousKeyframe = {};
+        this._currentKeyframe = {};
+        this._keyframes = new Map();
+        this._styleSummary = {};
+        this._pendingStyles = {};
+        this._backFill = {};
+        this._currentEmptyStepKeyframe = null;
+        if (!this._elementTimelineStylesLookup) {
+            this._elementTimelineStylesLookup = new Map();
+        }
+        this._localTimelineStyles = Object.create(this._backFill, {});
+        this._globalTimelineStyles = this._elementTimelineStylesLookup.get(element);
+        if (!this._globalTimelineStyles) {
+            this._globalTimelineStyles = this._localTimelineStyles;
+            this._elementTimelineStylesLookup.set(element, this._localTimelineStyles);
+        }
+        this._loadKeyframe();
+    }
+    TimelineBuilder.prototype.containsAnimation = function () {
+        switch (this._keyframes.size) {
+            case 0:
+                return false;
+            case 1:
+                return this.getCurrentStyleProperties().length > 0;
+            default:
+                return true;
+        }
+    };
+    TimelineBuilder.prototype.getCurrentStyleProperties = function () { return Object.keys(this._currentKeyframe); };
+    Object.defineProperty(TimelineBuilder.prototype, "currentTime", {
+        get: function () { return this.startTime + this.duration; },
+        enumerable: true,
+        configurable: true
+    });
+    TimelineBuilder.prototype.delayNextStep = function (delay) {
+        // in the event that a style() step is placed right before a stagger()
+        // and that style() step is the very first style() value in the animation
+        // then we need to make a copy of the keyframe [0, copy, 1] so that the delay
+        // properly applies the style() values to work with the stagger...
+        var hasPreStyleStep = this._keyframes.size == 1 && Object.keys(this._pendingStyles).length;
+        if (this.duration || hasPreStyleStep) {
+            this.forwardTime(this.currentTime + delay);
+            if (hasPreStyleStep) {
+                this.snapshotCurrentStyles();
+            }
+        }
+        else {
+            this.startTime += delay;
+        }
+    };
+    TimelineBuilder.prototype.fork = function (element, currentTime) {
+        this.applyStylesToKeyframe();
+        return new TimelineBuilder(this._driver, element, currentTime || this.currentTime, this._elementTimelineStylesLookup);
+    };
+    TimelineBuilder.prototype._loadKeyframe = function () {
+        if (this._currentKeyframe) {
+            this._previousKeyframe = this._currentKeyframe;
+        }
+        this._currentKeyframe = this._keyframes.get(this.duration);
+        if (!this._currentKeyframe) {
+            this._currentKeyframe = Object.create(this._backFill, {});
+            this._keyframes.set(this.duration, this._currentKeyframe);
+        }
+    };
+    TimelineBuilder.prototype.forwardFrame = function () {
+        this.duration += ONE_FRAME_IN_MILLISECONDS;
+        this._loadKeyframe();
+    };
+    TimelineBuilder.prototype.forwardTime = function (time) {
+        this.applyStylesToKeyframe();
+        this.duration = time;
+        this._loadKeyframe();
+    };
+    TimelineBuilder.prototype._updateStyle = function (prop, value) {
+        this._localTimelineStyles[prop] = value;
+        this._globalTimelineStyles[prop] = value;
+        this._styleSummary[prop] = { time: this.currentTime, value: value };
+    };
+    TimelineBuilder.prototype.allowOnlyTimelineStyles = function () { return this._currentEmptyStepKeyframe !== this._currentKeyframe; };
+    TimelineBuilder.prototype.applyEmptyStep = function (easing) {
+        var _this = this;
+        if (easing) {
+            this._previousKeyframe['easing'] = easing;
+        }
+        // special case for animate(duration):
+        // all missing styles are filled with a `*` value then
+        // if any destination styles are filled in later on the same
+        // keyframe then they will override the overridden styles
+        // We use `_globalTimelineStyles` here because there may be
+        // styles in previous keyframes that are not present in this timeline
+        Object.keys(this._globalTimelineStyles).forEach(function (prop) {
+            _this._backFill[prop] = _this._globalTimelineStyles[prop] || _angular_animations__WEBPACK_IMPORTED_MODULE_1__["AUTO_STYLE"];
+            _this._currentKeyframe[prop] = _angular_animations__WEBPACK_IMPORTED_MODULE_1__["AUTO_STYLE"];
+        });
+        this._currentEmptyStepKeyframe = this._currentKeyframe;
+    };
+    TimelineBuilder.prototype.setStyles = function (input, easing, errors, options) {
+        var _this = this;
+        if (easing) {
+            this._previousKeyframe['easing'] = easing;
+        }
+        var params = (options && options.params) || {};
+        var styles = flattenStyles(input, this._globalTimelineStyles);
+        Object.keys(styles).forEach(function (prop) {
+            var val = interpolateParams(styles[prop], params, errors);
+            _this._pendingStyles[prop] = val;
+            if (!_this._localTimelineStyles.hasOwnProperty(prop)) {
+                _this._backFill[prop] = _this._globalTimelineStyles.hasOwnProperty(prop) ?
+                    _this._globalTimelineStyles[prop] :
+                    _angular_animations__WEBPACK_IMPORTED_MODULE_1__["AUTO_STYLE"];
+            }
+            _this._updateStyle(prop, val);
+        });
+    };
+    TimelineBuilder.prototype.applyStylesToKeyframe = function () {
+        var _this = this;
+        var styles = this._pendingStyles;
+        var props = Object.keys(styles);
+        if (props.length == 0)
+            return;
+        this._pendingStyles = {};
+        props.forEach(function (prop) {
+            var val = styles[prop];
+            _this._currentKeyframe[prop] = val;
+        });
+        Object.keys(this._localTimelineStyles).forEach(function (prop) {
+            if (!_this._currentKeyframe.hasOwnProperty(prop)) {
+                _this._currentKeyframe[prop] = _this._localTimelineStyles[prop];
+            }
+        });
+    };
+    TimelineBuilder.prototype.snapshotCurrentStyles = function () {
+        var _this = this;
+        Object.keys(this._localTimelineStyles).forEach(function (prop) {
+            var val = _this._localTimelineStyles[prop];
+            _this._pendingStyles[prop] = val;
+            _this._updateStyle(prop, val);
+        });
+    };
+    TimelineBuilder.prototype.getFinalKeyframe = function () { return this._keyframes.get(this.duration); };
+    Object.defineProperty(TimelineBuilder.prototype, "properties", {
+        get: function () {
+            var properties = [];
+            for (var prop in this._currentKeyframe) {
+                properties.push(prop);
+            }
+            return properties;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    TimelineBuilder.prototype.mergeTimelineCollectedStyles = function (timeline) {
+        var _this = this;
+        Object.keys(timeline._styleSummary).forEach(function (prop) {
+            var details0 = _this._styleSummary[prop];
+            var details1 = timeline._styleSummary[prop];
+            if (!details0 || details1.time > details0.time) {
+                _this._updateStyle(prop, details1.value);
+            }
+        });
+    };
+    TimelineBuilder.prototype.buildKeyframes = function () {
+        var _this = this;
+        this.applyStylesToKeyframe();
+        var preStyleProps = new Set();
+        var postStyleProps = new Set();
+        var isEmpty = this._keyframes.size === 1 && this.duration === 0;
+        var finalKeyframes = [];
+        this._keyframes.forEach(function (keyframe, time) {
+            var finalKeyframe = copyStyles(keyframe, true);
+            Object.keys(finalKeyframe).forEach(function (prop) {
+                var value = finalKeyframe[prop];
+                if (value == _angular_animations__WEBPACK_IMPORTED_MODULE_1__["ɵPRE_STYLE"]) {
+                    preStyleProps.add(prop);
+                }
+                else if (value == _angular_animations__WEBPACK_IMPORTED_MODULE_1__["AUTO_STYLE"]) {
+                    postStyleProps.add(prop);
+                }
+            });
+            if (!isEmpty) {
+                finalKeyframe['offset'] = time / _this.duration;
+            }
+            finalKeyframes.push(finalKeyframe);
+        });
+        var preProps = preStyleProps.size ? iteratorToArray(preStyleProps.values()) : [];
+        var postProps = postStyleProps.size ? iteratorToArray(postStyleProps.values()) : [];
+        // special case for a 0-second animation (which is designed just to place styles onscreen)
+        if (isEmpty) {
+            var kf0 = finalKeyframes[0];
+            var kf1 = copyObj(kf0);
+            kf0['offset'] = 0;
+            kf1['offset'] = 1;
+            finalKeyframes = [kf0, kf1];
+        }
+        return createTimelineInstruction(this.element, finalKeyframes, preProps, postProps, this.duration, this.startTime, this.easing, false);
+    };
+    return TimelineBuilder;
+}());
+var SubTimelineBuilder = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(SubTimelineBuilder, _super);
+    function SubTimelineBuilder(driver, element, keyframes, preStyleProps, postStyleProps, timings, _stretchStartingKeyframe) {
+        if (_stretchStartingKeyframe === void 0) { _stretchStartingKeyframe = false; }
+        var _this = _super.call(this, driver, element, timings.delay) || this;
+        _this.element = element;
+        _this.keyframes = keyframes;
+        _this.preStyleProps = preStyleProps;
+        _this.postStyleProps = postStyleProps;
+        _this._stretchStartingKeyframe = _stretchStartingKeyframe;
+        _this.timings = { duration: timings.duration, delay: timings.delay, easing: timings.easing };
+        return _this;
+    }
+    SubTimelineBuilder.prototype.containsAnimation = function () { return this.keyframes.length > 1; };
+    SubTimelineBuilder.prototype.buildKeyframes = function () {
+        var keyframes = this.keyframes;
+        var _a = this.timings, delay = _a.delay, duration = _a.duration, easing = _a.easing;
+        if (this._stretchStartingKeyframe && delay) {
+            var newKeyframes = [];
+            var totalTime = duration + delay;
+            var startingGap = delay / totalTime;
+            // the original starting keyframe now starts once the delay is done
+            var newFirstKeyframe = copyStyles(keyframes[0], false);
+            newFirstKeyframe['offset'] = 0;
+            newKeyframes.push(newFirstKeyframe);
+            var oldFirstKeyframe = copyStyles(keyframes[0], false);
+            oldFirstKeyframe['offset'] = roundOffset(startingGap);
+            newKeyframes.push(oldFirstKeyframe);
+            /*
+              When the keyframe is stretched then it means that the delay before the animation
+              starts is gone. Instead the first keyframe is placed at the start of the animation
+              and it is then copied to where it starts when the original delay is over. This basically
+              means nothing animates during that delay, but the styles are still renderered. For this
+              to work the original offset values that exist in the original keyframes must be "warped"
+              so that they can take the new keyframe + delay into account.
+      
+              delay=1000, duration=1000, keyframes = 0 .5 1
+      
+              turns into
+      
+              delay=0, duration=2000, keyframes = 0 .33 .66 1
+             */
+            // offsets between 1 ... n -1 are all warped by the keyframe stretch
+            var limit = keyframes.length - 1;
+            for (var i = 1; i <= limit; i++) {
+                var kf = copyStyles(keyframes[i], false);
+                var oldOffset = kf['offset'];
+                var timeAtKeyframe = delay + oldOffset * duration;
+                kf['offset'] = roundOffset(timeAtKeyframe / totalTime);
+                newKeyframes.push(kf);
+            }
+            // the new starting keyframe should be added at the start
+            duration = totalTime;
+            delay = 0;
+            easing = '';
+            keyframes = newKeyframes;
+        }
+        return createTimelineInstruction(this.element, keyframes, this.preStyleProps, this.postStyleProps, duration, delay, easing, true);
+    };
+    return SubTimelineBuilder;
+}(TimelineBuilder));
+function roundOffset(offset, decimalPoints) {
+    if (decimalPoints === void 0) { decimalPoints = 3; }
+    var mult = Math.pow(10, decimalPoints - 1);
+    return Math.round(offset * mult) / mult;
+}
+function flattenStyles(input, allStyles) {
+    var styles = {};
+    var allProperties;
+    input.forEach(function (token) {
+        if (token === '*') {
+            allProperties = allProperties || Object.keys(allStyles);
+            allProperties.forEach(function (prop) { styles[prop] = _angular_animations__WEBPACK_IMPORTED_MODULE_1__["AUTO_STYLE"]; });
+        }
+        else {
+            copyStyles(token, false, styles);
+        }
+    });
+    return styles;
+}
+
+var Animation = /** @class */ (function () {
+    function Animation(_driver, input) {
+        this._driver = _driver;
+        var errors = [];
+        var ast = buildAnimationAst(_driver, input, errors);
+        if (errors.length) {
+            var errorMessage = "animation validation failed:\n" + errors.join("\n");
+            throw new Error(errorMessage);
+        }
+        this._animationAst = ast;
+    }
+    Animation.prototype.buildTimelines = function (element, startingStyles, destinationStyles, options, subInstructions) {
+        var start = Array.isArray(startingStyles) ? normalizeStyles(startingStyles) :
+            startingStyles;
+        var dest = Array.isArray(destinationStyles) ? normalizeStyles(destinationStyles) :
+            destinationStyles;
+        var errors = [];
+        subInstructions = subInstructions || new ElementInstructionMap();
+        var result = buildAnimationTimelines(this._driver, element, this._animationAst, ENTER_CLASSNAME, LEAVE_CLASSNAME, start, dest, options, subInstructions, errors);
+        if (errors.length) {
+            var errorMessage = "animation building failed:\n" + errors.join("\n");
+            throw new Error(errorMessage);
+        }
+        return result;
+    };
+    return Animation;
+}());
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * @publicApi
+ */
+var AnimationStyleNormalizer = /** @class */ (function () {
+    function AnimationStyleNormalizer() {
+    }
+    return AnimationStyleNormalizer;
+}());
+/**
+ * @publicApi
+ */
+var NoopAnimationStyleNormalizer = /** @class */ (function () {
+    function NoopAnimationStyleNormalizer() {
+    }
+    NoopAnimationStyleNormalizer.prototype.normalizePropertyName = function (propertyName, errors) { return propertyName; };
+    NoopAnimationStyleNormalizer.prototype.normalizeStyleValue = function (userProvidedProperty, normalizedProperty, value, errors) {
+        return value;
+    };
+    return NoopAnimationStyleNormalizer;
+}());
+
+var WebAnimationsStyleNormalizer = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(WebAnimationsStyleNormalizer, _super);
+    function WebAnimationsStyleNormalizer() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    WebAnimationsStyleNormalizer.prototype.normalizePropertyName = function (propertyName, errors) {
+        return dashCaseToCamelCase(propertyName);
+    };
+    WebAnimationsStyleNormalizer.prototype.normalizeStyleValue = function (userProvidedProperty, normalizedProperty, value, errors) {
+        var unit = '';
+        var strVal = value.toString().trim();
+        if (DIMENSIONAL_PROP_MAP[normalizedProperty] && value !== 0 && value !== '0') {
+            if (typeof value === 'number') {
+                unit = 'px';
+            }
+            else {
+                var valAndSuffixMatch = value.match(/^[+-]?[\d\.]+([a-z]*)$/);
+                if (valAndSuffixMatch && valAndSuffixMatch[1].length == 0) {
+                    errors.push("Please provide a CSS unit value for " + userProvidedProperty + ":" + value);
+                }
+            }
+        }
+        return strVal + unit;
+    };
+    return WebAnimationsStyleNormalizer;
+}(AnimationStyleNormalizer));
+var DIMENSIONAL_PROP_MAP = makeBooleanMap('width,height,minWidth,minHeight,maxWidth,maxHeight,left,top,bottom,right,fontSize,outlineWidth,outlineOffset,paddingTop,paddingLeft,paddingBottom,paddingRight,marginTop,marginLeft,marginBottom,marginRight,borderRadius,borderWidth,borderTopWidth,borderLeftWidth,borderRightWidth,borderBottomWidth,textIndent,perspective'
+    .split(','));
+function makeBooleanMap(keys) {
+    var map = {};
+    keys.forEach(function (key) { return map[key] = true; });
+    return map;
+}
+
+function createTransitionInstruction(element, triggerName, fromState, toState, isRemovalTransition, fromStyles, toStyles, timelines, queriedElements, preStyleProps, postStyleProps, totalTime, errors) {
+    return {
+        type: 0 /* TransitionAnimation */,
+        element: element,
+        triggerName: triggerName,
+        isRemovalTransition: isRemovalTransition,
+        fromState: fromState,
+        fromStyles: fromStyles,
+        toState: toState,
+        toStyles: toStyles,
+        timelines: timelines,
+        queriedElements: queriedElements,
+        preStyleProps: preStyleProps,
+        postStyleProps: postStyleProps,
+        totalTime: totalTime,
+        errors: errors
+    };
+}
+
+var EMPTY_OBJECT = {};
+var AnimationTransitionFactory = /** @class */ (function () {
+    function AnimationTransitionFactory(_triggerName, ast, _stateStyles) {
+        this._triggerName = _triggerName;
+        this.ast = ast;
+        this._stateStyles = _stateStyles;
+    }
+    AnimationTransitionFactory.prototype.match = function (currentState, nextState, element, params) {
+        return oneOrMoreTransitionsMatch(this.ast.matchers, currentState, nextState, element, params);
+    };
+    AnimationTransitionFactory.prototype.buildStyles = function (stateName, params, errors) {
+        var backupStateStyler = this._stateStyles['*'];
+        var stateStyler = this._stateStyles[stateName];
+        var backupStyles = backupStateStyler ? backupStateStyler.buildStyles(params, errors) : {};
+        return stateStyler ? stateStyler.buildStyles(params, errors) : backupStyles;
+    };
+    AnimationTransitionFactory.prototype.build = function (driver, element, currentState, nextState, enterClassName, leaveClassName, currentOptions, nextOptions, subInstructions, skipAstBuild) {
+        var errors = [];
+        var transitionAnimationParams = this.ast.options && this.ast.options.params || EMPTY_OBJECT;
+        var currentAnimationParams = currentOptions && currentOptions.params || EMPTY_OBJECT;
+        var currentStateStyles = this.buildStyles(currentState, currentAnimationParams, errors);
+        var nextAnimationParams = nextOptions && nextOptions.params || EMPTY_OBJECT;
+        var nextStateStyles = this.buildStyles(nextState, nextAnimationParams, errors);
+        var queriedElements = new Set();
+        var preStyleMap = new Map();
+        var postStyleMap = new Map();
+        var isRemoval = nextState === 'void';
+        var animationOptions = { params: Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"])({}, transitionAnimationParams, nextAnimationParams) };
+        var timelines = skipAstBuild ? [] : buildAnimationTimelines(driver, element, this.ast.animation, enterClassName, leaveClassName, currentStateStyles, nextStateStyles, animationOptions, subInstructions, errors);
+        var totalTime = 0;
+        timelines.forEach(function (tl) { totalTime = Math.max(tl.duration + tl.delay, totalTime); });
+        if (errors.length) {
+            return createTransitionInstruction(element, this._triggerName, currentState, nextState, isRemoval, currentStateStyles, nextStateStyles, [], [], preStyleMap, postStyleMap, totalTime, errors);
+        }
+        timelines.forEach(function (tl) {
+            var elm = tl.element;
+            var preProps = getOrSetAsInMap(preStyleMap, elm, {});
+            tl.preStyleProps.forEach(function (prop) { return preProps[prop] = true; });
+            var postProps = getOrSetAsInMap(postStyleMap, elm, {});
+            tl.postStyleProps.forEach(function (prop) { return postProps[prop] = true; });
+            if (elm !== element) {
+                queriedElements.add(elm);
+            }
+        });
+        var queriedElementsList = iteratorToArray(queriedElements.values());
+        return createTransitionInstruction(element, this._triggerName, currentState, nextState, isRemoval, currentStateStyles, nextStateStyles, timelines, queriedElementsList, preStyleMap, postStyleMap, totalTime);
+    };
+    return AnimationTransitionFactory;
+}());
+function oneOrMoreTransitionsMatch(matchFns, currentState, nextState, element, params) {
+    return matchFns.some(function (fn) { return fn(currentState, nextState, element, params); });
+}
+var AnimationStateStyles = /** @class */ (function () {
+    function AnimationStateStyles(styles, defaultParams) {
+        this.styles = styles;
+        this.defaultParams = defaultParams;
+    }
+    AnimationStateStyles.prototype.buildStyles = function (params, errors) {
+        var finalStyles = {};
+        var combinedParams = copyObj(this.defaultParams);
+        Object.keys(params).forEach(function (key) {
+            var value = params[key];
+            if (value != null) {
+                combinedParams[key] = value;
+            }
+        });
+        this.styles.styles.forEach(function (value) {
+            if (typeof value !== 'string') {
+                var styleObj_1 = value;
+                Object.keys(styleObj_1).forEach(function (prop) {
+                    var val = styleObj_1[prop];
+                    if (val.length > 1) {
+                        val = interpolateParams(val, combinedParams, errors);
+                    }
+                    finalStyles[prop] = val;
+                });
+            }
+        });
+        return finalStyles;
+    };
+    return AnimationStateStyles;
+}());
+
+/**
+ * @publicApi
+ */
+function buildTrigger(name, ast) {
+    return new AnimationTrigger(name, ast);
+}
+/**
+* @publicApi
+*/
+var AnimationTrigger = /** @class */ (function () {
+    function AnimationTrigger(name, ast) {
+        var _this = this;
+        this.name = name;
+        this.ast = ast;
+        this.transitionFactories = [];
+        this.states = {};
+        ast.states.forEach(function (ast) {
+            var defaultParams = (ast.options && ast.options.params) || {};
+            _this.states[ast.name] = new AnimationStateStyles(ast.style, defaultParams);
+        });
+        balanceProperties(this.states, 'true', '1');
+        balanceProperties(this.states, 'false', '0');
+        ast.transitions.forEach(function (ast) {
+            _this.transitionFactories.push(new AnimationTransitionFactory(name, ast, _this.states));
+        });
+        this.fallbackTransition = createFallbackTransition(name, this.states);
+    }
+    Object.defineProperty(AnimationTrigger.prototype, "containsQueries", {
+        get: function () { return this.ast.queryCount > 0; },
+        enumerable: true,
+        configurable: true
+    });
+    AnimationTrigger.prototype.matchTransition = function (currentState, nextState, element, params) {
+        var entry = this.transitionFactories.find(function (f) { return f.match(currentState, nextState, element, params); });
+        return entry || null;
+    };
+    AnimationTrigger.prototype.matchStyles = function (currentState, params, errors) {
+        return this.fallbackTransition.buildStyles(currentState, params, errors);
+    };
+    return AnimationTrigger;
+}());
+function createFallbackTransition(triggerName, states) {
+    var matchers = [function (fromState, toState) { return true; }];
+    var animation = { type: 2 /* Sequence */, steps: [], options: null };
+    var transition = {
+        type: 1 /* Transition */,
+        animation: animation,
+        matchers: matchers,
+        options: null,
+        queryCount: 0,
+        depCount: 0
+    };
+    return new AnimationTransitionFactory(triggerName, transition, states);
+}
+function balanceProperties(obj, key1, key2) {
+    if (obj.hasOwnProperty(key1)) {
+        if (!obj.hasOwnProperty(key2)) {
+            obj[key2] = obj[key1];
+        }
+    }
+    else if (obj.hasOwnProperty(key2)) {
+        obj[key1] = obj[key2];
+    }
+}
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var EMPTY_INSTRUCTION_MAP = new ElementInstructionMap();
+var TimelineAnimationEngine = /** @class */ (function () {
+    function TimelineAnimationEngine(bodyNode, _driver, _normalizer) {
+        this.bodyNode = bodyNode;
+        this._driver = _driver;
+        this._normalizer = _normalizer;
+        this._animations = {};
+        this._playersById = {};
+        this.players = [];
+    }
+    TimelineAnimationEngine.prototype.register = function (id, metadata) {
+        var errors = [];
+        var ast = buildAnimationAst(this._driver, metadata, errors);
+        if (errors.length) {
+            throw new Error("Unable to build the animation due to the following errors: " + errors.join("\n"));
+        }
+        else {
+            this._animations[id] = ast;
+        }
+    };
+    TimelineAnimationEngine.prototype._buildPlayer = function (i, preStyles, postStyles) {
+        var element = i.element;
+        var keyframes = normalizeKeyframes(this._driver, this._normalizer, element, i.keyframes, preStyles, postStyles);
+        return this._driver.animate(element, keyframes, i.duration, i.delay, i.easing, [], true);
+    };
+    TimelineAnimationEngine.prototype.create = function (id, element, options) {
+        var _this = this;
+        if (options === void 0) { options = {}; }
+        var errors = [];
+        var ast = this._animations[id];
+        var instructions;
+        var autoStylesMap = new Map();
+        if (ast) {
+            instructions = buildAnimationTimelines(this._driver, element, ast, ENTER_CLASSNAME, LEAVE_CLASSNAME, {}, {}, options, EMPTY_INSTRUCTION_MAP, errors);
+            instructions.forEach(function (inst) {
+                var styles = getOrSetAsInMap(autoStylesMap, inst.element, {});
+                inst.postStyleProps.forEach(function (prop) { return styles[prop] = null; });
+            });
+        }
+        else {
+            errors.push('The requested animation doesn\'t exist or has already been destroyed');
+            instructions = [];
+        }
+        if (errors.length) {
+            throw new Error("Unable to create the animation due to the following errors: " + errors.join("\n"));
+        }
+        autoStylesMap.forEach(function (styles, element) {
+            Object.keys(styles).forEach(function (prop) { styles[prop] = _this._driver.computeStyle(element, prop, _angular_animations__WEBPACK_IMPORTED_MODULE_1__["AUTO_STYLE"]); });
+        });
+        var players = instructions.map(function (i) {
+            var styles = autoStylesMap.get(i.element);
+            return _this._buildPlayer(i, {}, styles);
+        });
+        var player = optimizeGroupPlayer(players);
+        this._playersById[id] = player;
+        player.onDestroy(function () { return _this.destroy(id); });
+        this.players.push(player);
+        return player;
+    };
+    TimelineAnimationEngine.prototype.destroy = function (id) {
+        var player = this._getPlayer(id);
+        player.destroy();
+        delete this._playersById[id];
+        var index = this.players.indexOf(player);
+        if (index >= 0) {
+            this.players.splice(index, 1);
+        }
+    };
+    TimelineAnimationEngine.prototype._getPlayer = function (id) {
+        var player = this._playersById[id];
+        if (!player) {
+            throw new Error("Unable to find the timeline player referenced by " + id);
+        }
+        return player;
+    };
+    TimelineAnimationEngine.prototype.listen = function (id, element, eventName, callback) {
+        // triggerName, fromState, toState are all ignored for timeline animations
+        var baseEvent = makeAnimationEvent(element, '', '', '');
+        listenOnPlayer(this._getPlayer(id), eventName, baseEvent, callback);
+        return function () { };
+    };
+    TimelineAnimationEngine.prototype.command = function (id, element, command, args) {
+        if (command == 'register') {
+            this.register(id, args[0]);
+            return;
+        }
+        if (command == 'create') {
+            var options = (args[0] || {});
+            this.create(id, element, options);
+            return;
+        }
+        var player = this._getPlayer(id);
+        switch (command) {
+            case 'play':
+                player.play();
+                break;
+            case 'pause':
+                player.pause();
+                break;
+            case 'reset':
+                player.reset();
+                break;
+            case 'restart':
+                player.restart();
+                break;
+            case 'finish':
+                player.finish();
+                break;
+            case 'init':
+                player.init();
+                break;
+            case 'setPosition':
+                player.setPosition(parseFloat(args[0]));
+                break;
+            case 'destroy':
+                this.destroy(id);
+                break;
+        }
+    };
+    return TimelineAnimationEngine;
+}());
+
+var QUEUED_CLASSNAME = 'ng-animate-queued';
+var QUEUED_SELECTOR = '.ng-animate-queued';
+var DISABLED_CLASSNAME = 'ng-animate-disabled';
+var DISABLED_SELECTOR = '.ng-animate-disabled';
+var STAR_CLASSNAME = 'ng-star-inserted';
+var STAR_SELECTOR = '.ng-star-inserted';
+var EMPTY_PLAYER_ARRAY = [];
+var NULL_REMOVAL_STATE = {
+    namespaceId: '',
+    setForRemoval: false,
+    setForMove: false,
+    hasAnimation: false,
+    removedBeforeQueried: false
+};
+var NULL_REMOVED_QUERIED_STATE = {
+    namespaceId: '',
+    setForMove: false,
+    setForRemoval: false,
+    hasAnimation: false,
+    removedBeforeQueried: true
+};
+var REMOVAL_FLAG = '__ng_removed';
+var StateValue = /** @class */ (function () {
+    function StateValue(input, namespaceId) {
+        if (namespaceId === void 0) { namespaceId = ''; }
+        this.namespaceId = namespaceId;
+        var isObj = input && input.hasOwnProperty('value');
+        var value = isObj ? input['value'] : input;
+        this.value = normalizeTriggerValue(value);
+        if (isObj) {
+            var options = copyObj(input);
+            delete options['value'];
+            this.options = options;
+        }
+        else {
+            this.options = {};
+        }
+        if (!this.options.params) {
+            this.options.params = {};
+        }
+    }
+    Object.defineProperty(StateValue.prototype, "params", {
+        get: function () { return this.options.params; },
+        enumerable: true,
+        configurable: true
+    });
+    StateValue.prototype.absorbOptions = function (options) {
+        var newParams = options.params;
+        if (newParams) {
+            var oldParams_1 = this.options.params;
+            Object.keys(newParams).forEach(function (prop) {
+                if (oldParams_1[prop] == null) {
+                    oldParams_1[prop] = newParams[prop];
+                }
+            });
+        }
+    };
+    return StateValue;
+}());
+var VOID_VALUE = 'void';
+var DEFAULT_STATE_VALUE = new StateValue(VOID_VALUE);
+var AnimationTransitionNamespace = /** @class */ (function () {
+    function AnimationTransitionNamespace(id, hostElement, _engine) {
+        this.id = id;
+        this.hostElement = hostElement;
+        this._engine = _engine;
+        this.players = [];
+        this._triggers = {};
+        this._queue = [];
+        this._elementListeners = new Map();
+        this._hostClassName = 'ng-tns-' + id;
+        addClass(hostElement, this._hostClassName);
+    }
+    AnimationTransitionNamespace.prototype.listen = function (element, name, phase, callback) {
+        var _this = this;
+        if (!this._triggers.hasOwnProperty(name)) {
+            throw new Error("Unable to listen on the animation trigger event \"" + phase + "\" because the animation trigger \"" + name + "\" doesn't exist!");
+        }
+        if (phase == null || phase.length == 0) {
+            throw new Error("Unable to listen on the animation trigger \"" + name + "\" because the provided event is undefined!");
+        }
+        if (!isTriggerEventValid(phase)) {
+            throw new Error("The provided animation trigger event \"" + phase + "\" for the animation trigger \"" + name + "\" is not supported!");
+        }
+        var listeners = getOrSetAsInMap(this._elementListeners, element, []);
+        var data = { name: name, phase: phase, callback: callback };
+        listeners.push(data);
+        var triggersWithStates = getOrSetAsInMap(this._engine.statesByElement, element, {});
+        if (!triggersWithStates.hasOwnProperty(name)) {
+            addClass(element, NG_TRIGGER_CLASSNAME);
+            addClass(element, NG_TRIGGER_CLASSNAME + '-' + name);
+            triggersWithStates[name] = DEFAULT_STATE_VALUE;
+        }
+        return function () {
+            // the event listener is removed AFTER the flush has occurred such
+            // that leave animations callbacks can fire (otherwise if the node
+            // is removed in between then the listeners would be deregistered)
+            _this._engine.afterFlush(function () {
+                var index = listeners.indexOf(data);
+                if (index >= 0) {
+                    listeners.splice(index, 1);
+                }
+                if (!_this._triggers[name]) {
+                    delete triggersWithStates[name];
+                }
+            });
+        };
+    };
+    AnimationTransitionNamespace.prototype.register = function (name, ast) {
+        if (this._triggers[name]) {
+            // throw
+            return false;
+        }
+        else {
+            this._triggers[name] = ast;
+            return true;
+        }
+    };
+    AnimationTransitionNamespace.prototype._getTrigger = function (name) {
+        var trigger = this._triggers[name];
+        if (!trigger) {
+            throw new Error("The provided animation trigger \"" + name + "\" has not been registered!");
+        }
+        return trigger;
+    };
+    AnimationTransitionNamespace.prototype.trigger = function (element, triggerName, value, defaultToFallback) {
+        var _this = this;
+        if (defaultToFallback === void 0) { defaultToFallback = true; }
+        var trigger = this._getTrigger(triggerName);
+        var player = new TransitionAnimationPlayer(this.id, triggerName, element);
+        var triggersWithStates = this._engine.statesByElement.get(element);
+        if (!triggersWithStates) {
+            addClass(element, NG_TRIGGER_CLASSNAME);
+            addClass(element, NG_TRIGGER_CLASSNAME + '-' + triggerName);
+            this._engine.statesByElement.set(element, triggersWithStates = {});
+        }
+        var fromState = triggersWithStates[triggerName];
+        var toState = new StateValue(value, this.id);
+        var isObj = value && value.hasOwnProperty('value');
+        if (!isObj && fromState) {
+            toState.absorbOptions(fromState.options);
+        }
+        triggersWithStates[triggerName] = toState;
+        if (!fromState) {
+            fromState = DEFAULT_STATE_VALUE;
+        }
+        var isRemoval = toState.value === VOID_VALUE;
+        // normally this isn't reached by here, however, if an object expression
+        // is passed in then it may be a new object each time. Comparing the value
+        // is important since that will stay the same despite there being a new object.
+        // The removal arc here is special cased because the same element is triggered
+        // twice in the event that it contains animations on the outer/inner portions
+        // of the host container
+        if (!isRemoval && fromState.value === toState.value) {
+            // this means that despite the value not changing, some inner params
+            // have changed which means that the animation final styles need to be applied
+            if (!objEquals(fromState.params, toState.params)) {
+                var errors = [];
+                var fromStyles_1 = trigger.matchStyles(fromState.value, fromState.params, errors);
+                var toStyles_1 = trigger.matchStyles(toState.value, toState.params, errors);
+                if (errors.length) {
+                    this._engine.reportError(errors);
+                }
+                else {
+                    this._engine.afterFlush(function () {
+                        eraseStyles(element, fromStyles_1);
+                        setStyles(element, toStyles_1);
+                    });
+                }
+            }
+            return;
+        }
+        var playersOnElement = getOrSetAsInMap(this._engine.playersByElement, element, []);
+        playersOnElement.forEach(function (player) {
+            // only remove the player if it is queued on the EXACT same trigger/namespace
+            // we only also deal with queued players here because if the animation has
+            // started then we want to keep the player alive until the flush happens
+            // (which is where the previousPlayers are passed into the new palyer)
+            if (player.namespaceId == _this.id && player.triggerName == triggerName && player.queued) {
+                player.destroy();
+            }
+        });
+        var transition = trigger.matchTransition(fromState.value, toState.value, element, toState.params);
+        var isFallbackTransition = false;
+        if (!transition) {
+            if (!defaultToFallback)
+                return;
+            transition = trigger.fallbackTransition;
+            isFallbackTransition = true;
+        }
+        this._engine.totalQueuedPlayers++;
+        this._queue.push({ element: element, triggerName: triggerName, transition: transition, fromState: fromState, toState: toState, player: player, isFallbackTransition: isFallbackTransition });
+        if (!isFallbackTransition) {
+            addClass(element, QUEUED_CLASSNAME);
+            player.onStart(function () { removeClass(element, QUEUED_CLASSNAME); });
+        }
+        player.onDone(function () {
+            var index = _this.players.indexOf(player);
+            if (index >= 0) {
+                _this.players.splice(index, 1);
+            }
+            var players = _this._engine.playersByElement.get(element);
+            if (players) {
+                var index_1 = players.indexOf(player);
+                if (index_1 >= 0) {
+                    players.splice(index_1, 1);
+                }
+            }
+        });
+        this.players.push(player);
+        playersOnElement.push(player);
+        return player;
+    };
+    AnimationTransitionNamespace.prototype.deregister = function (name) {
+        var _this = this;
+        delete this._triggers[name];
+        this._engine.statesByElement.forEach(function (stateMap, element) { delete stateMap[name]; });
+        this._elementListeners.forEach(function (listeners, element) {
+            _this._elementListeners.set(element, listeners.filter(function (entry) { return entry.name != name; }));
+        });
+    };
+    AnimationTransitionNamespace.prototype.clearElementCache = function (element) {
+        this._engine.statesByElement.delete(element);
+        this._elementListeners.delete(element);
+        var elementPlayers = this._engine.playersByElement.get(element);
+        if (elementPlayers) {
+            elementPlayers.forEach(function (player) { return player.destroy(); });
+            this._engine.playersByElement.delete(element);
+        }
+    };
+    AnimationTransitionNamespace.prototype._signalRemovalForInnerTriggers = function (rootElement, context, animate) {
+        var _this = this;
+        if (animate === void 0) { animate = false; }
+        // emulate a leave animation for all inner nodes within this node.
+        // If there are no animations found for any of the nodes then clear the cache
+        // for the element.
+        this._engine.driver.query(rootElement, NG_TRIGGER_SELECTOR, true).forEach(function (elm) {
+            // this means that an inner remove() operation has already kicked off
+            // the animation on this element...
+            if (elm[REMOVAL_FLAG])
+                return;
+            var namespaces = _this._engine.fetchNamespacesByElement(elm);
+            if (namespaces.size) {
+                namespaces.forEach(function (ns) { return ns.triggerLeaveAnimation(elm, context, false, true); });
+            }
+            else {
+                _this.clearElementCache(elm);
+            }
+        });
+    };
+    AnimationTransitionNamespace.prototype.triggerLeaveAnimation = function (element, context, destroyAfterComplete, defaultToFallback) {
+        var _this = this;
+        var triggerStates = this._engine.statesByElement.get(element);
+        if (triggerStates) {
+            var players_1 = [];
+            Object.keys(triggerStates).forEach(function (triggerName) {
+                // this check is here in the event that an element is removed
+                // twice (both on the host level and the component level)
+                if (_this._triggers[triggerName]) {
+                    var player = _this.trigger(element, triggerName, VOID_VALUE, defaultToFallback);
+                    if (player) {
+                        players_1.push(player);
+                    }
+                }
+            });
+            if (players_1.length) {
+                this._engine.markElementAsRemoved(this.id, element, true, context);
+                if (destroyAfterComplete) {
+                    optimizeGroupPlayer(players_1).onDone(function () { return _this._engine.processLeaveNode(element); });
+                }
+                return true;
+            }
+        }
+        return false;
+    };
+    AnimationTransitionNamespace.prototype.prepareLeaveAnimationListeners = function (element) {
+        var _this = this;
+        var listeners = this._elementListeners.get(element);
+        if (listeners) {
+            var visitedTriggers_1 = new Set();
+            listeners.forEach(function (listener) {
+                var triggerName = listener.name;
+                if (visitedTriggers_1.has(triggerName))
+                    return;
+                visitedTriggers_1.add(triggerName);
+                var trigger = _this._triggers[triggerName];
+                var transition = trigger.fallbackTransition;
+                var elementStates = _this._engine.statesByElement.get(element);
+                var fromState = elementStates[triggerName] || DEFAULT_STATE_VALUE;
+                var toState = new StateValue(VOID_VALUE);
+                var player = new TransitionAnimationPlayer(_this.id, triggerName, element);
+                _this._engine.totalQueuedPlayers++;
+                _this._queue.push({
+                    element: element,
+                    triggerName: triggerName,
+                    transition: transition,
+                    fromState: fromState,
+                    toState: toState,
+                    player: player,
+                    isFallbackTransition: true
+                });
+            });
+        }
+    };
+    AnimationTransitionNamespace.prototype.removeNode = function (element, context) {
+        var _this = this;
+        var engine = this._engine;
+        if (element.childElementCount) {
+            this._signalRemovalForInnerTriggers(element, context, true);
+        }
+        // this means that a * => VOID animation was detected and kicked off
+        if (this.triggerLeaveAnimation(element, context, true))
+            return;
+        // find the player that is animating and make sure that the
+        // removal is delayed until that player has completed
+        var containsPotentialParentTransition = false;
+        if (engine.totalAnimations) {
+            var currentPlayers = engine.players.length ? engine.playersByQueriedElement.get(element) : [];
+            // when this `if statement` does not continue forward it means that
+            // a previous animation query has selected the current element and
+            // is animating it. In this situation want to continue forwards and
+            // allow the element to be queued up for animation later.
+            if (currentPlayers && currentPlayers.length) {
+                containsPotentialParentTransition = true;
+            }
+            else {
+                var parent_1 = element;
+                while (parent_1 = parent_1.parentNode) {
+                    var triggers = engine.statesByElement.get(parent_1);
+                    if (triggers) {
+                        containsPotentialParentTransition = true;
+                        break;
+                    }
+                }
+            }
+        }
+        // at this stage we know that the element will either get removed
+        // during flush or will be picked up by a parent query. Either way
+        // we need to fire the listeners for this element when it DOES get
+        // removed (once the query parent animation is done or after flush)
+        this.prepareLeaveAnimationListeners(element);
+        // whether or not a parent has an animation we need to delay the deferral of the leave
+        // operation until we have more information (which we do after flush() has been called)
+        if (containsPotentialParentTransition) {
+            engine.markElementAsRemoved(this.id, element, false, context);
+        }
+        else {
+            // we do this after the flush has occurred such
+            // that the callbacks can be fired
+            engine.afterFlush(function () { return _this.clearElementCache(element); });
+            engine.destroyInnerAnimations(element);
+            engine._onRemovalComplete(element, context);
+        }
+    };
+    AnimationTransitionNamespace.prototype.insertNode = function (element, parent) { addClass(element, this._hostClassName); };
+    AnimationTransitionNamespace.prototype.drainQueuedTransitions = function (microtaskId) {
+        var _this = this;
+        var instructions = [];
+        this._queue.forEach(function (entry) {
+            var player = entry.player;
+            if (player.destroyed)
+                return;
+            var element = entry.element;
+            var listeners = _this._elementListeners.get(element);
+            if (listeners) {
+                listeners.forEach(function (listener) {
+                    if (listener.name == entry.triggerName) {
+                        var baseEvent = makeAnimationEvent(element, entry.triggerName, entry.fromState.value, entry.toState.value);
+                        baseEvent['_data'] = microtaskId;
+                        listenOnPlayer(entry.player, listener.phase, baseEvent, listener.callback);
+                    }
+                });
+            }
+            if (player.markedForDestroy) {
+                _this._engine.afterFlush(function () {
+                    // now we can destroy the element properly since the event listeners have
+                    // been bound to the player
+                    player.destroy();
+                });
+            }
+            else {
+                instructions.push(entry);
+            }
+        });
+        this._queue = [];
+        return instructions.sort(function (a, b) {
+            // if depCount == 0 them move to front
+            // otherwise if a contains b then move back
+            var d0 = a.transition.ast.depCount;
+            var d1 = b.transition.ast.depCount;
+            if (d0 == 0 || d1 == 0) {
+                return d0 - d1;
+            }
+            return _this._engine.driver.containsElement(a.element, b.element) ? 1 : -1;
+        });
+    };
+    AnimationTransitionNamespace.prototype.destroy = function (context) {
+        this.players.forEach(function (p) { return p.destroy(); });
+        this._signalRemovalForInnerTriggers(this.hostElement, context);
+    };
+    AnimationTransitionNamespace.prototype.elementContainsData = function (element) {
+        var containsData = false;
+        if (this._elementListeners.has(element))
+            containsData = true;
+        containsData =
+            (this._queue.find(function (entry) { return entry.element === element; }) ? true : false) || containsData;
+        return containsData;
+    };
+    return AnimationTransitionNamespace;
+}());
+var TransitionAnimationEngine = /** @class */ (function () {
+    function TransitionAnimationEngine(bodyNode, driver, _normalizer) {
+        this.bodyNode = bodyNode;
+        this.driver = driver;
+        this._normalizer = _normalizer;
+        this.players = [];
+        this.newHostElements = new Map();
+        this.playersByElement = new Map();
+        this.playersByQueriedElement = new Map();
+        this.statesByElement = new Map();
+        this.disabledNodes = new Set();
+        this.totalAnimations = 0;
+        this.totalQueuedPlayers = 0;
+        this._namespaceLookup = {};
+        this._namespaceList = [];
+        this._flushFns = [];
+        this._whenQuietFns = [];
+        this.namespacesByHostElement = new Map();
+        this.collectedEnterElements = [];
+        this.collectedLeaveElements = [];
+        // this method is designed to be overridden by the code that uses this engine
+        this.onRemovalComplete = function (element, context) { };
+    }
+    /** @internal */
+    TransitionAnimationEngine.prototype._onRemovalComplete = function (element, context) { this.onRemovalComplete(element, context); };
+    Object.defineProperty(TransitionAnimationEngine.prototype, "queuedPlayers", {
+        get: function () {
+            var players = [];
+            this._namespaceList.forEach(function (ns) {
+                ns.players.forEach(function (player) {
+                    if (player.queued) {
+                        players.push(player);
+                    }
+                });
+            });
+            return players;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    TransitionAnimationEngine.prototype.createNamespace = function (namespaceId, hostElement) {
+        var ns = new AnimationTransitionNamespace(namespaceId, hostElement, this);
+        if (hostElement.parentNode) {
+            this._balanceNamespaceList(ns, hostElement);
+        }
+        else {
+            // defer this later until flush during when the host element has
+            // been inserted so that we know exactly where to place it in
+            // the namespace list
+            this.newHostElements.set(hostElement, ns);
+            // given that this host element is apart of the animation code, it
+            // may or may not be inserted by a parent node that is an of an
+            // animation renderer type. If this happens then we can still have
+            // access to this item when we query for :enter nodes. If the parent
+            // is a renderer then the set data-structure will normalize the entry
+            this.collectEnterElement(hostElement);
+        }
+        return this._namespaceLookup[namespaceId] = ns;
+    };
+    TransitionAnimationEngine.prototype._balanceNamespaceList = function (ns, hostElement) {
+        var limit = this._namespaceList.length - 1;
+        if (limit >= 0) {
+            var found = false;
+            for (var i = limit; i >= 0; i--) {
+                var nextNamespace = this._namespaceList[i];
+                if (this.driver.containsElement(nextNamespace.hostElement, hostElement)) {
+                    this._namespaceList.splice(i + 1, 0, ns);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                this._namespaceList.splice(0, 0, ns);
+            }
+        }
+        else {
+            this._namespaceList.push(ns);
+        }
+        this.namespacesByHostElement.set(hostElement, ns);
+        return ns;
+    };
+    TransitionAnimationEngine.prototype.register = function (namespaceId, hostElement) {
+        var ns = this._namespaceLookup[namespaceId];
+        if (!ns) {
+            ns = this.createNamespace(namespaceId, hostElement);
+        }
+        return ns;
+    };
+    TransitionAnimationEngine.prototype.registerTrigger = function (namespaceId, name, trigger) {
+        var ns = this._namespaceLookup[namespaceId];
+        if (ns && ns.register(name, trigger)) {
+            this.totalAnimations++;
+        }
+    };
+    TransitionAnimationEngine.prototype.destroy = function (namespaceId, context) {
+        var _this = this;
+        if (!namespaceId)
+            return;
+        var ns = this._fetchNamespace(namespaceId);
+        this.afterFlush(function () {
+            _this.namespacesByHostElement.delete(ns.hostElement);
+            delete _this._namespaceLookup[namespaceId];
+            var index = _this._namespaceList.indexOf(ns);
+            if (index >= 0) {
+                _this._namespaceList.splice(index, 1);
+            }
+        });
+        this.afterFlushAnimationsDone(function () { return ns.destroy(context); });
+    };
+    TransitionAnimationEngine.prototype._fetchNamespace = function (id) { return this._namespaceLookup[id]; };
+    TransitionAnimationEngine.prototype.fetchNamespacesByElement = function (element) {
+        // normally there should only be one namespace per element, however
+        // if @triggers are placed on both the component element and then
+        // its host element (within the component code) then there will be
+        // two namespaces returned. We use a set here to simply the dedupe
+        // of namespaces incase there are multiple triggers both the elm and host
+        var namespaces = new Set();
+        var elementStates = this.statesByElement.get(element);
+        if (elementStates) {
+            var keys = Object.keys(elementStates);
+            for (var i = 0; i < keys.length; i++) {
+                var nsId = elementStates[keys[i]].namespaceId;
+                if (nsId) {
+                    var ns = this._fetchNamespace(nsId);
+                    if (ns) {
+                        namespaces.add(ns);
+                    }
+                }
+            }
+        }
+        return namespaces;
+    };
+    TransitionAnimationEngine.prototype.trigger = function (namespaceId, element, name, value) {
+        if (isElementNode(element)) {
+            var ns = this._fetchNamespace(namespaceId);
+            if (ns) {
+                ns.trigger(element, name, value);
+                return true;
+            }
+        }
+        return false;
+    };
+    TransitionAnimationEngine.prototype.insertNode = function (namespaceId, element, parent, insertBefore) {
+        if (!isElementNode(element))
+            return;
+        // special case for when an element is removed and reinserted (move operation)
+        // when this occurs we do not want to use the element for deletion later
+        var details = element[REMOVAL_FLAG];
+        if (details && details.setForRemoval) {
+            details.setForRemoval = false;
+            details.setForMove = true;
+            var index = this.collectedLeaveElements.indexOf(element);
+            if (index >= 0) {
+                this.collectedLeaveElements.splice(index, 1);
+            }
+        }
+        // in the event that the namespaceId is blank then the caller
+        // code does not contain any animation code in it, but it is
+        // just being called so that the node is marked as being inserted
+        if (namespaceId) {
+            var ns = this._fetchNamespace(namespaceId);
+            // This if-statement is a workaround for router issue #21947.
+            // The router sometimes hits a race condition where while a route
+            // is being instantiated a new navigation arrives, triggering leave
+            // animation of DOM that has not been fully initialized, until this
+            // is resolved, we need to handle the scenario when DOM is not in a
+            // consistent state during the animation.
+            if (ns) {
+                ns.insertNode(element, parent);
+            }
+        }
+        // only *directives and host elements are inserted before
+        if (insertBefore) {
+            this.collectEnterElement(element);
+        }
+    };
+    TransitionAnimationEngine.prototype.collectEnterElement = function (element) { this.collectedEnterElements.push(element); };
+    TransitionAnimationEngine.prototype.markElementAsDisabled = function (element, value) {
+        if (value) {
+            if (!this.disabledNodes.has(element)) {
+                this.disabledNodes.add(element);
+                addClass(element, DISABLED_CLASSNAME);
+            }
+        }
+        else if (this.disabledNodes.has(element)) {
+            this.disabledNodes.delete(element);
+            removeClass(element, DISABLED_CLASSNAME);
+        }
+    };
+    TransitionAnimationEngine.prototype.removeNode = function (namespaceId, element, context) {
+        if (!isElementNode(element)) {
+            this._onRemovalComplete(element, context);
+            return;
+        }
+        var ns = namespaceId ? this._fetchNamespace(namespaceId) : null;
+        if (ns) {
+            ns.removeNode(element, context);
+        }
+        else {
+            this.markElementAsRemoved(namespaceId, element, false, context);
+        }
+    };
+    TransitionAnimationEngine.prototype.markElementAsRemoved = function (namespaceId, element, hasAnimation, context) {
+        this.collectedLeaveElements.push(element);
+        element[REMOVAL_FLAG] = {
+            namespaceId: namespaceId,
+            setForRemoval: context, hasAnimation: hasAnimation,
+            removedBeforeQueried: false
+        };
+    };
+    TransitionAnimationEngine.prototype.listen = function (namespaceId, element, name, phase, callback) {
+        if (isElementNode(element)) {
+            return this._fetchNamespace(namespaceId).listen(element, name, phase, callback);
+        }
+        return function () { };
+    };
+    TransitionAnimationEngine.prototype._buildInstruction = function (entry, subTimelines, enterClassName, leaveClassName, skipBuildAst) {
+        return entry.transition.build(this.driver, entry.element, entry.fromState.value, entry.toState.value, enterClassName, leaveClassName, entry.fromState.options, entry.toState.options, subTimelines, skipBuildAst);
+    };
+    TransitionAnimationEngine.prototype.destroyInnerAnimations = function (containerElement) {
+        var _this = this;
+        var elements = this.driver.query(containerElement, NG_TRIGGER_SELECTOR, true);
+        elements.forEach(function (element) { return _this.destroyActiveAnimationsForElement(element); });
+        if (this.playersByQueriedElement.size == 0)
+            return;
+        elements = this.driver.query(containerElement, NG_ANIMATING_SELECTOR, true);
+        elements.forEach(function (element) { return _this.finishActiveQueriedAnimationOnElement(element); });
+    };
+    TransitionAnimationEngine.prototype.destroyActiveAnimationsForElement = function (element) {
+        var players = this.playersByElement.get(element);
+        if (players) {
+            players.forEach(function (player) {
+                // special case for when an element is set for destruction, but hasn't started.
+                // in this situation we want to delay the destruction until the flush occurs
+                // so that any event listeners attached to the player are triggered.
+                if (player.queued) {
+                    player.markedForDestroy = true;
+                }
+                else {
+                    player.destroy();
+                }
+            });
+        }
+    };
+    TransitionAnimationEngine.prototype.finishActiveQueriedAnimationOnElement = function (element) {
+        var players = this.playersByQueriedElement.get(element);
+        if (players) {
+            players.forEach(function (player) { return player.finish(); });
+        }
+    };
+    TransitionAnimationEngine.prototype.whenRenderingDone = function () {
+        var _this = this;
+        return new Promise(function (resolve) {
+            if (_this.players.length) {
+                return optimizeGroupPlayer(_this.players).onDone(function () { return resolve(); });
+            }
+            else {
+                resolve();
+            }
+        });
+    };
+    TransitionAnimationEngine.prototype.processLeaveNode = function (element) {
+        var _this = this;
+        var details = element[REMOVAL_FLAG];
+        if (details && details.setForRemoval) {
+            // this will prevent it from removing it twice
+            element[REMOVAL_FLAG] = NULL_REMOVAL_STATE;
+            if (details.namespaceId) {
+                this.destroyInnerAnimations(element);
+                var ns = this._fetchNamespace(details.namespaceId);
+                if (ns) {
+                    ns.clearElementCache(element);
+                }
+            }
+            this._onRemovalComplete(element, details.setForRemoval);
+        }
+        if (this.driver.matchesElement(element, DISABLED_SELECTOR)) {
+            this.markElementAsDisabled(element, false);
+        }
+        this.driver.query(element, DISABLED_SELECTOR, true).forEach(function (node) {
+            _this.markElementAsDisabled(node, false);
+        });
+    };
+    TransitionAnimationEngine.prototype.flush = function (microtaskId) {
+        var _this = this;
+        if (microtaskId === void 0) { microtaskId = -1; }
+        var players = [];
+        if (this.newHostElements.size) {
+            this.newHostElements.forEach(function (ns, element) { return _this._balanceNamespaceList(ns, element); });
+            this.newHostElements.clear();
+        }
+        if (this.totalAnimations && this.collectedEnterElements.length) {
+            for (var i = 0; i < this.collectedEnterElements.length; i++) {
+                var elm = this.collectedEnterElements[i];
+                addClass(elm, STAR_CLASSNAME);
+            }
+        }
+        if (this._namespaceList.length &&
+            (this.totalQueuedPlayers || this.collectedLeaveElements.length)) {
+            var cleanupFns = [];
+            try {
+                players = this._flushAnimations(cleanupFns, microtaskId);
+            }
+            finally {
+                for (var i = 0; i < cleanupFns.length; i++) {
+                    cleanupFns[i]();
+                }
+            }
+        }
+        else {
+            for (var i = 0; i < this.collectedLeaveElements.length; i++) {
+                var element = this.collectedLeaveElements[i];
+                this.processLeaveNode(element);
+            }
+        }
+        this.totalQueuedPlayers = 0;
+        this.collectedEnterElements.length = 0;
+        this.collectedLeaveElements.length = 0;
+        this._flushFns.forEach(function (fn) { return fn(); });
+        this._flushFns = [];
+        if (this._whenQuietFns.length) {
+            // we move these over to a variable so that
+            // if any new callbacks are registered in another
+            // flush they do not populate the existing set
+            var quietFns_1 = this._whenQuietFns;
+            this._whenQuietFns = [];
+            if (players.length) {
+                optimizeGroupPlayer(players).onDone(function () { quietFns_1.forEach(function (fn) { return fn(); }); });
+            }
+            else {
+                quietFns_1.forEach(function (fn) { return fn(); });
+            }
+        }
+    };
+    TransitionAnimationEngine.prototype.reportError = function (errors) {
+        throw new Error("Unable to process animations due to the following failed trigger transitions\n " + errors.join('\n'));
+    };
+    TransitionAnimationEngine.prototype._flushAnimations = function (cleanupFns, microtaskId) {
+        var _this = this;
+        var subTimelines = new ElementInstructionMap();
+        var skippedPlayers = [];
+        var skippedPlayersMap = new Map();
+        var queuedInstructions = [];
+        var queriedElements = new Map();
+        var allPreStyleElements = new Map();
+        var allPostStyleElements = new Map();
+        var disabledElementsSet = new Set();
+        this.disabledNodes.forEach(function (node) {
+            disabledElementsSet.add(node);
+            var nodesThatAreDisabled = _this.driver.query(node, QUEUED_SELECTOR, true);
+            for (var i_1 = 0; i_1 < nodesThatAreDisabled.length; i_1++) {
+                disabledElementsSet.add(nodesThatAreDisabled[i_1]);
+            }
+        });
+        var bodyNode = this.bodyNode;
+        var allTriggerElements = Array.from(this.statesByElement.keys());
+        var enterNodeMap = buildRootMap(allTriggerElements, this.collectedEnterElements);
+        // this must occur before the instructions are built below such that
+        // the :enter queries match the elements (since the timeline queries
+        // are fired during instruction building).
+        var enterNodeMapIds = new Map();
+        var i = 0;
+        enterNodeMap.forEach(function (nodes, root) {
+            var className = ENTER_CLASSNAME + i++;
+            enterNodeMapIds.set(root, className);
+            nodes.forEach(function (node) { return addClass(node, className); });
+        });
+        var allLeaveNodes = [];
+        var mergedLeaveNodes = new Set();
+        var leaveNodesWithoutAnimations = new Set();
+        for (var i_2 = 0; i_2 < this.collectedLeaveElements.length; i_2++) {
+            var element = this.collectedLeaveElements[i_2];
+            var details = element[REMOVAL_FLAG];
+            if (details && details.setForRemoval) {
+                allLeaveNodes.push(element);
+                mergedLeaveNodes.add(element);
+                if (details.hasAnimation) {
+                    this.driver.query(element, STAR_SELECTOR, true).forEach(function (elm) { return mergedLeaveNodes.add(elm); });
+                }
+                else {
+                    leaveNodesWithoutAnimations.add(element);
+                }
+            }
+        }
+        var leaveNodeMapIds = new Map();
+        var leaveNodeMap = buildRootMap(allTriggerElements, Array.from(mergedLeaveNodes));
+        leaveNodeMap.forEach(function (nodes, root) {
+            var className = LEAVE_CLASSNAME + i++;
+            leaveNodeMapIds.set(root, className);
+            nodes.forEach(function (node) { return addClass(node, className); });
+        });
+        cleanupFns.push(function () {
+            enterNodeMap.forEach(function (nodes, root) {
+                var className = enterNodeMapIds.get(root);
+                nodes.forEach(function (node) { return removeClass(node, className); });
+            });
+            leaveNodeMap.forEach(function (nodes, root) {
+                var className = leaveNodeMapIds.get(root);
+                nodes.forEach(function (node) { return removeClass(node, className); });
+            });
+            allLeaveNodes.forEach(function (element) { _this.processLeaveNode(element); });
+        });
+        var allPlayers = [];
+        var erroneousTransitions = [];
+        for (var i_3 = this._namespaceList.length - 1; i_3 >= 0; i_3--) {
+            var ns = this._namespaceList[i_3];
+            ns.drainQueuedTransitions(microtaskId).forEach(function (entry) {
+                var player = entry.player;
+                var element = entry.element;
+                allPlayers.push(player);
+                if (_this.collectedEnterElements.length) {
+                    var details = element[REMOVAL_FLAG];
+                    // move animations are currently not supported...
+                    if (details && details.setForMove) {
+                        player.destroy();
+                        return;
+                    }
+                }
+                var nodeIsOrphaned = !bodyNode || !_this.driver.containsElement(bodyNode, element);
+                var leaveClassName = leaveNodeMapIds.get(element);
+                var enterClassName = enterNodeMapIds.get(element);
+                var instruction = _this._buildInstruction(entry, subTimelines, enterClassName, leaveClassName, nodeIsOrphaned);
+                if (instruction.errors && instruction.errors.length) {
+                    erroneousTransitions.push(instruction);
+                    return;
+                }
+                // even though the element may not be apart of the DOM, it may
+                // still be added at a later point (due to the mechanics of content
+                // projection and/or dynamic component insertion) therefore it's
+                // important we still style the element.
+                if (nodeIsOrphaned) {
+                    player.onStart(function () { return eraseStyles(element, instruction.fromStyles); });
+                    player.onDestroy(function () { return setStyles(element, instruction.toStyles); });
+                    skippedPlayers.push(player);
+                    return;
+                }
+                // if a unmatched transition is queued to go then it SHOULD NOT render
+                // an animation and cancel the previously running animations.
+                if (entry.isFallbackTransition) {
+                    player.onStart(function () { return eraseStyles(element, instruction.fromStyles); });
+                    player.onDestroy(function () { return setStyles(element, instruction.toStyles); });
+                    skippedPlayers.push(player);
+                    return;
+                }
+                // this means that if a parent animation uses this animation as a sub trigger
+                // then it will instruct the timeline builder to not add a player delay, but
+                // instead stretch the first keyframe gap up until the animation starts. The
+                // reason this is important is to prevent extra initialization styles from being
+                // required by the user in the animation.
+                instruction.timelines.forEach(function (tl) { return tl.stretchStartingKeyframe = true; });
+                subTimelines.append(element, instruction.timelines);
+                var tuple = { instruction: instruction, player: player, element: element };
+                queuedInstructions.push(tuple);
+                instruction.queriedElements.forEach(function (element) { return getOrSetAsInMap(queriedElements, element, []).push(player); });
+                instruction.preStyleProps.forEach(function (stringMap, element) {
+                    var props = Object.keys(stringMap);
+                    if (props.length) {
+                        var setVal_1 = allPreStyleElements.get(element);
+                        if (!setVal_1) {
+                            allPreStyleElements.set(element, setVal_1 = new Set());
+                        }
+                        props.forEach(function (prop) { return setVal_1.add(prop); });
+                    }
+                });
+                instruction.postStyleProps.forEach(function (stringMap, element) {
+                    var props = Object.keys(stringMap);
+                    var setVal = allPostStyleElements.get(element);
+                    if (!setVal) {
+                        allPostStyleElements.set(element, setVal = new Set());
+                    }
+                    props.forEach(function (prop) { return setVal.add(prop); });
+                });
+            });
+        }
+        if (erroneousTransitions.length) {
+            var errors_1 = [];
+            erroneousTransitions.forEach(function (instruction) {
+                errors_1.push("@" + instruction.triggerName + " has failed due to:\n");
+                instruction.errors.forEach(function (error) { return errors_1.push("- " + error + "\n"); });
+            });
+            allPlayers.forEach(function (player) { return player.destroy(); });
+            this.reportError(errors_1);
+        }
+        var allPreviousPlayersMap = new Map();
+        // this map works to tell which element in the DOM tree is contained by
+        // which animation. Further down below this map will get populated once
+        // the players are built and in doing so it can efficiently figure out
+        // if a sub player is skipped due to a parent player having priority.
+        var animationElementMap = new Map();
+        queuedInstructions.forEach(function (entry) {
+            var element = entry.element;
+            if (subTimelines.has(element)) {
+                animationElementMap.set(element, element);
+                _this._beforeAnimationBuild(entry.player.namespaceId, entry.instruction, allPreviousPlayersMap);
+            }
+        });
+        skippedPlayers.forEach(function (player) {
+            var element = player.element;
+            var previousPlayers = _this._getPreviousPlayers(element, false, player.namespaceId, player.triggerName, null);
+            previousPlayers.forEach(function (prevPlayer) {
+                getOrSetAsInMap(allPreviousPlayersMap, element, []).push(prevPlayer);
+                prevPlayer.destroy();
+            });
+        });
+        // this is a special case for nodes that will be removed (either by)
+        // having their own leave animations or by being queried in a container
+        // that will be removed once a parent animation is complete. The idea
+        // here is that * styles must be identical to ! styles because of
+        // backwards compatibility (* is also filled in by default in many places).
+        // Otherwise * styles will return an empty value or auto since the element
+        // that is being getComputedStyle'd will not be visible (since * = destination)
+        var replaceNodes = allLeaveNodes.filter(function (node) {
+            return replacePostStylesAsPre(node, allPreStyleElements, allPostStyleElements);
+        });
+        // POST STAGE: fill the * styles
+        var postStylesMap = new Map();
+        var allLeaveQueriedNodes = cloakAndComputeStyles(postStylesMap, this.driver, leaveNodesWithoutAnimations, allPostStyleElements, _angular_animations__WEBPACK_IMPORTED_MODULE_1__["AUTO_STYLE"]);
+        allLeaveQueriedNodes.forEach(function (node) {
+            if (replacePostStylesAsPre(node, allPreStyleElements, allPostStyleElements)) {
+                replaceNodes.push(node);
+            }
+        });
+        // PRE STAGE: fill the ! styles
+        var preStylesMap = new Map();
+        enterNodeMap.forEach(function (nodes, root) {
+            cloakAndComputeStyles(preStylesMap, _this.driver, new Set(nodes), allPreStyleElements, _angular_animations__WEBPACK_IMPORTED_MODULE_1__["ɵPRE_STYLE"]);
+        });
+        replaceNodes.forEach(function (node) {
+            var post = postStylesMap.get(node);
+            var pre = preStylesMap.get(node);
+            postStylesMap.set(node, Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"])({}, post, pre));
+        });
+        var rootPlayers = [];
+        var subPlayers = [];
+        var NO_PARENT_ANIMATION_ELEMENT_DETECTED = {};
+        queuedInstructions.forEach(function (entry) {
+            var element = entry.element, player = entry.player, instruction = entry.instruction;
+            // this means that it was never consumed by a parent animation which
+            // means that it is independent and therefore should be set for animation
+            if (subTimelines.has(element)) {
+                if (disabledElementsSet.has(element)) {
+                    player.onDestroy(function () { return setStyles(element, instruction.toStyles); });
+                    player.disabled = true;
+                    player.overrideTotalTime(instruction.totalTime);
+                    skippedPlayers.push(player);
+                    return;
+                }
+                // this will flow up the DOM and query the map to figure out
+                // if a parent animation has priority over it. In the situation
+                // that a parent is detected then it will cancel the loop. If
+                // nothing is detected, or it takes a few hops to find a parent,
+                // then it will fill in the missing nodes and signal them as having
+                // a detected parent (or a NO_PARENT value via a special constant).
+                var parentWithAnimation_1 = NO_PARENT_ANIMATION_ELEMENT_DETECTED;
+                if (animationElementMap.size > 1) {
+                    var elm = element;
+                    var parentsToAdd = [];
+                    while (elm = elm.parentNode) {
+                        var detectedParent = animationElementMap.get(elm);
+                        if (detectedParent) {
+                            parentWithAnimation_1 = detectedParent;
+                            break;
+                        }
+                        parentsToAdd.push(elm);
+                    }
+                    parentsToAdd.forEach(function (parent) { return animationElementMap.set(parent, parentWithAnimation_1); });
+                }
+                var innerPlayer = _this._buildAnimation(player.namespaceId, instruction, allPreviousPlayersMap, skippedPlayersMap, preStylesMap, postStylesMap);
+                player.setRealPlayer(innerPlayer);
+                if (parentWithAnimation_1 === NO_PARENT_ANIMATION_ELEMENT_DETECTED) {
+                    rootPlayers.push(player);
+                }
+                else {
+                    var parentPlayers = _this.playersByElement.get(parentWithAnimation_1);
+                    if (parentPlayers && parentPlayers.length) {
+                        player.parentPlayer = optimizeGroupPlayer(parentPlayers);
+                    }
+                    skippedPlayers.push(player);
+                }
+            }
+            else {
+                eraseStyles(element, instruction.fromStyles);
+                player.onDestroy(function () { return setStyles(element, instruction.toStyles); });
+                // there still might be a ancestor player animating this
+                // element therefore we will still add it as a sub player
+                // even if its animation may be disabled
+                subPlayers.push(player);
+                if (disabledElementsSet.has(element)) {
+                    skippedPlayers.push(player);
+                }
+            }
+        });
+        // find all of the sub players' corresponding inner animation player
+        subPlayers.forEach(function (player) {
+            // even if any players are not found for a sub animation then it
+            // will still complete itself after the next tick since it's Noop
+            var playersForElement = skippedPlayersMap.get(player.element);
+            if (playersForElement && playersForElement.length) {
+                var innerPlayer = optimizeGroupPlayer(playersForElement);
+                player.setRealPlayer(innerPlayer);
+            }
+        });
+        // the reason why we don't actually play the animation is
+        // because all that a skipped player is designed to do is to
+        // fire the start/done transition callback events
+        skippedPlayers.forEach(function (player) {
+            if (player.parentPlayer) {
+                player.syncPlayerEvents(player.parentPlayer);
+            }
+            else {
+                player.destroy();
+            }
+        });
+        // run through all of the queued removals and see if they
+        // were picked up by a query. If not then perform the removal
+        // operation right away unless a parent animation is ongoing.
+        for (var i_4 = 0; i_4 < allLeaveNodes.length; i_4++) {
+            var element = allLeaveNodes[i_4];
+            var details = element[REMOVAL_FLAG];
+            removeClass(element, LEAVE_CLASSNAME);
+            // this means the element has a removal animation that is being
+            // taken care of and therefore the inner elements will hang around
+            // until that animation is over (or the parent queried animation)
+            if (details && details.hasAnimation)
+                continue;
+            var players = [];
+            // if this element is queried or if it contains queried children
+            // then we want for the element not to be removed from the page
+            // until the queried animations have finished
+            if (queriedElements.size) {
+                var queriedPlayerResults = queriedElements.get(element);
+                if (queriedPlayerResults && queriedPlayerResults.length) {
+                    players.push.apply(players, Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__spread"])(queriedPlayerResults));
+                }
+                var queriedInnerElements = this.driver.query(element, NG_ANIMATING_SELECTOR, true);
+                for (var j = 0; j < queriedInnerElements.length; j++) {
+                    var queriedPlayers = queriedElements.get(queriedInnerElements[j]);
+                    if (queriedPlayers && queriedPlayers.length) {
+                        players.push.apply(players, Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__spread"])(queriedPlayers));
+                    }
+                }
+            }
+            var activePlayers = players.filter(function (p) { return !p.destroyed; });
+            if (activePlayers.length) {
+                removeNodesAfterAnimationDone(this, element, activePlayers);
+            }
+            else {
+                this.processLeaveNode(element);
+            }
+        }
+        // this is required so the cleanup method doesn't remove them
+        allLeaveNodes.length = 0;
+        rootPlayers.forEach(function (player) {
+            _this.players.push(player);
+            player.onDone(function () {
+                player.destroy();
+                var index = _this.players.indexOf(player);
+                _this.players.splice(index, 1);
+            });
+            player.play();
+        });
+        return rootPlayers;
+    };
+    TransitionAnimationEngine.prototype.elementContainsData = function (namespaceId, element) {
+        var containsData = false;
+        var details = element[REMOVAL_FLAG];
+        if (details && details.setForRemoval)
+            containsData = true;
+        if (this.playersByElement.has(element))
+            containsData = true;
+        if (this.playersByQueriedElement.has(element))
+            containsData = true;
+        if (this.statesByElement.has(element))
+            containsData = true;
+        return this._fetchNamespace(namespaceId).elementContainsData(element) || containsData;
+    };
+    TransitionAnimationEngine.prototype.afterFlush = function (callback) { this._flushFns.push(callback); };
+    TransitionAnimationEngine.prototype.afterFlushAnimationsDone = function (callback) { this._whenQuietFns.push(callback); };
+    TransitionAnimationEngine.prototype._getPreviousPlayers = function (element, isQueriedElement, namespaceId, triggerName, toStateValue) {
+        var players = [];
+        if (isQueriedElement) {
+            var queriedElementPlayers = this.playersByQueriedElement.get(element);
+            if (queriedElementPlayers) {
+                players = queriedElementPlayers;
+            }
+        }
+        else {
+            var elementPlayers = this.playersByElement.get(element);
+            if (elementPlayers) {
+                var isRemovalAnimation_1 = !toStateValue || toStateValue == VOID_VALUE;
+                elementPlayers.forEach(function (player) {
+                    if (player.queued)
+                        return;
+                    if (!isRemovalAnimation_1 && player.triggerName != triggerName)
+                        return;
+                    players.push(player);
+                });
+            }
+        }
+        if (namespaceId || triggerName) {
+            players = players.filter(function (player) {
+                if (namespaceId && namespaceId != player.namespaceId)
+                    return false;
+                if (triggerName && triggerName != player.triggerName)
+                    return false;
+                return true;
+            });
+        }
+        return players;
+    };
+    TransitionAnimationEngine.prototype._beforeAnimationBuild = function (namespaceId, instruction, allPreviousPlayersMap) {
+        var e_1, _a;
+        var triggerName = instruction.triggerName;
+        var rootElement = instruction.element;
+        // when a removal animation occurs, ALL previous players are collected
+        // and destroyed (even if they are outside of the current namespace)
+        var targetNameSpaceId = instruction.isRemovalTransition ? undefined : namespaceId;
+        var targetTriggerName = instruction.isRemovalTransition ? undefined : triggerName;
+        var _loop_1 = function (timelineInstruction) {
+            var element = timelineInstruction.element;
+            var isQueriedElement = element !== rootElement;
+            var players = getOrSetAsInMap(allPreviousPlayersMap, element, []);
+            var previousPlayers = this_1._getPreviousPlayers(element, isQueriedElement, targetNameSpaceId, targetTriggerName, instruction.toState);
+            previousPlayers.forEach(function (player) {
+                var realPlayer = player.getRealPlayer();
+                if (realPlayer.beforeDestroy) {
+                    realPlayer.beforeDestroy();
+                }
+                player.destroy();
+                players.push(player);
+            });
+        };
+        var this_1 = this;
+        try {
+            for (var _b = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__values"])(instruction.timelines), _c = _b.next(); !_c.done; _c = _b.next()) {
+                var timelineInstruction = _c.value;
+                _loop_1(timelineInstruction);
+            }
+        }
+        catch (e_1_1) { e_1 = { error: e_1_1 }; }
+        finally {
+            try {
+                if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+            }
+            finally { if (e_1) throw e_1.error; }
+        }
+        // this needs to be done so that the PRE/POST styles can be
+        // computed properly without interfering with the previous animation
+        eraseStyles(rootElement, instruction.fromStyles);
+    };
+    TransitionAnimationEngine.prototype._buildAnimation = function (namespaceId, instruction, allPreviousPlayersMap, skippedPlayersMap, preStylesMap, postStylesMap) {
+        var _this = this;
+        var triggerName = instruction.triggerName;
+        var rootElement = instruction.element;
+        // we first run this so that the previous animation player
+        // data can be passed into the successive animation players
+        var allQueriedPlayers = [];
+        var allConsumedElements = new Set();
+        var allSubElements = new Set();
+        var allNewPlayers = instruction.timelines.map(function (timelineInstruction) {
+            var element = timelineInstruction.element;
+            allConsumedElements.add(element);
+            // FIXME (matsko): make sure to-be-removed animations are removed properly
+            var details = element[REMOVAL_FLAG];
+            if (details && details.removedBeforeQueried)
+                return new _angular_animations__WEBPACK_IMPORTED_MODULE_1__["NoopAnimationPlayer"](timelineInstruction.duration, timelineInstruction.delay);
+            var isQueriedElement = element !== rootElement;
+            var previousPlayers = flattenGroupPlayers((allPreviousPlayersMap.get(element) || EMPTY_PLAYER_ARRAY)
+                .map(function (p) { return p.getRealPlayer(); }))
+                .filter(function (p) {
+                // the `element` is not apart of the AnimationPlayer definition, but
+                // Mock/WebAnimations
+                // use the element within their implementation. This will be added in Angular5 to
+                // AnimationPlayer
+                var pp = p;
+                return pp.element ? pp.element === element : false;
+            });
+            var preStyles = preStylesMap.get(element);
+            var postStyles = postStylesMap.get(element);
+            var keyframes = normalizeKeyframes(_this.driver, _this._normalizer, element, timelineInstruction.keyframes, preStyles, postStyles);
+            var player = _this._buildPlayer(timelineInstruction, keyframes, previousPlayers);
+            // this means that this particular player belongs to a sub trigger. It is
+            // important that we match this player up with the corresponding (@trigger.listener)
+            if (timelineInstruction.subTimeline && skippedPlayersMap) {
+                allSubElements.add(element);
+            }
+            if (isQueriedElement) {
+                var wrappedPlayer = new TransitionAnimationPlayer(namespaceId, triggerName, element);
+                wrappedPlayer.setRealPlayer(player);
+                allQueriedPlayers.push(wrappedPlayer);
+            }
+            return player;
+        });
+        allQueriedPlayers.forEach(function (player) {
+            getOrSetAsInMap(_this.playersByQueriedElement, player.element, []).push(player);
+            player.onDone(function () { return deleteOrUnsetInMap(_this.playersByQueriedElement, player.element, player); });
+        });
+        allConsumedElements.forEach(function (element) { return addClass(element, NG_ANIMATING_CLASSNAME); });
+        var player = optimizeGroupPlayer(allNewPlayers);
+        player.onDestroy(function () {
+            allConsumedElements.forEach(function (element) { return removeClass(element, NG_ANIMATING_CLASSNAME); });
+            setStyles(rootElement, instruction.toStyles);
+        });
+        // this basically makes all of the callbacks for sub element animations
+        // be dependent on the upper players for when they finish
+        allSubElements.forEach(function (element) { getOrSetAsInMap(skippedPlayersMap, element, []).push(player); });
+        return player;
+    };
+    TransitionAnimationEngine.prototype._buildPlayer = function (instruction, keyframes, previousPlayers) {
+        if (keyframes.length > 0) {
+            return this.driver.animate(instruction.element, keyframes, instruction.duration, instruction.delay, instruction.easing, previousPlayers);
+        }
+        // special case for when an empty transition|definition is provided
+        // ... there is no point in rendering an empty animation
+        return new _angular_animations__WEBPACK_IMPORTED_MODULE_1__["NoopAnimationPlayer"](instruction.duration, instruction.delay);
+    };
+    return TransitionAnimationEngine;
+}());
+var TransitionAnimationPlayer = /** @class */ (function () {
+    function TransitionAnimationPlayer(namespaceId, triggerName, element) {
+        this.namespaceId = namespaceId;
+        this.triggerName = triggerName;
+        this.element = element;
+        this._player = new _angular_animations__WEBPACK_IMPORTED_MODULE_1__["NoopAnimationPlayer"]();
+        this._containsRealPlayer = false;
+        this._queuedCallbacks = {};
+        this.destroyed = false;
+        this.markedForDestroy = false;
+        this.disabled = false;
+        this.queued = true;
+        this.totalTime = 0;
+    }
+    TransitionAnimationPlayer.prototype.setRealPlayer = function (player) {
+        var _this = this;
+        if (this._containsRealPlayer)
+            return;
+        this._player = player;
+        Object.keys(this._queuedCallbacks).forEach(function (phase) {
+            _this._queuedCallbacks[phase].forEach(function (callback) { return listenOnPlayer(player, phase, undefined, callback); });
+        });
+        this._queuedCallbacks = {};
+        this._containsRealPlayer = true;
+        this.overrideTotalTime(player.totalTime);
+        this.queued = false;
+    };
+    TransitionAnimationPlayer.prototype.getRealPlayer = function () { return this._player; };
+    TransitionAnimationPlayer.prototype.overrideTotalTime = function (totalTime) { this.totalTime = totalTime; };
+    TransitionAnimationPlayer.prototype.syncPlayerEvents = function (player) {
+        var _this = this;
+        var p = this._player;
+        if (p.triggerCallback) {
+            player.onStart(function () { return p.triggerCallback('start'); });
+        }
+        player.onDone(function () { return _this.finish(); });
+        player.onDestroy(function () { return _this.destroy(); });
+    };
+    TransitionAnimationPlayer.prototype._queueEvent = function (name, callback) {
+        getOrSetAsInMap(this._queuedCallbacks, name, []).push(callback);
+    };
+    TransitionAnimationPlayer.prototype.onDone = function (fn) {
+        if (this.queued) {
+            this._queueEvent('done', fn);
+        }
+        this._player.onDone(fn);
+    };
+    TransitionAnimationPlayer.prototype.onStart = function (fn) {
+        if (this.queued) {
+            this._queueEvent('start', fn);
+        }
+        this._player.onStart(fn);
+    };
+    TransitionAnimationPlayer.prototype.onDestroy = function (fn) {
+        if (this.queued) {
+            this._queueEvent('destroy', fn);
+        }
+        this._player.onDestroy(fn);
+    };
+    TransitionAnimationPlayer.prototype.init = function () { this._player.init(); };
+    TransitionAnimationPlayer.prototype.hasStarted = function () { return this.queued ? false : this._player.hasStarted(); };
+    TransitionAnimationPlayer.prototype.play = function () { !this.queued && this._player.play(); };
+    TransitionAnimationPlayer.prototype.pause = function () { !this.queued && this._player.pause(); };
+    TransitionAnimationPlayer.prototype.restart = function () { !this.queued && this._player.restart(); };
+    TransitionAnimationPlayer.prototype.finish = function () { this._player.finish(); };
+    TransitionAnimationPlayer.prototype.destroy = function () {
+        this.destroyed = true;
+        this._player.destroy();
+    };
+    TransitionAnimationPlayer.prototype.reset = function () { !this.queued && this._player.reset(); };
+    TransitionAnimationPlayer.prototype.setPosition = function (p) {
+        if (!this.queued) {
+            this._player.setPosition(p);
+        }
+    };
+    TransitionAnimationPlayer.prototype.getPosition = function () { return this.queued ? 0 : this._player.getPosition(); };
+    /** @internal */
+    TransitionAnimationPlayer.prototype.triggerCallback = function (phaseName) {
+        var p = this._player;
+        if (p.triggerCallback) {
+            p.triggerCallback(phaseName);
+        }
+    };
+    return TransitionAnimationPlayer;
+}());
+function deleteOrUnsetInMap(map, key, value) {
+    var currentValues;
+    if (map instanceof Map) {
+        currentValues = map.get(key);
+        if (currentValues) {
+            if (currentValues.length) {
+                var index = currentValues.indexOf(value);
+                currentValues.splice(index, 1);
+            }
+            if (currentValues.length == 0) {
+                map.delete(key);
+            }
+        }
+    }
+    else {
+        currentValues = map[key];
+        if (currentValues) {
+            if (currentValues.length) {
+                var index = currentValues.indexOf(value);
+                currentValues.splice(index, 1);
+            }
+            if (currentValues.length == 0) {
+                delete map[key];
+            }
+        }
+    }
+    return currentValues;
+}
+function normalizeTriggerValue(value) {
+    // we use `!= null` here because it's the most simple
+    // way to test against a "falsy" value without mixing
+    // in empty strings or a zero value. DO NOT OPTIMIZE.
+    return value != null ? value : null;
+}
+function isElementNode(node) {
+    return node && node['nodeType'] === 1;
+}
+function isTriggerEventValid(eventName) {
+    return eventName == 'start' || eventName == 'done';
+}
+function cloakElement(element, value) {
+    var oldValue = element.style.display;
+    element.style.display = value != null ? value : 'none';
+    return oldValue;
+}
+function cloakAndComputeStyles(valuesMap, driver, elements, elementPropsMap, defaultStyle) {
+    var cloakVals = [];
+    elements.forEach(function (element) { return cloakVals.push(cloakElement(element)); });
+    var failedElements = [];
+    elementPropsMap.forEach(function (props, element) {
+        var styles = {};
+        props.forEach(function (prop) {
+            var value = styles[prop] = driver.computeStyle(element, prop, defaultStyle);
+            // there is no easy way to detect this because a sub element could be removed
+            // by a parent animation element being detached.
+            if (!value || value.length == 0) {
+                element[REMOVAL_FLAG] = NULL_REMOVED_QUERIED_STATE;
+                failedElements.push(element);
+            }
+        });
+        valuesMap.set(element, styles);
+    });
+    // we use a index variable here since Set.forEach(a, i) does not return
+    // an index value for the closure (but instead just the value)
+    var i = 0;
+    elements.forEach(function (element) { return cloakElement(element, cloakVals[i++]); });
+    return failedElements;
+}
+/*
+Since the Angular renderer code will return a collection of inserted
+nodes in all areas of a DOM tree, it's up to this algorithm to figure
+out which nodes are roots for each animation @trigger.
+
+By placing each inserted node into a Set and traversing upwards, it
+is possible to find the @trigger elements and well any direct *star
+insertion nodes, if a @trigger root is found then the enter element
+is placed into the Map[@trigger] spot.
+ */
+function buildRootMap(roots, nodes) {
+    var rootMap = new Map();
+    roots.forEach(function (root) { return rootMap.set(root, []); });
+    if (nodes.length == 0)
+        return rootMap;
+    var NULL_NODE = 1;
+    var nodeSet = new Set(nodes);
+    var localRootMap = new Map();
+    function getRoot(node) {
+        if (!node)
+            return NULL_NODE;
+        var root = localRootMap.get(node);
+        if (root)
+            return root;
+        var parent = node.parentNode;
+        if (rootMap.has(parent)) { // ngIf inside @trigger
+            root = parent;
+        }
+        else if (nodeSet.has(parent)) { // ngIf inside ngIf
+            root = NULL_NODE;
+        }
+        else { // recurse upwards
+            root = getRoot(parent);
+        }
+        localRootMap.set(node, root);
+        return root;
+    }
+    nodes.forEach(function (node) {
+        var root = getRoot(node);
+        if (root !== NULL_NODE) {
+            rootMap.get(root).push(node);
+        }
+    });
+    return rootMap;
+}
+var CLASSES_CACHE_KEY = '$$classes';
+function addClass(element, className) {
+    if (element.classList) {
+        element.classList.add(className);
+    }
+    else {
+        var classes = element[CLASSES_CACHE_KEY];
+        if (!classes) {
+            classes = element[CLASSES_CACHE_KEY] = {};
+        }
+        classes[className] = true;
+    }
+}
+function removeClass(element, className) {
+    if (element.classList) {
+        element.classList.remove(className);
+    }
+    else {
+        var classes = element[CLASSES_CACHE_KEY];
+        if (classes) {
+            delete classes[className];
+        }
+    }
+}
+function removeNodesAfterAnimationDone(engine, element, players) {
+    optimizeGroupPlayer(players).onDone(function () { return engine.processLeaveNode(element); });
+}
+function flattenGroupPlayers(players) {
+    var finalPlayers = [];
+    _flattenGroupPlayersRecur(players, finalPlayers);
+    return finalPlayers;
+}
+function _flattenGroupPlayersRecur(players, finalPlayers) {
+    for (var i = 0; i < players.length; i++) {
+        var player = players[i];
+        if (player instanceof _angular_animations__WEBPACK_IMPORTED_MODULE_1__["ɵAnimationGroupPlayer"]) {
+            _flattenGroupPlayersRecur(player.players, finalPlayers);
+        }
+        else {
+            finalPlayers.push(player);
+        }
+    }
+}
+function objEquals(a, b) {
+    var k1 = Object.keys(a);
+    var k2 = Object.keys(b);
+    if (k1.length != k2.length)
+        return false;
+    for (var i = 0; i < k1.length; i++) {
+        var prop = k1[i];
+        if (!b.hasOwnProperty(prop) || a[prop] !== b[prop])
+            return false;
+    }
+    return true;
+}
+function replacePostStylesAsPre(element, allPreStyleElements, allPostStyleElements) {
+    var postEntry = allPostStyleElements.get(element);
+    if (!postEntry)
+        return false;
+    var preEntry = allPreStyleElements.get(element);
+    if (preEntry) {
+        postEntry.forEach(function (data) { return preEntry.add(data); });
+    }
+    else {
+        allPreStyleElements.set(element, postEntry);
+    }
+    allPostStyleElements.delete(element);
+    return true;
+}
+
+var AnimationEngine = /** @class */ (function () {
+    function AnimationEngine(bodyNode, _driver, normalizer) {
+        var _this = this;
+        this.bodyNode = bodyNode;
+        this._driver = _driver;
+        this._triggerCache = {};
+        // this method is designed to be overridden by the code that uses this engine
+        this.onRemovalComplete = function (element, context) { };
+        this._transitionEngine = new TransitionAnimationEngine(bodyNode, _driver, normalizer);
+        this._timelineEngine = new TimelineAnimationEngine(bodyNode, _driver, normalizer);
+        this._transitionEngine.onRemovalComplete = function (element, context) {
+            return _this.onRemovalComplete(element, context);
+        };
+    }
+    AnimationEngine.prototype.registerTrigger = function (componentId, namespaceId, hostElement, name, metadata) {
+        var cacheKey = componentId + '-' + name;
+        var trigger = this._triggerCache[cacheKey];
+        if (!trigger) {
+            var errors = [];
+            var ast = buildAnimationAst(this._driver, metadata, errors);
+            if (errors.length) {
+                throw new Error("The animation trigger \"" + name + "\" has failed to build due to the following errors:\n - " + errors.join("\n - "));
+            }
+            trigger = buildTrigger(name, ast);
+            this._triggerCache[cacheKey] = trigger;
+        }
+        this._transitionEngine.registerTrigger(namespaceId, name, trigger);
+    };
+    AnimationEngine.prototype.register = function (namespaceId, hostElement) {
+        this._transitionEngine.register(namespaceId, hostElement);
+    };
+    AnimationEngine.prototype.destroy = function (namespaceId, context) {
+        this._transitionEngine.destroy(namespaceId, context);
+    };
+    AnimationEngine.prototype.onInsert = function (namespaceId, element, parent, insertBefore) {
+        this._transitionEngine.insertNode(namespaceId, element, parent, insertBefore);
+    };
+    AnimationEngine.prototype.onRemove = function (namespaceId, element, context) {
+        this._transitionEngine.removeNode(namespaceId, element, context);
+    };
+    AnimationEngine.prototype.disableAnimations = function (element, disable) {
+        this._transitionEngine.markElementAsDisabled(element, disable);
+    };
+    AnimationEngine.prototype.process = function (namespaceId, element, property, value) {
+        if (property.charAt(0) == '@') {
+            var _a = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__read"])(parseTimelineCommand(property), 2), id = _a[0], action = _a[1];
+            var args = value;
+            this._timelineEngine.command(id, element, action, args);
+        }
+        else {
+            this._transitionEngine.trigger(namespaceId, element, property, value);
+        }
+    };
+    AnimationEngine.prototype.listen = function (namespaceId, element, eventName, eventPhase, callback) {
+        // @@listen
+        if (eventName.charAt(0) == '@') {
+            var _a = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__read"])(parseTimelineCommand(eventName), 2), id = _a[0], action = _a[1];
+            return this._timelineEngine.listen(id, element, action, callback);
+        }
+        return this._transitionEngine.listen(namespaceId, element, eventName, eventPhase, callback);
+    };
+    AnimationEngine.prototype.flush = function (microtaskId) {
+        if (microtaskId === void 0) { microtaskId = -1; }
+        this._transitionEngine.flush(microtaskId);
+    };
+    Object.defineProperty(AnimationEngine.prototype, "players", {
+        get: function () {
+            return this._transitionEngine.players
+                .concat(this._timelineEngine.players);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    AnimationEngine.prototype.whenRenderingDone = function () { return this._transitionEngine.whenRenderingDone(); };
+    return AnimationEngine;
+}());
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var ELAPSED_TIME_MAX_DECIMAL_PLACES = 3;
+var ANIMATION_PROP = 'animation';
+var ANIMATIONEND_EVENT = 'animationend';
+var ONE_SECOND$1 = 1000;
+var ElementAnimationStyleHandler = /** @class */ (function () {
+    function ElementAnimationStyleHandler(_element, _name, _duration, _delay, _easing, _fillMode, _onDoneFn) {
+        var _this = this;
+        this._element = _element;
+        this._name = _name;
+        this._duration = _duration;
+        this._delay = _delay;
+        this._easing = _easing;
+        this._fillMode = _fillMode;
+        this._onDoneFn = _onDoneFn;
+        this._finished = false;
+        this._destroyed = false;
+        this._startTime = 0;
+        this._position = 0;
+        this._eventFn = function (e) { return _this._handleCallback(e); };
+    }
+    ElementAnimationStyleHandler.prototype.apply = function () {
+        applyKeyframeAnimation(this._element, this._duration + "ms " + this._easing + " " + this._delay + "ms 1 normal " + this._fillMode + " " + this._name);
+        addRemoveAnimationEvent(this._element, this._eventFn, false);
+        this._startTime = Date.now();
+    };
+    ElementAnimationStyleHandler.prototype.pause = function () { playPauseAnimation(this._element, this._name, 'paused'); };
+    ElementAnimationStyleHandler.prototype.resume = function () { playPauseAnimation(this._element, this._name, 'running'); };
+    ElementAnimationStyleHandler.prototype.setPosition = function (position) {
+        var index = findIndexForAnimation(this._element, this._name);
+        this._position = position * this._duration;
+        setAnimationStyle(this._element, 'Delay', "-" + this._position + "ms", index);
+    };
+    ElementAnimationStyleHandler.prototype.getPosition = function () { return this._position; };
+    ElementAnimationStyleHandler.prototype._handleCallback = function (event) {
+        var timestamp = event._ngTestManualTimestamp || Date.now();
+        var elapsedTime = parseFloat(event.elapsedTime.toFixed(ELAPSED_TIME_MAX_DECIMAL_PLACES)) * ONE_SECOND$1;
+        if (event.animationName == this._name &&
+            Math.max(timestamp - this._startTime, 0) >= this._delay && elapsedTime >= this._duration) {
+            this.finish();
+        }
+    };
+    ElementAnimationStyleHandler.prototype.finish = function () {
+        if (this._finished)
+            return;
+        this._finished = true;
+        this._onDoneFn();
+        addRemoveAnimationEvent(this._element, this._eventFn, true);
+    };
+    ElementAnimationStyleHandler.prototype.destroy = function () {
+        if (this._destroyed)
+            return;
+        this._destroyed = true;
+        this.finish();
+        removeKeyframeAnimation(this._element, this._name);
+    };
+    return ElementAnimationStyleHandler;
+}());
+function playPauseAnimation(element, name, status) {
+    var index = findIndexForAnimation(element, name);
+    setAnimationStyle(element, 'PlayState', status, index);
+}
+function applyKeyframeAnimation(element, value) {
+    var anim = getAnimationStyle(element, '').trim();
+    var index = 0;
+    if (anim.length) {
+        index = countChars(anim, ',') + 1;
+        value = anim + ", " + value;
+    }
+    setAnimationStyle(element, '', value);
+    return index;
+}
+function removeKeyframeAnimation(element, name) {
+    var anim = getAnimationStyle(element, '');
+    var tokens = anim.split(',');
+    var index = findMatchingTokenIndex(tokens, name);
+    if (index >= 0) {
+        tokens.splice(index, 1);
+        var newValue = tokens.join(',');
+        setAnimationStyle(element, '', newValue);
+    }
+}
+function findIndexForAnimation(element, value) {
+    var anim = getAnimationStyle(element, '');
+    if (anim.indexOf(',') > 0) {
+        var tokens = anim.split(',');
+        return findMatchingTokenIndex(tokens, value);
+    }
+    return findMatchingTokenIndex([anim], value);
+}
+function findMatchingTokenIndex(tokens, searchToken) {
+    for (var i = 0; i < tokens.length; i++) {
+        if (tokens[i].indexOf(searchToken) >= 0) {
+            return i;
+        }
+    }
+    return -1;
+}
+function addRemoveAnimationEvent(element, fn, doRemove) {
+    doRemove ? element.removeEventListener(ANIMATIONEND_EVENT, fn) :
+        element.addEventListener(ANIMATIONEND_EVENT, fn);
+}
+function setAnimationStyle(element, name, value, index) {
+    var prop = ANIMATION_PROP + name;
+    if (index != null) {
+        var oldValue = element.style[prop];
+        if (oldValue.length) {
+            var tokens = oldValue.split(',');
+            tokens[index] = value;
+            value = tokens.join(',');
+        }
+    }
+    element.style[prop] = value;
+}
+function getAnimationStyle(element, name) {
+    return element.style[ANIMATION_PROP + name];
+}
+function countChars(value, char) {
+    var count = 0;
+    for (var i = 0; i < value.length; i++) {
+        var c = value.charAt(i);
+        if (c === char)
+            count++;
+    }
+    return count;
+}
+
+var DEFAULT_FILL_MODE = 'forwards';
+var DEFAULT_EASING = 'linear';
+var CssKeyframesPlayer = /** @class */ (function () {
+    function CssKeyframesPlayer(element, keyframes, animationName, _duration, _delay, easing, _finalStyles) {
+        this.element = element;
+        this.keyframes = keyframes;
+        this.animationName = animationName;
+        this._duration = _duration;
+        this._delay = _delay;
+        this._finalStyles = _finalStyles;
+        this._onDoneFns = [];
+        this._onStartFns = [];
+        this._onDestroyFns = [];
+        this._started = false;
+        this.currentSnapshot = {};
+        this._state = 0;
+        this.easing = easing || DEFAULT_EASING;
+        this.totalTime = _duration + _delay;
+        this._buildStyler();
+    }
+    CssKeyframesPlayer.prototype.onStart = function (fn) { this._onStartFns.push(fn); };
+    CssKeyframesPlayer.prototype.onDone = function (fn) { this._onDoneFns.push(fn); };
+    CssKeyframesPlayer.prototype.onDestroy = function (fn) { this._onDestroyFns.push(fn); };
+    CssKeyframesPlayer.prototype.destroy = function () {
+        this.init();
+        if (this._state >= 4 /* DESTROYED */)
+            return;
+        this._state = 4 /* DESTROYED */;
+        this._styler.destroy();
+        this._flushStartFns();
+        this._flushDoneFns();
+        this._onDestroyFns.forEach(function (fn) { return fn(); });
+        this._onDestroyFns = [];
+    };
+    CssKeyframesPlayer.prototype._flushDoneFns = function () {
+        this._onDoneFns.forEach(function (fn) { return fn(); });
+        this._onDoneFns = [];
+    };
+    CssKeyframesPlayer.prototype._flushStartFns = function () {
+        this._onStartFns.forEach(function (fn) { return fn(); });
+        this._onStartFns = [];
+    };
+    CssKeyframesPlayer.prototype.finish = function () {
+        this.init();
+        if (this._state >= 3 /* FINISHED */)
+            return;
+        this._state = 3 /* FINISHED */;
+        this._styler.finish();
+        this._flushStartFns();
+        this._flushDoneFns();
+    };
+    CssKeyframesPlayer.prototype.setPosition = function (value) { this._styler.setPosition(value); };
+    CssKeyframesPlayer.prototype.getPosition = function () { return this._styler.getPosition(); };
+    CssKeyframesPlayer.prototype.hasStarted = function () { return this._state >= 2 /* STARTED */; };
+    CssKeyframesPlayer.prototype.init = function () {
+        if (this._state >= 1 /* INITIALIZED */)
+            return;
+        this._state = 1 /* INITIALIZED */;
+        var elm = this.element;
+        this._styler.apply();
+        if (this._delay) {
+            this._styler.pause();
+        }
+    };
+    CssKeyframesPlayer.prototype.play = function () {
+        this.init();
+        if (!this.hasStarted()) {
+            this._flushStartFns();
+            this._state = 2 /* STARTED */;
+        }
+        this._styler.resume();
+    };
+    CssKeyframesPlayer.prototype.pause = function () {
+        this.init();
+        this._styler.pause();
+    };
+    CssKeyframesPlayer.prototype.restart = function () {
+        this.reset();
+        this.play();
+    };
+    CssKeyframesPlayer.prototype.reset = function () {
+        this._styler.destroy();
+        this._buildStyler();
+        this._styler.apply();
+    };
+    CssKeyframesPlayer.prototype._buildStyler = function () {
+        var _this = this;
+        this._styler = new ElementAnimationStyleHandler(this.element, this.animationName, this._duration, this._delay, this.easing, DEFAULT_FILL_MODE, function () { return _this.finish(); });
+    };
+    /** @internal */
+    CssKeyframesPlayer.prototype.triggerCallback = function (phaseName) {
+        var methods = phaseName == 'start' ? this._onStartFns : this._onDoneFns;
+        methods.forEach(function (fn) { return fn(); });
+        methods.length = 0;
+    };
+    CssKeyframesPlayer.prototype.beforeDestroy = function () {
+        var _this = this;
+        this.init();
+        var styles = {};
+        if (this.hasStarted()) {
+            var finished_1 = this._state >= 3 /* FINISHED */;
+            Object.keys(this._finalStyles).forEach(function (prop) {
+                if (prop != 'offset') {
+                    styles[prop] = finished_1 ? _this._finalStyles[prop] : computeStyle(_this.element, prop);
+                }
+            });
+        }
+        this.currentSnapshot = styles;
+    };
+    return CssKeyframesPlayer;
+}());
+
+var DirectStylePlayer = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(DirectStylePlayer, _super);
+    function DirectStylePlayer(element, styles) {
+        var _this = _super.call(this) || this;
+        _this.element = element;
+        _this._startingStyles = {};
+        _this.__initialized = false;
+        _this._styles = hypenatePropsObject(styles);
+        return _this;
+    }
+    DirectStylePlayer.prototype.init = function () {
+        var _this = this;
+        if (this.__initialized || !this._startingStyles)
+            return;
+        this.__initialized = true;
+        Object.keys(this._styles).forEach(function (prop) {
+            _this._startingStyles[prop] = _this.element.style[prop];
+        });
+        _super.prototype.init.call(this);
+    };
+    DirectStylePlayer.prototype.play = function () {
+        var _this = this;
+        if (!this._startingStyles)
+            return;
+        this.init();
+        Object.keys(this._styles)
+            .forEach(function (prop) { return _this.element.style.setProperty(prop, _this._styles[prop]); });
+        _super.prototype.play.call(this);
+    };
+    DirectStylePlayer.prototype.destroy = function () {
+        var _this = this;
+        if (!this._startingStyles)
+            return;
+        Object.keys(this._startingStyles).forEach(function (prop) {
+            var value = _this._startingStyles[prop];
+            if (value) {
+                _this.element.style.setProperty(prop, value);
+            }
+            else {
+                _this.element.style.removeProperty(prop);
+            }
+        });
+        this._startingStyles = null;
+        _super.prototype.destroy.call(this);
+    };
+    return DirectStylePlayer;
+}(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["NoopAnimationPlayer"]));
+
+var KEYFRAMES_NAME_PREFIX = 'gen_css_kf_';
+var TAB_SPACE = ' ';
+var CssKeyframesDriver = /** @class */ (function () {
+    function CssKeyframesDriver() {
+        this._count = 0;
+        this._head = document.querySelector('head');
+        this._warningIssued = false;
+    }
+    CssKeyframesDriver.prototype.validateStyleProperty = function (prop) { return validateStyleProperty(prop); };
+    CssKeyframesDriver.prototype.matchesElement = function (element, selector) {
+        return matchesElement(element, selector);
+    };
+    CssKeyframesDriver.prototype.containsElement = function (elm1, elm2) { return containsElement(elm1, elm2); };
+    CssKeyframesDriver.prototype.query = function (element, selector, multi) {
+        return invokeQuery(element, selector, multi);
+    };
+    CssKeyframesDriver.prototype.computeStyle = function (element, prop, defaultValue) {
+        return window.getComputedStyle(element)[prop];
+    };
+    CssKeyframesDriver.prototype.buildKeyframeElement = function (element, name, keyframes) {
+        keyframes = keyframes.map(function (kf) { return hypenatePropsObject(kf); });
+        var keyframeStr = "@keyframes " + name + " {\n";
+        var tab = '';
+        keyframes.forEach(function (kf) {
+            tab = TAB_SPACE;
+            var offset = parseFloat(kf.offset);
+            keyframeStr += "" + tab + offset * 100 + "% {\n";
+            tab += TAB_SPACE;
+            Object.keys(kf).forEach(function (prop) {
+                var value = kf[prop];
+                switch (prop) {
+                    case 'offset':
+                        return;
+                    case 'easing':
+                        if (value) {
+                            keyframeStr += tab + "animation-timing-function: " + value + ";\n";
+                        }
+                        return;
+                    default:
+                        keyframeStr += "" + tab + prop + ": " + value + ";\n";
+                        return;
+                }
+            });
+            keyframeStr += tab + "}\n";
+        });
+        keyframeStr += "}\n";
+        var kfElm = document.createElement('style');
+        kfElm.innerHTML = keyframeStr;
+        return kfElm;
+    };
+    CssKeyframesDriver.prototype.animate = function (element, keyframes, duration, delay, easing, previousPlayers, scrubberAccessRequested) {
+        if (previousPlayers === void 0) { previousPlayers = []; }
+        if (scrubberAccessRequested) {
+            this._notifyFaultyScrubber();
+        }
+        var previousCssKeyframePlayers = previousPlayers.filter(function (player) { return player instanceof CssKeyframesPlayer; });
+        var previousStyles = {};
+        if (allowPreviousPlayerStylesMerge(duration, delay)) {
+            previousCssKeyframePlayers.forEach(function (player) {
+                var styles = player.currentSnapshot;
+                Object.keys(styles).forEach(function (prop) { return previousStyles[prop] = styles[prop]; });
+            });
+        }
+        keyframes = balancePreviousStylesIntoKeyframes(element, keyframes, previousStyles);
+        var finalStyles = flattenKeyframesIntoStyles(keyframes);
+        // if there is no animation then there is no point in applying
+        // styles and waiting for an event to get fired. This causes lag.
+        // It's better to just directly apply the styles to the element
+        // via the direct styling animation player.
+        if (duration == 0) {
+            return new DirectStylePlayer(element, finalStyles);
+        }
+        var animationName = "" + KEYFRAMES_NAME_PREFIX + this._count++;
+        var kfElm = this.buildKeyframeElement(element, animationName, keyframes);
+        document.querySelector('head').appendChild(kfElm);
+        var player = new CssKeyframesPlayer(element, keyframes, animationName, duration, delay, easing, finalStyles);
+        player.onDestroy(function () { return removeElement(kfElm); });
+        return player;
+    };
+    CssKeyframesDriver.prototype._notifyFaultyScrubber = function () {
+        if (!this._warningIssued) {
+            console.warn('@angular/animations: please load the web-animations.js polyfill to allow programmatic access...\n', '  visit http://bit.ly/IWukam to learn more about using the web-animation-js polyfill.');
+            this._warningIssued = true;
+        }
+    };
+    return CssKeyframesDriver;
+}());
+function flattenKeyframesIntoStyles(keyframes) {
+    var flatKeyframes = {};
+    if (keyframes) {
+        var kfs = Array.isArray(keyframes) ? keyframes : [keyframes];
+        kfs.forEach(function (kf) {
+            Object.keys(kf).forEach(function (prop) {
+                if (prop == 'offset' || prop == 'easing')
+                    return;
+                flatKeyframes[prop] = kf[prop];
+            });
+        });
+    }
+    return flatKeyframes;
+}
+function removeElement(node) {
+    node.parentNode.removeChild(node);
+}
+
+var WebAnimationsPlayer = /** @class */ (function () {
+    function WebAnimationsPlayer(element, keyframes, options) {
+        this.element = element;
+        this.keyframes = keyframes;
+        this.options = options;
+        this._onDoneFns = [];
+        this._onStartFns = [];
+        this._onDestroyFns = [];
+        this._initialized = false;
+        this._finished = false;
+        this._started = false;
+        this._destroyed = false;
+        this.time = 0;
+        this.parentPlayer = null;
+        this.currentSnapshot = {};
+        this._duration = options['duration'];
+        this._delay = options['delay'] || 0;
+        this.time = this._duration + this._delay;
+    }
+    WebAnimationsPlayer.prototype._onFinish = function () {
+        if (!this._finished) {
+            this._finished = true;
+            this._onDoneFns.forEach(function (fn) { return fn(); });
+            this._onDoneFns = [];
+        }
+    };
+    WebAnimationsPlayer.prototype.init = function () {
+        this._buildPlayer();
+        this._preparePlayerBeforeStart();
+    };
+    WebAnimationsPlayer.prototype._buildPlayer = function () {
+        var _this = this;
+        if (this._initialized)
+            return;
+        this._initialized = true;
+        var keyframes = this.keyframes;
+        this.domPlayer =
+            this._triggerWebAnimation(this.element, keyframes, this.options);
+        this._finalKeyframe = keyframes.length ? keyframes[keyframes.length - 1] : {};
+        this.domPlayer.addEventListener('finish', function () { return _this._onFinish(); });
+    };
+    WebAnimationsPlayer.prototype._preparePlayerBeforeStart = function () {
+        // this is required so that the player doesn't start to animate right away
+        if (this._delay) {
+            this._resetDomPlayerState();
+        }
+        else {
+            this.domPlayer.pause();
+        }
+    };
+    /** @internal */
+    WebAnimationsPlayer.prototype._triggerWebAnimation = function (element, keyframes, options) {
+        // jscompiler doesn't seem to know animate is a native property because it's not fully
+        // supported yet across common browsers (we polyfill it for Edge/Safari) [CL #143630929]
+        return element['animate'](keyframes, options);
+    };
+    WebAnimationsPlayer.prototype.onStart = function (fn) { this._onStartFns.push(fn); };
+    WebAnimationsPlayer.prototype.onDone = function (fn) { this._onDoneFns.push(fn); };
+    WebAnimationsPlayer.prototype.onDestroy = function (fn) { this._onDestroyFns.push(fn); };
+    WebAnimationsPlayer.prototype.play = function () {
+        this._buildPlayer();
+        if (!this.hasStarted()) {
+            this._onStartFns.forEach(function (fn) { return fn(); });
+            this._onStartFns = [];
+            this._started = true;
+        }
+        this.domPlayer.play();
+    };
+    WebAnimationsPlayer.prototype.pause = function () {
+        this.init();
+        this.domPlayer.pause();
+    };
+    WebAnimationsPlayer.prototype.finish = function () {
+        this.init();
+        this._onFinish();
+        this.domPlayer.finish();
+    };
+    WebAnimationsPlayer.prototype.reset = function () {
+        this._resetDomPlayerState();
+        this._destroyed = false;
+        this._finished = false;
+        this._started = false;
+    };
+    WebAnimationsPlayer.prototype._resetDomPlayerState = function () {
+        if (this.domPlayer) {
+            this.domPlayer.cancel();
+        }
+    };
+    WebAnimationsPlayer.prototype.restart = function () {
+        this.reset();
+        this.play();
+    };
+    WebAnimationsPlayer.prototype.hasStarted = function () { return this._started; };
+    WebAnimationsPlayer.prototype.destroy = function () {
+        if (!this._destroyed) {
+            this._destroyed = true;
+            this._resetDomPlayerState();
+            this._onFinish();
+            this._onDestroyFns.forEach(function (fn) { return fn(); });
+            this._onDestroyFns = [];
+        }
+    };
+    WebAnimationsPlayer.prototype.setPosition = function (p) { this.domPlayer.currentTime = p * this.time; };
+    WebAnimationsPlayer.prototype.getPosition = function () { return this.domPlayer.currentTime / this.time; };
+    Object.defineProperty(WebAnimationsPlayer.prototype, "totalTime", {
+        get: function () { return this._delay + this._duration; },
+        enumerable: true,
+        configurable: true
+    });
+    WebAnimationsPlayer.prototype.beforeDestroy = function () {
+        var _this = this;
+        var styles = {};
+        if (this.hasStarted()) {
+            Object.keys(this._finalKeyframe).forEach(function (prop) {
+                if (prop != 'offset') {
+                    styles[prop] =
+                        _this._finished ? _this._finalKeyframe[prop] : computeStyle(_this.element, prop);
+                }
+            });
+        }
+        this.currentSnapshot = styles;
+    };
+    /** @internal */
+    WebAnimationsPlayer.prototype.triggerCallback = function (phaseName) {
+        var methods = phaseName == 'start' ? this._onStartFns : this._onDoneFns;
+        methods.forEach(function (fn) { return fn(); });
+        methods.length = 0;
+    };
+    return WebAnimationsPlayer;
+}());
+
+var WebAnimationsDriver = /** @class */ (function () {
+    function WebAnimationsDriver() {
+        this._isNativeImpl = /\{\s*\[native\s+code\]\s*\}/.test(getElementAnimateFn().toString());
+        this._cssKeyframesDriver = new CssKeyframesDriver();
+    }
+    WebAnimationsDriver.prototype.validateStyleProperty = function (prop) { return validateStyleProperty(prop); };
+    WebAnimationsDriver.prototype.matchesElement = function (element, selector) {
+        return matchesElement(element, selector);
+    };
+    WebAnimationsDriver.prototype.containsElement = function (elm1, elm2) { return containsElement(elm1, elm2); };
+    WebAnimationsDriver.prototype.query = function (element, selector, multi) {
+        return invokeQuery(element, selector, multi);
+    };
+    WebAnimationsDriver.prototype.computeStyle = function (element, prop, defaultValue) {
+        return window.getComputedStyle(element)[prop];
+    };
+    WebAnimationsDriver.prototype.overrideWebAnimationsSupport = function (supported) { this._isNativeImpl = supported; };
+    WebAnimationsDriver.prototype.animate = function (element, keyframes, duration, delay, easing, previousPlayers, scrubberAccessRequested) {
+        if (previousPlayers === void 0) { previousPlayers = []; }
+        var useKeyframes = !scrubberAccessRequested && !this._isNativeImpl;
+        if (useKeyframes) {
+            return this._cssKeyframesDriver.animate(element, keyframes, duration, delay, easing, previousPlayers);
+        }
+        var fill = delay == 0 ? 'both' : 'forwards';
+        var playerOptions = { duration: duration, delay: delay, fill: fill };
+        // we check for this to avoid having a null|undefined value be present
+        // for the easing (which results in an error for certain browsers #9752)
+        if (easing) {
+            playerOptions['easing'] = easing;
+        }
+        var previousStyles = {};
+        var previousWebAnimationPlayers = previousPlayers.filter(function (player) { return player instanceof WebAnimationsPlayer; });
+        if (allowPreviousPlayerStylesMerge(duration, delay)) {
+            previousWebAnimationPlayers.forEach(function (player) {
+                var styles = player.currentSnapshot;
+                Object.keys(styles).forEach(function (prop) { return previousStyles[prop] = styles[prop]; });
+            });
+        }
+        keyframes = keyframes.map(function (styles) { return copyStyles(styles, false); });
+        keyframes = balancePreviousStylesIntoKeyframes(element, keyframes, previousStyles);
+        return new WebAnimationsPlayer(element, keyframes, playerOptions);
+    };
+    return WebAnimationsDriver;
+}());
+function supportsWebAnimations() {
+    return typeof getElementAnimateFn() === 'function';
+}
+function getElementAnimateFn() {
+    return (isBrowser() && Element.prototype['animate']) || {};
+}
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * Generated bundle index. Do not edit.
+ */
+
+
+//# sourceMappingURL=browser.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@angular/cdk/esm5/bidi.es5.js":
+/*!****************************************************!*\
+  !*** ./node_modules/@angular/cdk/esm5/bidi.es5.js ***!
+  \****************************************************/
+/*! exports provided: Directionality, DIR_DOCUMENT, Dir, BidiModule, ɵa */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Directionality", function() { return Directionality; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DIR_DOCUMENT", function() { return DIR_DOCUMENT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Dir", function() { return Dir; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BidiModule", function() { return BidiModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵa", function() { return DIR_DOCUMENT_FACTORY; });
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/**
+ * @license
+ * Copyright Google LLC All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * Injection token used to inject the document into Directionality.
+ * This is used so that the value can be faked in tests.
+ *
+ * We can't use the real document in tests because changing the real `dir` causes geometry-based
+ * tests in Safari to fail.
+ *
+ * We also can't re-provide the DOCUMENT token from platform-brower because the unit tests
+ * themselves use things like `querySelector` in test code.
+ *
+ * This token is defined in a separate file from Directionality as a workaround for
+ * https://github.com/angular/angular/issues/22559
+ *
+ * \@docs-private
+ * @type {?}
+ */
+var DIR_DOCUMENT = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["InjectionToken"]('cdk-dir-doc', {
+    providedIn: 'root',
+    factory: DIR_DOCUMENT_FACTORY,
+});
+/**
+ * \@docs-private
+ * @return {?}
+ */
+function DIR_DOCUMENT_FACTORY() {
+    return Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["inject"])(_angular_common__WEBPACK_IMPORTED_MODULE_0__["DOCUMENT"]);
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * The directionality (LTR / RTL) context for the application (or a subtree of it).
+ * Exposes the current direction and a stream of direction changes.
+ */
+var Directionality = /** @class */ (function () {
+    function Directionality(_document) {
+        /**
+         * The current 'ltr' or 'rtl' value.
+         */
+        this.value = 'ltr';
+        /**
+         * Stream that emits whenever the 'ltr' / 'rtl' state changes.
+         */
+        this.change = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+        if (_document) {
+            // TODO: handle 'auto' value -
+            // We still need to account for dir="auto".
+            // It looks like HTMLElemenet.dir is also "auto" when that's set to the attribute,
+            // but getComputedStyle return either "ltr" or "rtl". avoiding getComputedStyle for now
+            /** @type {?} */
+            var bodyDir = _document.body ? _document.body.dir : null;
+            /** @type {?} */
+            var htmlDir = _document.documentElement ? _document.documentElement.dir : null;
+            /** @type {?} */
+            var value = bodyDir || htmlDir;
+            this.value = (value === 'ltr' || value === 'rtl') ? value : 'ltr';
+        }
+    }
+    /**
+     * @return {?}
+     */
+    Directionality.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        this.change.complete();
+    };
+    Directionality.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"], args: [{ providedIn: 'root' },] },
+    ];
+    /** @nocollapse */
+    Directionality.ctorParameters = function () { return [
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Inject"], args: [DIR_DOCUMENT,] }] }
+    ]; };
+    /** @nocollapse */ Directionality.ngInjectableDef = Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["defineInjectable"])({ factory: function Directionality_Factory() { return new Directionality(Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["inject"])(DIR_DOCUMENT, 8)); }, token: Directionality, providedIn: "root" });
+    return Directionality;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * Directive to listen for changes of direction of part of the DOM.
+ *
+ * Provides itself as Directionality such that descendant directives only need to ever inject
+ * Directionality to get the closest direction.
+ */
+var Dir = /** @class */ (function () {
+    function Dir() {
+        /**
+         * Normalized direction that accounts for invalid/unsupported values.
+         */
+        this._dir = 'ltr';
+        /**
+         * Whether the `value` has been set to its initial value.
+         */
+        this._isInitialized = false;
+        /**
+         * Event emitted when the direction changes.
+         */
+        this.change = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+    }
+    Object.defineProperty(Dir.prototype, "dir", {
+        /** @docs-private */
+        get: /**
+         * \@docs-private
+         * @return {?}
+         */
+        function () { return this._dir; },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            /** @type {?} */
+            var old = this._dir;
+            /** @type {?} */
+            var normalizedValue = value ? value.toLowerCase() : value;
+            this._rawDir = value;
+            this._dir = (normalizedValue === 'ltr' || normalizedValue === 'rtl') ? normalizedValue : 'ltr';
+            if (old !== this._dir && this._isInitialized) {
+                this.change.emit(this._dir);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Dir.prototype, "value", {
+        /** Current layout direction of the element. */
+        get: /**
+         * Current layout direction of the element.
+         * @return {?}
+         */
+        function () { return this.dir; },
+        enumerable: true,
+        configurable: true
+    });
+    /** Initialize once default value has been set. */
+    /**
+     * Initialize once default value has been set.
+     * @return {?}
+     */
+    Dir.prototype.ngAfterContentInit = /**
+     * Initialize once default value has been set.
+     * @return {?}
+     */
+    function () {
+        this._isInitialized = true;
+    };
+    /**
+     * @return {?}
+     */
+    Dir.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        this.change.complete();
+    };
+    Dir.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Directive"], args: [{
+                    selector: '[dir]',
+                    providers: [{ provide: Directionality, useExisting: Dir }],
+                    host: { '[attr.dir]': '_rawDir' },
+                    exportAs: 'dir',
+                },] },
+    ];
+    Dir.propDecorators = {
+        change: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"], args: ['dirChange',] }],
+        dir: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"] }]
+    };
+    return Dir;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+var BidiModule = /** @class */ (function () {
+    function BidiModule() {
+    }
+    BidiModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"], args: [{
+                    exports: [Dir],
+                    declarations: [Dir],
+                },] },
+    ];
+    return BidiModule;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+
+//# sourceMappingURL=bidi.es5.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@angular/cdk/esm5/coercion.es5.js":
+/*!********************************************************!*\
+  !*** ./node_modules/@angular/cdk/esm5/coercion.es5.js ***!
+  \********************************************************/
+/*! exports provided: coerceBooleanProperty, coerceNumberProperty, _isNumberValue, coerceArray, coerceCssPixelValue, coerceElement */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "coerceBooleanProperty", function() { return coerceBooleanProperty; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "coerceNumberProperty", function() { return coerceNumberProperty; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_isNumberValue", function() { return _isNumberValue; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "coerceArray", function() { return coerceArray; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "coerceCssPixelValue", function() { return coerceCssPixelValue; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "coerceElement", function() { return coerceElement; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/**
+ * @license
+ * Copyright Google LLC All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * Coerces a data-bound value (typically a string) to a boolean.
+ * @param {?} value
+ * @return {?}
+ */
+function coerceBooleanProperty(value) {
+    return value != null && "" + value !== 'false';
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * @param {?} value
+ * @param {?=} fallbackValue
+ * @return {?}
+ */
+function coerceNumberProperty(value, fallbackValue) {
+    if (fallbackValue === void 0) { fallbackValue = 0; }
+    return _isNumberValue(value) ? Number(value) : fallbackValue;
+}
+/**
+ * Whether the provided value is considered a number.
+ * \@docs-private
+ * @param {?} value
+ * @return {?}
+ */
+function _isNumberValue(value) {
+    // parseFloat(value) handles most of the cases we're interested in (it treats null, empty string,
+    // and other non-number values as NaN, where Number just uses 0) but it considers the string
+    // '123hello' to be a valid number. Therefore we also check if Number(value) is NaN.
+    return !isNaN(parseFloat((/** @type {?} */ (value)))) && !isNaN(Number(value));
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * Wraps the provided value in an array, unless the provided value is an array.
+ * @template T
+ * @param {?} value
+ * @return {?}
+ */
+function coerceArray(value) {
+    return Array.isArray(value) ? value : [value];
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * Coerces a value to a CSS pixel value.
+ * @param {?} value
+ * @return {?}
+ */
+function coerceCssPixelValue(value) {
+    if (value == null) {
+        return '';
+    }
+    return typeof value === 'string' ? value : value + "px";
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * Coerces an ElementRef or an Element into an element.
+ * Useful for APIs that can accept either a ref or the native element itself.
+ * @template T
+ * @param {?} elementOrRef
+ * @return {?}
+ */
+function coerceElement(elementOrRef) {
+    return elementOrRef instanceof _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"] ? elementOrRef.nativeElement : elementOrRef;
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+
+//# sourceMappingURL=coercion.es5.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@angular/cdk/esm5/collections.es5.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/@angular/cdk/esm5/collections.es5.js ***!
+  \***********************************************************/
+/*! exports provided: UniqueSelectionDispatcher, ArrayDataSource, isDataSource, DataSource, getMultipleValuesInSingleSelectionError, SelectionModel */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UniqueSelectionDispatcher", function() { return UniqueSelectionDispatcher; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ArrayDataSource", function() { return ArrayDataSource; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isDataSource", function() { return isDataSource; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DataSource", function() { return DataSource; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getMultipleValuesInSingleSelectionError", function() { return getMultipleValuesInSingleSelectionError; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SelectionModel", function() { return SelectionModel; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/**
+ * @license
+ * Copyright Google LLC All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+
+
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * @abstract
+ * @template T
+ */
+var  /**
+ * @abstract
+ * @template T
+ */
+DataSource = /** @class */ (function () {
+    function DataSource() {
+    }
+    return DataSource;
+}());
+/**
+ * Checks whether an object is a data source.
+ * @param {?} value
+ * @return {?}
+ */
+function isDataSource(value) {
+    // Check if the value is a DataSource by observing if it has a connect function. Cannot
+    // be checked as an `instanceof DataSource` since people could create their own sources
+    // that match the interface, but don't extend DataSource.
+    return value && typeof value.connect === 'function';
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * DataSource wrapper for a native array.
+ * @template T
+ */
+var  /**
+ * DataSource wrapper for a native array.
+ * @template T
+ */
+ArrayDataSource = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(ArrayDataSource, _super);
+    function ArrayDataSource(_data) {
+        var _this = _super.call(this) || this;
+        _this._data = _data;
+        return _this;
+    }
+    /**
+     * @return {?}
+     */
+    ArrayDataSource.prototype.connect = /**
+     * @return {?}
+     */
+    function () {
+        return this._data instanceof rxjs__WEBPACK_IMPORTED_MODULE_1__["Observable"] ? this._data : Object(rxjs__WEBPACK_IMPORTED_MODULE_1__["of"])(this._data);
+    };
+    /**
+     * @return {?}
+     */
+    ArrayDataSource.prototype.disconnect = /**
+     * @return {?}
+     */
+    function () { };
+    return ArrayDataSource;
+}(DataSource));
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * Class to be used to power selecting one or more options from a list.
+ * @template T
+ */
+var  /**
+ * Class to be used to power selecting one or more options from a list.
+ * @template T
+ */
+SelectionModel = /** @class */ (function () {
+    function SelectionModel(_multiple, initiallySelectedValues, _emitChanges) {
+        if (_multiple === void 0) { _multiple = false; }
+        if (_emitChanges === void 0) { _emitChanges = true; }
+        var _this = this;
+        this._multiple = _multiple;
+        this._emitChanges = _emitChanges;
+        /**
+         * Currently-selected values.
+         */
+        this._selection = new Set();
+        /**
+         * Keeps track of the deselected options that haven't been emitted by the change event.
+         */
+        this._deselectedToEmit = [];
+        /**
+         * Keeps track of the selected options that haven't been emitted by the change event.
+         */
+        this._selectedToEmit = [];
+        /**
+         * Event emitted when the value has changed.
+         */
+        this.changed = new rxjs__WEBPACK_IMPORTED_MODULE_1__["Subject"]();
+        /**
+         * Event emitted when the value has changed.
+         * @deprecated Use `changed` instead.
+         * \@breaking-change 8.0.0 To be changed to `changed`
+         */
+        this.onChange = this.changed;
+        if (initiallySelectedValues && initiallySelectedValues.length) {
+            if (_multiple) {
+                initiallySelectedValues.forEach(function (value) { return _this._markSelected(value); });
+            }
+            else {
+                this._markSelected(initiallySelectedValues[0]);
+            }
+            // Clear the array in order to avoid firing the change event for preselected values.
+            this._selectedToEmit.length = 0;
+        }
+    }
+    Object.defineProperty(SelectionModel.prototype, "selected", {
+        /** Selected values. */
+        get: /**
+         * Selected values.
+         * @return {?}
+         */
+        function () {
+            if (!this._selected) {
+                this._selected = Array.from(this._selection.values());
+            }
+            return this._selected;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Selects a value or an array of values.
+     */
+    /**
+     * Selects a value or an array of values.
+     * @param {...?} values
+     * @return {?}
+     */
+    SelectionModel.prototype.select = /**
+     * Selects a value or an array of values.
+     * @param {...?} values
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        var values = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            values[_i] = arguments[_i];
+        }
+        this._verifyValueAssignment(values);
+        values.forEach(function (value) { return _this._markSelected(value); });
+        this._emitChangeEvent();
+    };
+    /**
+     * Deselects a value or an array of values.
+     */
+    /**
+     * Deselects a value or an array of values.
+     * @param {...?} values
+     * @return {?}
+     */
+    SelectionModel.prototype.deselect = /**
+     * Deselects a value or an array of values.
+     * @param {...?} values
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        var values = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            values[_i] = arguments[_i];
+        }
+        this._verifyValueAssignment(values);
+        values.forEach(function (value) { return _this._unmarkSelected(value); });
+        this._emitChangeEvent();
+    };
+    /**
+     * Toggles a value between selected and deselected.
+     */
+    /**
+     * Toggles a value between selected and deselected.
+     * @param {?} value
+     * @return {?}
+     */
+    SelectionModel.prototype.toggle = /**
+     * Toggles a value between selected and deselected.
+     * @param {?} value
+     * @return {?}
+     */
+    function (value) {
+        this.isSelected(value) ? this.deselect(value) : this.select(value);
+    };
+    /**
+     * Clears all of the selected values.
+     */
+    /**
+     * Clears all of the selected values.
+     * @return {?}
+     */
+    SelectionModel.prototype.clear = /**
+     * Clears all of the selected values.
+     * @return {?}
+     */
+    function () {
+        this._unmarkAll();
+        this._emitChangeEvent();
+    };
+    /**
+     * Determines whether a value is selected.
+     */
+    /**
+     * Determines whether a value is selected.
+     * @param {?} value
+     * @return {?}
+     */
+    SelectionModel.prototype.isSelected = /**
+     * Determines whether a value is selected.
+     * @param {?} value
+     * @return {?}
+     */
+    function (value) {
+        return this._selection.has(value);
+    };
+    /**
+     * Determines whether the model does not have a value.
+     */
+    /**
+     * Determines whether the model does not have a value.
+     * @return {?}
+     */
+    SelectionModel.prototype.isEmpty = /**
+     * Determines whether the model does not have a value.
+     * @return {?}
+     */
+    function () {
+        return this._selection.size === 0;
+    };
+    /**
+     * Determines whether the model has a value.
+     */
+    /**
+     * Determines whether the model has a value.
+     * @return {?}
+     */
+    SelectionModel.prototype.hasValue = /**
+     * Determines whether the model has a value.
+     * @return {?}
+     */
+    function () {
+        return !this.isEmpty();
+    };
+    /**
+     * Sorts the selected values based on a predicate function.
+     */
+    /**
+     * Sorts the selected values based on a predicate function.
+     * @param {?=} predicate
+     * @return {?}
+     */
+    SelectionModel.prototype.sort = /**
+     * Sorts the selected values based on a predicate function.
+     * @param {?=} predicate
+     * @return {?}
+     */
+    function (predicate) {
+        if (this._multiple && this.selected) {
+            (/** @type {?} */ (this._selected)).sort(predicate);
+        }
+    };
+    /**
+     * Gets whether multiple values can be selected.
+     */
+    /**
+     * Gets whether multiple values can be selected.
+     * @return {?}
+     */
+    SelectionModel.prototype.isMultipleSelection = /**
+     * Gets whether multiple values can be selected.
+     * @return {?}
+     */
+    function () {
+        return this._multiple;
+    };
+    /** Emits a change event and clears the records of selected and deselected values. */
+    /**
+     * Emits a change event and clears the records of selected and deselected values.
+     * @private
+     * @return {?}
+     */
+    SelectionModel.prototype._emitChangeEvent = /**
+     * Emits a change event and clears the records of selected and deselected values.
+     * @private
+     * @return {?}
+     */
+    function () {
+        // Clear the selected values so they can be re-cached.
+        this._selected = null;
+        if (this._selectedToEmit.length || this._deselectedToEmit.length) {
+            this.changed.next({
+                source: this,
+                added: this._selectedToEmit,
+                removed: this._deselectedToEmit
+            });
+            this._deselectedToEmit = [];
+            this._selectedToEmit = [];
+        }
+    };
+    /** Selects a value. */
+    /**
+     * Selects a value.
+     * @private
+     * @param {?} value
+     * @return {?}
+     */
+    SelectionModel.prototype._markSelected = /**
+     * Selects a value.
+     * @private
+     * @param {?} value
+     * @return {?}
+     */
+    function (value) {
+        if (!this.isSelected(value)) {
+            if (!this._multiple) {
+                this._unmarkAll();
+            }
+            this._selection.add(value);
+            if (this._emitChanges) {
+                this._selectedToEmit.push(value);
+            }
+        }
+    };
+    /** Deselects a value. */
+    /**
+     * Deselects a value.
+     * @private
+     * @param {?} value
+     * @return {?}
+     */
+    SelectionModel.prototype._unmarkSelected = /**
+     * Deselects a value.
+     * @private
+     * @param {?} value
+     * @return {?}
+     */
+    function (value) {
+        if (this.isSelected(value)) {
+            this._selection.delete(value);
+            if (this._emitChanges) {
+                this._deselectedToEmit.push(value);
+            }
+        }
+    };
+    /** Clears out the selected values. */
+    /**
+     * Clears out the selected values.
+     * @private
+     * @return {?}
+     */
+    SelectionModel.prototype._unmarkAll = /**
+     * Clears out the selected values.
+     * @private
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        if (!this.isEmpty()) {
+            this._selection.forEach(function (value) { return _this._unmarkSelected(value); });
+        }
+    };
+    /**
+     * Verifies the value assignment and throws an error if the specified value array is
+     * including multiple values while the selection model is not supporting multiple values.
+     */
+    /**
+     * Verifies the value assignment and throws an error if the specified value array is
+     * including multiple values while the selection model is not supporting multiple values.
+     * @private
+     * @param {?} values
+     * @return {?}
+     */
+    SelectionModel.prototype._verifyValueAssignment = /**
+     * Verifies the value assignment and throws an error if the specified value array is
+     * including multiple values while the selection model is not supporting multiple values.
+     * @private
+     * @param {?} values
+     * @return {?}
+     */
+    function (values) {
+        if (values.length > 1 && !this._multiple) {
+            throw getMultipleValuesInSingleSelectionError();
+        }
+    };
+    return SelectionModel;
+}());
+/**
+ * Returns an error that reports that multiple values are passed into a selection model
+ * with a single value.
+ * \@docs-private
+ * @return {?}
+ */
+function getMultipleValuesInSingleSelectionError() {
+    return Error('Cannot pass multiple values into SelectionModel with single-value mode.');
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * Class to coordinate unique selection based on name.
+ * Intended to be consumed as an Angular service.
+ * This service is needed because native radio change events are only fired on the item currently
+ * being selected, and we still need to uncheck the previous selection.
+ *
+ * This service does not *store* any IDs and names because they may change at any time, so it is
+ * less error-prone if they are simply passed through when the events occur.
+ */
+var UniqueSelectionDispatcher = /** @class */ (function () {
+    function UniqueSelectionDispatcher() {
+        this._listeners = [];
+    }
+    /**
+     * Notify other items that selection for the given name has been set.
+     * @param id ID of the item.
+     * @param name Name of the item.
+     */
+    /**
+     * Notify other items that selection for the given name has been set.
+     * @param {?} id ID of the item.
+     * @param {?} name Name of the item.
+     * @return {?}
+     */
+    UniqueSelectionDispatcher.prototype.notify = /**
+     * Notify other items that selection for the given name has been set.
+     * @param {?} id ID of the item.
+     * @param {?} name Name of the item.
+     * @return {?}
+     */
+    function (id, name) {
+        for (var _i = 0, _a = this._listeners; _i < _a.length; _i++) {
+            var listener = _a[_i];
+            listener(id, name);
+        }
+    };
+    /**
+     * Listen for future changes to item selection.
+     * @return Function used to deregister listener
+     */
+    /**
+     * Listen for future changes to item selection.
+     * @param {?} listener
+     * @return {?} Function used to deregister listener
+     */
+    UniqueSelectionDispatcher.prototype.listen = /**
+     * Listen for future changes to item selection.
+     * @param {?} listener
+     * @return {?} Function used to deregister listener
+     */
+    function (listener) {
+        var _this = this;
+        this._listeners.push(listener);
+        return function () {
+            _this._listeners = _this._listeners.filter(function (registered) {
+                return listener !== registered;
+            });
+        };
+    };
+    /**
+     * @return {?}
+     */
+    UniqueSelectionDispatcher.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        this._listeners = [];
+    };
+    UniqueSelectionDispatcher.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"], args: [{ providedIn: 'root' },] },
+    ];
+    /** @nocollapse */ UniqueSelectionDispatcher.ngInjectableDef = Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["defineInjectable"])({ factory: function UniqueSelectionDispatcher_Factory() { return new UniqueSelectionDispatcher(); }, token: UniqueSelectionDispatcher, providedIn: "root" });
+    return UniqueSelectionDispatcher;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+
+//# sourceMappingURL=collections.es5.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@angular/cdk/esm5/drag-drop.es5.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/@angular/cdk/esm5/drag-drop.es5.js ***!
+  \*********************************************************/
+/*! exports provided: DragDrop, DragRef, DropListRef, CdkDropList, CDK_DROP_LIST, CDK_DROP_LIST_CONTAINER, moveItemInArray, transferArrayItem, copyArrayItem, DragDropModule, DragDropRegistry, CdkDropListGroup, CDK_DRAG_CONFIG_FACTORY, CDK_DRAG_CONFIG, CdkDrag, CdkDragHandle, CdkDragPreview, CdkDragPlaceholder, ɵb */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DragDrop", function() { return DragDrop; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DragRef", function() { return DragRef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DropListRef", function() { return DropListRef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CdkDropList", function() { return CdkDropList; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CDK_DROP_LIST", function() { return CDK_DROP_LIST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CDK_DROP_LIST_CONTAINER", function() { return CDK_DROP_LIST_CONTAINER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "moveItemInArray", function() { return moveItemInArray; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "transferArrayItem", function() { return transferArrayItem; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "copyArrayItem", function() { return copyArrayItem; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DragDropModule", function() { return DragDropModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DragDropRegistry", function() { return DragDropRegistry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CdkDropListGroup", function() { return CdkDropListGroup; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CDK_DRAG_CONFIG_FACTORY", function() { return CDK_DRAG_CONFIG_FACTORY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CDK_DRAG_CONFIG", function() { return CDK_DRAG_CONFIG; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CdkDrag", function() { return CdkDrag; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CdkDragHandle", function() { return CdkDragHandle; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CdkDragPreview", function() { return CdkDragPreview; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CdkDragPlaceholder", function() { return CdkDragPlaceholder; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵb", function() { return CDK_DRAG_PARENT; });
+/* harmony import */ var _angular_cdk_platform__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/cdk/platform */ "./node_modules/@angular/cdk/esm5/platform.es5.js");
+/* harmony import */ var _angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/cdk/coercion */ "./node_modules/@angular/cdk/esm5/coercion.es5.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _angular_cdk_scrolling__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/cdk/scrolling */ "./node_modules/@angular/cdk/esm5/scrolling.es5.js");
+/* harmony import */ var _angular_cdk_bidi__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/cdk/bidi */ "./node_modules/@angular/cdk/esm5/bidi.es5.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/**
+ * @license
+ * Copyright Google LLC All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+
+
+
+
+
+
+
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * Shallow-extends a stylesheet object with another stylesheet object.
+ * \@docs-private
+ * @param {?} dest
+ * @param {?} source
+ * @return {?}
+ */
+function extendStyles(dest, source) {
+    for (var key in source) {
+        if (source.hasOwnProperty(key)) {
+            dest[(/** @type {?} */ (key))] = source[(/** @type {?} */ (key))];
+        }
+    }
+    return dest;
+}
+/**
+ * Toggles whether the native drag interactions should be enabled for an element.
+ * \@docs-private
+ * @param {?} element Element on which to toggle the drag interactions.
+ * @param {?} enable Whether the drag interactions should be enabled.
+ * @return {?}
+ */
+function toggleNativeDragInteractions(element, enable) {
+    /** @type {?} */
+    var userSelect = enable ? '' : 'none';
+    extendStyles(element.style, {
+        touchAction: enable ? '' : 'none',
+        webkitUserDrag: enable ? '' : 'none',
+        webkitTapHighlightColor: enable ? '' : 'transparent',
+        userSelect: userSelect,
+        msUserSelect: userSelect,
+        webkitUserSelect: userSelect,
+        MozUserSelect: userSelect
+    });
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * Parses a CSS time value to milliseconds.
+ * @param {?} value
+ * @return {?}
+ */
+function parseCssTimeUnitsToMs(value) {
+    // Some browsers will return it in seconds, whereas others will return milliseconds.
+    /** @type {?} */
+    var multiplier = value.toLowerCase().indexOf('ms') > -1 ? 1 : 1000;
+    return parseFloat(value) * multiplier;
+}
+/**
+ * Gets the transform transition duration, including the delay, of an element in milliseconds.
+ * @param {?} element
+ * @return {?}
+ */
+function getTransformTransitionDurationInMs(element) {
+    /** @type {?} */
+    var computedStyle = getComputedStyle(element);
+    /** @type {?} */
+    var transitionedProperties = parseCssPropertyValue(computedStyle, 'transition-property');
+    /** @type {?} */
+    var property = transitionedProperties.find(function (prop) { return prop === 'transform' || prop === 'all'; });
+    // If there's no transition for `all` or `transform`, we shouldn't do anything.
+    if (!property) {
+        return 0;
+    }
+    // Get the index of the property that we're interested in and match
+    // it up to the same index in `transition-delay` and `transition-duration`.
+    /** @type {?} */
+    var propertyIndex = transitionedProperties.indexOf(property);
+    /** @type {?} */
+    var rawDurations = parseCssPropertyValue(computedStyle, 'transition-duration');
+    /** @type {?} */
+    var rawDelays = parseCssPropertyValue(computedStyle, 'transition-delay');
+    return parseCssTimeUnitsToMs(rawDurations[propertyIndex]) +
+        parseCssTimeUnitsToMs(rawDelays[propertyIndex]);
+}
+/**
+ * Parses out multiple values from a computed style into an array.
+ * @param {?} computedStyle
+ * @param {?} name
+ * @return {?}
+ */
+function parseCssPropertyValue(computedStyle, name) {
+    /** @type {?} */
+    var value = computedStyle.getPropertyValue(name);
+    return value.split(',').map(function (part) { return part.trim(); });
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * Options that can be used to bind a passive event listener.
+ * @type {?}
+ */
+var passiveEventListenerOptions = Object(_angular_cdk_platform__WEBPACK_IMPORTED_MODULE_0__["normalizePassiveListenerOptions"])({ passive: true });
+/**
+ * Options that can be used to bind an active event listener.
+ * @type {?}
+ */
+var activeEventListenerOptions = Object(_angular_cdk_platform__WEBPACK_IMPORTED_MODULE_0__["normalizePassiveListenerOptions"])({ passive: false });
+/**
+ * Time in milliseconds for which to ignore mouse events, after
+ * receiving a touch event. Used to avoid doing double work for
+ * touch devices where the browser fires fake mouse events, in
+ * addition to touch events.
+ * @type {?}
+ */
+var MOUSE_EVENT_IGNORE_TIME = 800;
+/**
+ * Reference to a draggable item. Used to manipulate or dispose of the item.
+ * \@docs-private
+ * @template T
+ */
+var  /**
+ * Reference to a draggable item. Used to manipulate or dispose of the item.
+ * \@docs-private
+ * @template T
+ */
+DragRef = /** @class */ (function () {
+    function DragRef(element, _config, _document, _ngZone, _viewportRuler, _dragDropRegistry) {
+        var _this = this;
+        this._config = _config;
+        this._document = _document;
+        this._ngZone = _ngZone;
+        this._viewportRuler = _viewportRuler;
+        this._dragDropRegistry = _dragDropRegistry;
+        /**
+         * CSS `transform` applied to the element when it isn't being dragged. We need a
+         * passive transform in order for the dragged element to retain its new position
+         * after the user has stopped dragging and because we need to know the relative
+         * position in case they start dragging again. This corresponds to `element.style.transform`.
+         */
+        this._passiveTransform = { x: 0, y: 0 };
+        /**
+         * CSS `transform` that is applied to the element while it's being dragged.
+         */
+        this._activeTransform = { x: 0, y: 0 };
+        /**
+         * Emits when the item is being moved.
+         */
+        this._moveEvents = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        /**
+         * Amount of subscriptions to the move event. Used to avoid
+         * hitting the zone if the consumer didn't subscribe to it.
+         */
+        this._moveEventSubscriptions = 0;
+        /**
+         * Subscription to pointer movement events.
+         */
+        this._pointerMoveSubscription = rxjs__WEBPACK_IMPORTED_MODULE_2__["Subscription"].EMPTY;
+        /**
+         * Subscription to the event that is dispatched when the user lifts their pointer.
+         */
+        this._pointerUpSubscription = rxjs__WEBPACK_IMPORTED_MODULE_2__["Subscription"].EMPTY;
+        /**
+         * Cached reference to the boundary element.
+         */
+        this._boundaryElement = null;
+        /**
+         * Whether the native dragging interactions have been enabled on the root element.
+         */
+        this._nativeInteractionsEnabled = true;
+        /**
+         * Elements that can be used to drag the draggable item.
+         */
+        this._handles = [];
+        /**
+         * Registered handles that are currently disabled.
+         */
+        this._disabledHandles = new Set();
+        /**
+         * Layout direction of the item.
+         */
+        this._direction = 'ltr';
+        this._disabled = false;
+        /**
+         * Emits as the drag sequence is being prepared.
+         */
+        this.beforeStarted = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        /**
+         * Emits when the user starts dragging the item.
+         */
+        this.started = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        /**
+         * Emits when the user has released a drag item, before any animations have started.
+         */
+        this.released = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        /**
+         * Emits when the user stops dragging an item in the container.
+         */
+        this.ended = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        /**
+         * Emits when the user has moved the item into a new container.
+         */
+        this.entered = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        /**
+         * Emits when the user removes the item its container by dragging it into another container.
+         */
+        this.exited = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        /**
+         * Emits when the user drops the item inside a container.
+         */
+        this.dropped = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        /**
+         * Emits as the user is dragging the item. Use with caution,
+         * because this event will fire for every pixel that the user has dragged.
+         */
+        this.moved = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"](function (observer) {
+            /** @type {?} */
+            var subscription = _this._moveEvents.subscribe(observer);
+            _this._moveEventSubscriptions++;
+            return function () {
+                subscription.unsubscribe();
+                _this._moveEventSubscriptions--;
+            };
+        });
+        /**
+         * Handler for the `mousedown`/`touchstart` events.
+         */
+        this._pointerDown = function (event) {
+            _this.beforeStarted.next();
+            // Delegate the event based on whether it started from a handle or the element itself.
+            if (_this._handles.length) {
+                /** @type {?} */
+                var targetHandle = _this._handles.find(function (handle) {
+                    /** @type {?} */
+                    var target = event.target;
+                    return !!target && (target === handle || handle.contains((/** @type {?} */ (target))));
+                });
+                if (targetHandle && !_this._disabledHandles.has(targetHandle) && !_this.disabled) {
+                    _this._initializeDragSequence(targetHandle, event);
+                }
+            }
+            else if (!_this.disabled) {
+                _this._initializeDragSequence(_this._rootElement, event);
+            }
+        };
+        /**
+         * Handler that is invoked when the user moves their pointer after they've initiated a drag.
+         */
+        this._pointerMove = function (event) {
+            if (!_this._hasStartedDragging) {
+                /** @type {?} */
+                var pointerPosition = _this._getPointerPositionOnPage(event);
+                /** @type {?} */
+                var distanceX = Math.abs(pointerPosition.x - _this._pickupPositionOnPage.x);
+                /** @type {?} */
+                var distanceY = Math.abs(pointerPosition.y - _this._pickupPositionOnPage.y);
+                // Only start dragging after the user has moved more than the minimum distance in either
+                // direction. Note that this is preferrable over doing something like `skip(minimumDistance)`
+                // in the `pointerMove` subscription, because we're not guaranteed to have one move event
+                // per pixel of movement (e.g. if the user moves their pointer quickly).
+                if (distanceX + distanceY >= _this._config.dragStartThreshold) {
+                    _this._hasStartedDragging = true;
+                    _this._ngZone.run(function () { return _this._startDragSequence(event); });
+                }
+                return;
+            }
+            // We only need the preview dimensions if we have a boundary element.
+            if (_this._boundaryElement) {
+                // Cache the preview element rect if we haven't cached it already or if
+                // we cached it too early before the element dimensions were computed.
+                if (!_this._previewRect || (!_this._previewRect.width && !_this._previewRect.height)) {
+                    _this._previewRect = (_this._preview || _this._rootElement).getBoundingClientRect();
+                }
+            }
+            /** @type {?} */
+            var constrainedPointerPosition = _this._getConstrainedPointerPosition(event);
+            _this._hasMoved = true;
+            event.preventDefault();
+            _this._updatePointerDirectionDelta(constrainedPointerPosition);
+            if (_this._dropContainer) {
+                _this._updateActiveDropContainer(constrainedPointerPosition);
+            }
+            else {
+                /** @type {?} */
+                var activeTransform = _this._activeTransform;
+                activeTransform.x =
+                    constrainedPointerPosition.x - _this._pickupPositionOnPage.x + _this._passiveTransform.x;
+                activeTransform.y =
+                    constrainedPointerPosition.y - _this._pickupPositionOnPage.y + _this._passiveTransform.y;
+                /** @type {?} */
+                var transform = getTransform(activeTransform.x, activeTransform.y);
+                // Preserve the previous `transform` value, if there was one. Note that we apply our own
+                // transform before the user's, because things like rotation can affect which direction
+                // the element will be translated towards.
+                _this._rootElement.style.transform = _this._initialTransform ?
+                    transform + ' ' + _this._initialTransform : transform;
+                // Apply transform as attribute if dragging and svg element to work for IE
+                if (typeof SVGElement !== 'undefined' && _this._rootElement instanceof SVGElement) {
+                    /** @type {?} */
+                    var appliedTransform = "translate(" + activeTransform.x + " " + activeTransform.y + ")";
+                    _this._rootElement.setAttribute('transform', appliedTransform);
+                }
+            }
+            // Since this event gets fired for every pixel while dragging, we only
+            // want to fire it if the consumer opted into it. Also we have to
+            // re-enter the zone because we run all of the events on the outside.
+            if (_this._moveEventSubscriptions > 0) {
+                _this._ngZone.run(function () {
+                    _this._moveEvents.next({
+                        source: _this,
+                        pointerPosition: constrainedPointerPosition,
+                        event: event,
+                        delta: _this._pointerDirectionDelta
+                    });
+                });
+            }
+        };
+        /**
+         * Handler that is invoked when the user lifts their pointer up, after initiating a drag.
+         */
+        this._pointerUp = function (event) {
+            // Note that here we use `isDragging` from the service, rather than from `this`.
+            // The difference is that the one from the service reflects whether a dragging sequence
+            // has been initiated, whereas the one on `this` includes whether the user has passed
+            // the minimum dragging threshold.
+            if (!_this._dragDropRegistry.isDragging(_this)) {
+                return;
+            }
+            _this._removeSubscriptions();
+            _this._dragDropRegistry.stopDragging(_this);
+            if (_this._handles) {
+                _this._rootElement.style.webkitTapHighlightColor = _this._rootElementTapHighlight;
+            }
+            if (!_this._hasStartedDragging) {
+                return;
+            }
+            _this.released.next({ source: _this });
+            if (!_this._dropContainer) {
+                // Convert the active transform into a passive one. This means that next time
+                // the user starts dragging the item, its position will be calculated relatively
+                // to the new passive transform.
+                _this._passiveTransform.x = _this._activeTransform.x;
+                _this._passiveTransform.y = _this._activeTransform.y;
+                _this._ngZone.run(function () { return _this.ended.next({ source: _this }); });
+                _this._dragDropRegistry.stopDragging(_this);
+                return;
+            }
+            _this._animatePreviewToPlaceholder().then(function () {
+                _this._cleanupDragArtifacts(event);
+                _this._dragDropRegistry.stopDragging(_this);
+            });
+        };
+        this.withRootElement(element);
+        _dragDropRegistry.registerDragItem(this);
+    }
+    Object.defineProperty(DragRef.prototype, "disabled", {
+        /** Whether starting to drag this element is disabled. */
+        get: /**
+         * Whether starting to drag this element is disabled.
+         * @return {?}
+         */
+        function () {
+            return this._disabled || !!(this._dropContainer && this._dropContainer.disabled);
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            /** @type {?} */
+            var newValue = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceBooleanProperty"])(value);
+            if (newValue !== this._disabled) {
+                this._disabled = newValue;
+                this._toggleNativeDragInteractions();
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Returns the element that is being used as a placeholder
+     * while the current element is being dragged.
+     */
+    /**
+     * Returns the element that is being used as a placeholder
+     * while the current element is being dragged.
+     * @return {?}
+     */
+    DragRef.prototype.getPlaceholderElement = /**
+     * Returns the element that is being used as a placeholder
+     * while the current element is being dragged.
+     * @return {?}
+     */
+    function () {
+        return this._placeholder;
+    };
+    /** Returns the root draggable element. */
+    /**
+     * Returns the root draggable element.
+     * @return {?}
+     */
+    DragRef.prototype.getRootElement = /**
+     * Returns the root draggable element.
+     * @return {?}
+     */
+    function () {
+        return this._rootElement;
+    };
+    /** Registers the handles that can be used to drag the element. */
+    /**
+     * Registers the handles that can be used to drag the element.
+     * @template THIS
+     * @this {THIS}
+     * @param {?} handles
+     * @return {THIS}
+     */
+    DragRef.prototype.withHandles = /**
+     * Registers the handles that can be used to drag the element.
+     * @template THIS
+     * @this {THIS}
+     * @param {?} handles
+     * @return {THIS}
+     */
+    function (handles) {
+        (/** @type {?} */ (this))._handles = handles.map(function (handle) { return Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceElement"])(handle); });
+        (/** @type {?} */ (this))._handles.forEach(function (handle) { return toggleNativeDragInteractions(handle, false); });
+        (/** @type {?} */ (this))._toggleNativeDragInteractions();
+        return (/** @type {?} */ (this));
+    };
+    /**
+     * Registers the template that should be used for the drag preview.
+     * @param template Template that from which to stamp out the preview.
+     */
+    /**
+     * Registers the template that should be used for the drag preview.
+     * @template THIS
+     * @this {THIS}
+     * @param {?} template Template that from which to stamp out the preview.
+     * @return {THIS}
+     */
+    DragRef.prototype.withPreviewTemplate = /**
+     * Registers the template that should be used for the drag preview.
+     * @template THIS
+     * @this {THIS}
+     * @param {?} template Template that from which to stamp out the preview.
+     * @return {THIS}
+     */
+    function (template) {
+        (/** @type {?} */ (this))._previewTemplate = template;
+        return (/** @type {?} */ (this));
+    };
+    /**
+     * Registers the template that should be used for the drag placeholder.
+     * @param template Template that from which to stamp out the placeholder.
+     */
+    /**
+     * Registers the template that should be used for the drag placeholder.
+     * @template THIS
+     * @this {THIS}
+     * @param {?} template Template that from which to stamp out the placeholder.
+     * @return {THIS}
+     */
+    DragRef.prototype.withPlaceholderTemplate = /**
+     * Registers the template that should be used for the drag placeholder.
+     * @template THIS
+     * @this {THIS}
+     * @param {?} template Template that from which to stamp out the placeholder.
+     * @return {THIS}
+     */
+    function (template) {
+        (/** @type {?} */ (this))._placeholderTemplate = template;
+        return (/** @type {?} */ (this));
+    };
+    /**
+     * Sets an alternate drag root element. The root element is the element that will be moved as
+     * the user is dragging. Passing an alternate root element is useful when trying to enable
+     * dragging on an element that you might not have access to.
+     */
+    /**
+     * Sets an alternate drag root element. The root element is the element that will be moved as
+     * the user is dragging. Passing an alternate root element is useful when trying to enable
+     * dragging on an element that you might not have access to.
+     * @template THIS
+     * @this {THIS}
+     * @param {?} rootElement
+     * @return {THIS}
+     */
+    DragRef.prototype.withRootElement = /**
+     * Sets an alternate drag root element. The root element is the element that will be moved as
+     * the user is dragging. Passing an alternate root element is useful when trying to enable
+     * dragging on an element that you might not have access to.
+     * @template THIS
+     * @this {THIS}
+     * @param {?} rootElement
+     * @return {THIS}
+     */
+    function (rootElement) {
+        /** @type {?} */
+        var element = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceElement"])(rootElement);
+        if (element !== (/** @type {?} */ (this))._rootElement) {
+            if ((/** @type {?} */ (this))._rootElement) {
+                (/** @type {?} */ (this))._removeRootElementListeners((/** @type {?} */ (this))._rootElement);
+            }
+            element.addEventListener('mousedown', (/** @type {?} */ (this))._pointerDown, activeEventListenerOptions);
+            element.addEventListener('touchstart', (/** @type {?} */ (this))._pointerDown, passiveEventListenerOptions);
+            (/** @type {?} */ (this))._initialTransform = undefined;
+            (/** @type {?} */ (this))._rootElement = element;
+        }
+        return (/** @type {?} */ (this));
+    };
+    /**
+     * Element to which the draggable's position will be constrained.
+     */
+    /**
+     * Element to which the draggable's position will be constrained.
+     * @template THIS
+     * @this {THIS}
+     * @param {?} boundaryElement
+     * @return {THIS}
+     */
+    DragRef.prototype.withBoundaryElement = /**
+     * Element to which the draggable's position will be constrained.
+     * @template THIS
+     * @this {THIS}
+     * @param {?} boundaryElement
+     * @return {THIS}
+     */
+    function (boundaryElement) {
+        (/** @type {?} */ (this))._boundaryElement = boundaryElement ? Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceElement"])(boundaryElement) : null;
+        return (/** @type {?} */ (this));
+    };
+    /** Removes the dragging functionality from the DOM element. */
+    /**
+     * Removes the dragging functionality from the DOM element.
+     * @return {?}
+     */
+    DragRef.prototype.dispose = /**
+     * Removes the dragging functionality from the DOM element.
+     * @return {?}
+     */
+    function () {
+        this._removeRootElementListeners(this._rootElement);
+        // Do this check before removing from the registry since it'll
+        // stop being considered as dragged once it is removed.
+        if (this.isDragging()) {
+            // Since we move out the element to the end of the body while it's being
+            // dragged, we have to make sure that it's removed if it gets destroyed.
+            removeElement(this._rootElement);
+        }
+        this._destroyPreview();
+        this._destroyPlaceholder();
+        this._dragDropRegistry.removeDragItem(this);
+        this._removeSubscriptions();
+        this.beforeStarted.complete();
+        this.started.complete();
+        this.released.complete();
+        this.ended.complete();
+        this.entered.complete();
+        this.exited.complete();
+        this.dropped.complete();
+        this._moveEvents.complete();
+        this._handles = [];
+        this._disabledHandles.clear();
+        this._dropContainer = undefined;
+        this._boundaryElement = this._rootElement = this._placeholderTemplate =
+            this._previewTemplate = this._nextSibling = (/** @type {?} */ (null));
+    };
+    /** Checks whether the element is currently being dragged. */
+    /**
+     * Checks whether the element is currently being dragged.
+     * @return {?}
+     */
+    DragRef.prototype.isDragging = /**
+     * Checks whether the element is currently being dragged.
+     * @return {?}
+     */
+    function () {
+        return this._hasStartedDragging && this._dragDropRegistry.isDragging(this);
+    };
+    /** Resets a standalone drag item to its initial position. */
+    /**
+     * Resets a standalone drag item to its initial position.
+     * @return {?}
+     */
+    DragRef.prototype.reset = /**
+     * Resets a standalone drag item to its initial position.
+     * @return {?}
+     */
+    function () {
+        this._rootElement.style.transform = this._initialTransform || '';
+        this._activeTransform = { x: 0, y: 0 };
+        this._passiveTransform = { x: 0, y: 0 };
+    };
+    /**
+     * Sets a handle as disabled. While a handle is disabled, it'll capture and interrupt dragging.
+     * @param handle Handle element that should be disabled.
+     */
+    /**
+     * Sets a handle as disabled. While a handle is disabled, it'll capture and interrupt dragging.
+     * @param {?} handle Handle element that should be disabled.
+     * @return {?}
+     */
+    DragRef.prototype.disableHandle = /**
+     * Sets a handle as disabled. While a handle is disabled, it'll capture and interrupt dragging.
+     * @param {?} handle Handle element that should be disabled.
+     * @return {?}
+     */
+    function (handle) {
+        if (this._handles.indexOf(handle) > -1) {
+            this._disabledHandles.add(handle);
+        }
+    };
+    /**
+     * Enables a handle, if it has been disabled.
+     * @param handle Handle element to be enabled.
+     */
+    /**
+     * Enables a handle, if it has been disabled.
+     * @param {?} handle Handle element to be enabled.
+     * @return {?}
+     */
+    DragRef.prototype.enableHandle = /**
+     * Enables a handle, if it has been disabled.
+     * @param {?} handle Handle element to be enabled.
+     * @return {?}
+     */
+    function (handle) {
+        this._disabledHandles.delete(handle);
+    };
+    /** Sets the layout direction of the draggable item. */
+    /**
+     * Sets the layout direction of the draggable item.
+     * @template THIS
+     * @this {THIS}
+     * @param {?} direction
+     * @return {THIS}
+     */
+    DragRef.prototype.withDirection = /**
+     * Sets the layout direction of the draggable item.
+     * @template THIS
+     * @this {THIS}
+     * @param {?} direction
+     * @return {THIS}
+     */
+    function (direction) {
+        (/** @type {?} */ (this))._direction = direction;
+        return (/** @type {?} */ (this));
+    };
+    /** Sets the container that the item is part of. */
+    /**
+     * Sets the container that the item is part of.
+     * @param {?} container
+     * @return {?}
+     */
+    DragRef.prototype._withDropContainer = /**
+     * Sets the container that the item is part of.
+     * @param {?} container
+     * @return {?}
+     */
+    function (container) {
+        this._dropContainer = container;
+    };
+    /** Unsubscribes from the global subscriptions. */
+    /**
+     * Unsubscribes from the global subscriptions.
+     * @private
+     * @return {?}
+     */
+    DragRef.prototype._removeSubscriptions = /**
+     * Unsubscribes from the global subscriptions.
+     * @private
+     * @return {?}
+     */
+    function () {
+        this._pointerMoveSubscription.unsubscribe();
+        this._pointerUpSubscription.unsubscribe();
+    };
+    /** Destroys the preview element and its ViewRef. */
+    /**
+     * Destroys the preview element and its ViewRef.
+     * @private
+     * @return {?}
+     */
+    DragRef.prototype._destroyPreview = /**
+     * Destroys the preview element and its ViewRef.
+     * @private
+     * @return {?}
+     */
+    function () {
+        if (this._preview) {
+            removeElement(this._preview);
+        }
+        if (this._previewRef) {
+            this._previewRef.destroy();
+        }
+        this._preview = this._previewRef = (/** @type {?} */ (null));
+    };
+    /** Destroys the placeholder element and its ViewRef. */
+    /**
+     * Destroys the placeholder element and its ViewRef.
+     * @private
+     * @return {?}
+     */
+    DragRef.prototype._destroyPlaceholder = /**
+     * Destroys the placeholder element and its ViewRef.
+     * @private
+     * @return {?}
+     */
+    function () {
+        if (this._placeholder) {
+            removeElement(this._placeholder);
+        }
+        if (this._placeholderRef) {
+            this._placeholderRef.destroy();
+        }
+        this._placeholder = this._placeholderRef = (/** @type {?} */ (null));
+    };
+    /** Starts the dragging sequence. */
+    /**
+     * Starts the dragging sequence.
+     * @private
+     * @param {?} event
+     * @return {?}
+     */
+    DragRef.prototype._startDragSequence = /**
+     * Starts the dragging sequence.
+     * @private
+     * @param {?} event
+     * @return {?}
+     */
+    function (event) {
+        // Emit the event on the item before the one on the container.
+        this.started.next({ source: this });
+        if (isTouchEvent(event)) {
+            this._lastTouchEventTime = Date.now();
+        }
+        if (this._dropContainer) {
+            /** @type {?} */
+            var element = this._rootElement;
+            // Grab the `nextSibling` before the preview and placeholder
+            // have been created so we don't get the preview by accident.
+            this._nextSibling = element.nextSibling;
+            /** @type {?} */
+            var preview = this._preview = this._createPreviewElement();
+            /** @type {?} */
+            var placeholder = this._placeholder = this._createPlaceholderElement();
+            // We move the element out at the end of the body and we make it hidden, because keeping it in
+            // place will throw off the consumer's `:last-child` selectors. We can't remove the element
+            // from the DOM completely, because iOS will stop firing all subsequent events in the chain.
+            element.style.display = 'none';
+            this._document.body.appendChild((/** @type {?} */ (element.parentNode)).replaceChild(placeholder, element));
+            this._document.body.appendChild(preview);
+            this._dropContainer.start();
+        }
+    };
+    /**
+     * Sets up the different variables and subscriptions
+     * that will be necessary for the dragging sequence.
+     * @param referenceElement Element that started the drag sequence.
+     * @param event Browser event object that started the sequence.
+     */
+    /**
+     * Sets up the different variables and subscriptions
+     * that will be necessary for the dragging sequence.
+     * @private
+     * @param {?} referenceElement Element that started the drag sequence.
+     * @param {?} event Browser event object that started the sequence.
+     * @return {?}
+     */
+    DragRef.prototype._initializeDragSequence = /**
+     * Sets up the different variables and subscriptions
+     * that will be necessary for the dragging sequence.
+     * @private
+     * @param {?} referenceElement Element that started the drag sequence.
+     * @param {?} event Browser event object that started the sequence.
+     * @return {?}
+     */
+    function (referenceElement, event) {
+        // Always stop propagation for the event that initializes
+        // the dragging sequence, in order to prevent it from potentially
+        // starting another sequence for a draggable parent somewhere up the DOM tree.
+        event.stopPropagation();
+        /** @type {?} */
+        var isDragging = this.isDragging();
+        /** @type {?} */
+        var isTouchSequence = isTouchEvent(event);
+        /** @type {?} */
+        var isAuxiliaryMouseButton = !isTouchSequence && ((/** @type {?} */ (event))).button !== 0;
+        /** @type {?} */
+        var rootElement = this._rootElement;
+        /** @type {?} */
+        var isSyntheticEvent = !isTouchSequence && this._lastTouchEventTime &&
+            this._lastTouchEventTime + MOUSE_EVENT_IGNORE_TIME > Date.now();
+        // If the event started from an element with the native HTML drag&drop, it'll interfere
+        // with our own dragging (e.g. `img` tags do it by default). Prevent the default action
+        // to stop it from happening. Note that preventing on `dragstart` also seems to work, but
+        // it's flaky and it fails if the user drags it away quickly. Also note that we only want
+        // to do this for `mousedown` since doing the same for `touchstart` will stop any `click`
+        // events from firing on touch devices.
+        if (event.target && ((/** @type {?} */ (event.target))).draggable && event.type === 'mousedown') {
+            event.preventDefault();
+        }
+        // Abort if the user is already dragging or is using a mouse button other than the primary one.
+        if (isDragging || isAuxiliaryMouseButton || isSyntheticEvent) {
+            return;
+        }
+        // Cache the previous transform amount only after the first drag sequence, because
+        // we don't want our own transforms to stack on top of each other.
+        if (this._initialTransform == null) {
+            this._initialTransform = this._rootElement.style.transform || '';
+        }
+        // If we've got handles, we need to disable the tap highlight on the entire root element,
+        // otherwise iOS will still add it, even though all the drag interactions on the handle
+        // are disabled.
+        if (this._handles.length) {
+            this._rootElementTapHighlight = rootElement.style.webkitTapHighlightColor;
+            rootElement.style.webkitTapHighlightColor = 'transparent';
+        }
+        this._toggleNativeDragInteractions();
+        this._hasStartedDragging = this._hasMoved = false;
+        this._initialContainer = (/** @type {?} */ (this._dropContainer));
+        this._pointerMoveSubscription = this._dragDropRegistry.pointerMove.subscribe(this._pointerMove);
+        this._pointerUpSubscription = this._dragDropRegistry.pointerUp.subscribe(this._pointerUp);
+        this._scrollPosition = this._viewportRuler.getViewportScrollPosition();
+        if (this._boundaryElement) {
+            this._boundaryRect = this._boundaryElement.getBoundingClientRect();
+        }
+        // If we have a custom preview template, the element won't be visible anyway so we avoid the
+        // extra `getBoundingClientRect` calls and just move the preview next to the cursor.
+        this._pickupPositionInElement = this._previewTemplate && this._previewTemplate.template ?
+            { x: 0, y: 0 } :
+            this._getPointerPositionInElement(referenceElement, event);
+        /** @type {?} */
+        var pointerPosition = this._pickupPositionOnPage = this._getPointerPositionOnPage(event);
+        this._pointerDirectionDelta = { x: 0, y: 0 };
+        this._pointerPositionAtLastDirectionChange = { x: pointerPosition.x, y: pointerPosition.y };
+        this._dragDropRegistry.startDragging(this, event);
+    };
+    /** Cleans up the DOM artifacts that were added to facilitate the element being dragged. */
+    /**
+     * Cleans up the DOM artifacts that were added to facilitate the element being dragged.
+     * @private
+     * @param {?} event
+     * @return {?}
+     */
+    DragRef.prototype._cleanupDragArtifacts = /**
+     * Cleans up the DOM artifacts that were added to facilitate the element being dragged.
+     * @private
+     * @param {?} event
+     * @return {?}
+     */
+    function (event) {
+        var _this = this;
+        // Restore the element's visibility and insert it at its old position in the DOM.
+        // It's important that we maintain the position, because moving the element around in the DOM
+        // can throw off `NgFor` which does smart diffing and re-creates elements only when necessary,
+        // while moving the existing elements in all other cases.
+        this._rootElement.style.display = '';
+        if (this._nextSibling) {
+            (/** @type {?} */ (this._nextSibling.parentNode)).insertBefore(this._rootElement, this._nextSibling);
+        }
+        else {
+            this._initialContainer.element.appendChild(this._rootElement);
+        }
+        this._destroyPreview();
+        this._destroyPlaceholder();
+        this._boundaryRect = this._previewRect = undefined;
+        // Re-enter the NgZone since we bound `document` events on the outside.
+        this._ngZone.run(function () {
+            /** @type {?} */
+            var container = (/** @type {?} */ (_this._dropContainer));
+            /** @type {?} */
+            var currentIndex = container.getItemIndex(_this);
+            var _a = _this._getPointerPositionOnPage(event), x = _a.x, y = _a.y;
+            /** @type {?} */
+            var isPointerOverContainer = container._isOverContainer(x, y);
+            _this.ended.next({ source: _this });
+            _this.dropped.next({
+                item: _this,
+                currentIndex: currentIndex,
+                previousIndex: _this._initialContainer.getItemIndex(_this),
+                container: container,
+                previousContainer: _this._initialContainer,
+                isPointerOverContainer: isPointerOverContainer
+            });
+            container.drop(_this, currentIndex, _this._initialContainer, isPointerOverContainer);
+            _this._dropContainer = _this._initialContainer;
+        });
+    };
+    /**
+     * Updates the item's position in its drop container, or moves it
+     * into a new one, depending on its current drag position.
+     */
+    /**
+     * Updates the item's position in its drop container, or moves it
+     * into a new one, depending on its current drag position.
+     * @private
+     * @param {?} __0
+     * @return {?}
+     */
+    DragRef.prototype._updateActiveDropContainer = /**
+     * Updates the item's position in its drop container, or moves it
+     * into a new one, depending on its current drag position.
+     * @private
+     * @param {?} __0
+     * @return {?}
+     */
+    function (_a) {
+        var _this = this;
+        var x = _a.x, y = _a.y;
+        // Drop container that draggable has been moved into.
+        /** @type {?} */
+        var newContainer = (/** @type {?} */ (this._dropContainer))._getSiblingContainerFromPosition(this, x, y) ||
+            this._initialContainer._getSiblingContainerFromPosition(this, x, y);
+        // If we couldn't find a new container to move the item into, and the item has left it's
+        // initial container, check whether the it's over the initial container. This handles the
+        // case where two containers are connected one way and the user tries to undo dragging an
+        // item into a new container.
+        if (!newContainer && this._dropContainer !== this._initialContainer &&
+            this._initialContainer._isOverContainer(x, y)) {
+            newContainer = this._initialContainer;
+        }
+        if (newContainer && newContainer !== this._dropContainer) {
+            this._ngZone.run(function () {
+                // Notify the old container that the item has left.
+                _this.exited.next({ item: _this, container: (/** @type {?} */ (_this._dropContainer)) });
+                (/** @type {?} */ (_this._dropContainer)).exit(_this);
+                // Notify the new container that the item has entered.
+                _this.entered.next({ item: _this, container: (/** @type {?} */ (newContainer)) });
+                _this._dropContainer = (/** @type {?} */ (newContainer));
+                _this._dropContainer.enter(_this, x, y);
+            });
+        }
+        (/** @type {?} */ (this._dropContainer))._sortItem(this, x, y, this._pointerDirectionDelta);
+        this._preview.style.transform =
+            getTransform(x - this._pickupPositionInElement.x, y - this._pickupPositionInElement.y);
+    };
+    /**
+     * Creates the element that will be rendered next to the user's pointer
+     * and will be used as a preview of the element that is being dragged.
+     */
+    /**
+     * Creates the element that will be rendered next to the user's pointer
+     * and will be used as a preview of the element that is being dragged.
+     * @private
+     * @return {?}
+     */
+    DragRef.prototype._createPreviewElement = /**
+     * Creates the element that will be rendered next to the user's pointer
+     * and will be used as a preview of the element that is being dragged.
+     * @private
+     * @return {?}
+     */
+    function () {
+        /** @type {?} */
+        var previewConfig = this._previewTemplate;
+        /** @type {?} */
+        var previewTemplate = previewConfig ? previewConfig.template : null;
+        /** @type {?} */
+        var preview;
+        if (previewTemplate) {
+            /** @type {?} */
+            var viewRef = (/** @type {?} */ (previewConfig)).viewContainer.createEmbeddedView(previewTemplate, (/** @type {?} */ (previewConfig)).context);
+            preview = viewRef.rootNodes[0];
+            this._previewRef = viewRef;
+            preview.style.transform =
+                getTransform(this._pickupPositionOnPage.x, this._pickupPositionOnPage.y);
+        }
+        else {
+            /** @type {?} */
+            var element = this._rootElement;
+            /** @type {?} */
+            var elementRect = element.getBoundingClientRect();
+            preview = deepCloneNode(element);
+            preview.style.width = elementRect.width + "px";
+            preview.style.height = elementRect.height + "px";
+            preview.style.transform = getTransform(elementRect.left, elementRect.top);
+        }
+        extendStyles(preview.style, {
+            // It's important that we disable the pointer events on the preview, because
+            // it can throw off the `document.elementFromPoint` calls in the `CdkDropList`.
+            pointerEvents: 'none',
+            position: 'fixed',
+            top: '0',
+            left: '0',
+            zIndex: '1000'
+        });
+        toggleNativeDragInteractions(preview, false);
+        preview.classList.add('cdk-drag-preview');
+        preview.setAttribute('dir', this._direction);
+        return preview;
+    };
+    /**
+     * Animates the preview element from its current position to the location of the drop placeholder.
+     * @returns Promise that resolves when the animation completes.
+     */
+    /**
+     * Animates the preview element from its current position to the location of the drop placeholder.
+     * @private
+     * @return {?} Promise that resolves when the animation completes.
+     */
+    DragRef.prototype._animatePreviewToPlaceholder = /**
+     * Animates the preview element from its current position to the location of the drop placeholder.
+     * @private
+     * @return {?} Promise that resolves when the animation completes.
+     */
+    function () {
+        var _this = this;
+        // If the user hasn't moved yet, the transitionend event won't fire.
+        if (!this._hasMoved) {
+            return Promise.resolve();
+        }
+        /** @type {?} */
+        var placeholderRect = this._placeholder.getBoundingClientRect();
+        // Apply the class that adds a transition to the preview.
+        this._preview.classList.add('cdk-drag-animating');
+        // Move the preview to the placeholder position.
+        this._preview.style.transform = getTransform(placeholderRect.left, placeholderRect.top);
+        // If the element doesn't have a `transition`, the `transitionend` event won't fire. Since
+        // we need to trigger a style recalculation in order for the `cdk-drag-animating` class to
+        // apply its style, we take advantage of the available info to figure out whether we need to
+        // bind the event in the first place.
+        /** @type {?} */
+        var duration = getTransformTransitionDurationInMs(this._preview);
+        if (duration === 0) {
+            return Promise.resolve();
+        }
+        return this._ngZone.runOutsideAngular(function () {
+            return new Promise(function (resolve) {
+                /** @type {?} */
+                var handler = (/** @type {?} */ ((function (event) {
+                    if (!event || (event.target === _this._preview && event.propertyName === 'transform')) {
+                        _this._preview.removeEventListener('transitionend', handler);
+                        resolve();
+                        clearTimeout(timeout);
+                    }
+                })));
+                // If a transition is short enough, the browser might not fire the `transitionend` event.
+                // Since we know how long it's supposed to take, add a timeout with a 50% buffer that'll
+                // fire if the transition hasn't completed when it was supposed to.
+                /** @type {?} */
+                var timeout = setTimeout((/** @type {?} */ (handler)), duration * 1.5);
+                _this._preview.addEventListener('transitionend', handler);
+            });
+        });
+    };
+    /** Creates an element that will be shown instead of the current element while dragging. */
+    /**
+     * Creates an element that will be shown instead of the current element while dragging.
+     * @private
+     * @return {?}
+     */
+    DragRef.prototype._createPlaceholderElement = /**
+     * Creates an element that will be shown instead of the current element while dragging.
+     * @private
+     * @return {?}
+     */
+    function () {
+        /** @type {?} */
+        var placeholderConfig = this._placeholderTemplate;
+        /** @type {?} */
+        var placeholderTemplate = placeholderConfig ? placeholderConfig.template : null;
+        /** @type {?} */
+        var placeholder;
+        if (placeholderTemplate) {
+            this._placeholderRef = (/** @type {?} */ (placeholderConfig)).viewContainer.createEmbeddedView(placeholderTemplate, (/** @type {?} */ (placeholderConfig)).context);
+            placeholder = this._placeholderRef.rootNodes[0];
+        }
+        else {
+            placeholder = deepCloneNode(this._rootElement);
+        }
+        placeholder.classList.add('cdk-drag-placeholder');
+        return placeholder;
+    };
+    /**
+     * Figures out the coordinates at which an element was picked up.
+     * @param referenceElement Element that initiated the dragging.
+     * @param event Event that initiated the dragging.
+     */
+    /**
+     * Figures out the coordinates at which an element was picked up.
+     * @private
+     * @param {?} referenceElement Element that initiated the dragging.
+     * @param {?} event Event that initiated the dragging.
+     * @return {?}
+     */
+    DragRef.prototype._getPointerPositionInElement = /**
+     * Figures out the coordinates at which an element was picked up.
+     * @private
+     * @param {?} referenceElement Element that initiated the dragging.
+     * @param {?} event Event that initiated the dragging.
+     * @return {?}
+     */
+    function (referenceElement, event) {
+        /** @type {?} */
+        var elementRect = this._rootElement.getBoundingClientRect();
+        /** @type {?} */
+        var handleElement = referenceElement === this._rootElement ? null : referenceElement;
+        /** @type {?} */
+        var referenceRect = handleElement ? handleElement.getBoundingClientRect() : elementRect;
+        /** @type {?} */
+        var point = isTouchEvent(event) ? event.targetTouches[0] : event;
+        /** @type {?} */
+        var x = point.pageX - referenceRect.left - this._scrollPosition.left;
+        /** @type {?} */
+        var y = point.pageY - referenceRect.top - this._scrollPosition.top;
+        return {
+            x: referenceRect.left - elementRect.left + x,
+            y: referenceRect.top - elementRect.top + y
+        };
+    };
+    /** Determines the point of the page that was touched by the user. */
+    /**
+     * Determines the point of the page that was touched by the user.
+     * @private
+     * @param {?} event
+     * @return {?}
+     */
+    DragRef.prototype._getPointerPositionOnPage = /**
+     * Determines the point of the page that was touched by the user.
+     * @private
+     * @param {?} event
+     * @return {?}
+     */
+    function (event) {
+        // `touches` will be empty for start/end events so we have to fall back to `changedTouches`.
+        /** @type {?} */
+        var point = isTouchEvent(event) ? (event.touches[0] || event.changedTouches[0]) : event;
+        return {
+            x: point.pageX - this._scrollPosition.left,
+            y: point.pageY - this._scrollPosition.top
+        };
+    };
+    /** Gets the pointer position on the page, accounting for any position constraints. */
+    /**
+     * Gets the pointer position on the page, accounting for any position constraints.
+     * @private
+     * @param {?} event
+     * @return {?}
+     */
+    DragRef.prototype._getConstrainedPointerPosition = /**
+     * Gets the pointer position on the page, accounting for any position constraints.
+     * @private
+     * @param {?} event
+     * @return {?}
+     */
+    function (event) {
+        /** @type {?} */
+        var point = this._getPointerPositionOnPage(event);
+        /** @type {?} */
+        var dropContainerLock = this._dropContainer ? this._dropContainer.lockAxis : null;
+        if (this.lockAxis === 'x' || dropContainerLock === 'x') {
+            point.y = this._pickupPositionOnPage.y;
+        }
+        else if (this.lockAxis === 'y' || dropContainerLock === 'y') {
+            point.x = this._pickupPositionOnPage.x;
+        }
+        if (this._boundaryRect) {
+            var _a = this._pickupPositionInElement, pickupX = _a.x, pickupY = _a.y;
+            /** @type {?} */
+            var boundaryRect = this._boundaryRect;
+            /** @type {?} */
+            var previewRect = (/** @type {?} */ (this._previewRect));
+            /** @type {?} */
+            var minY = boundaryRect.top + pickupY;
+            /** @type {?} */
+            var maxY = boundaryRect.bottom - (previewRect.height - pickupY);
+            /** @type {?} */
+            var minX = boundaryRect.left + pickupX;
+            /** @type {?} */
+            var maxX = boundaryRect.right - (previewRect.width - pickupX);
+            point.x = clamp(point.x, minX, maxX);
+            point.y = clamp(point.y, minY, maxY);
+        }
+        return point;
+    };
+    /** Updates the current drag delta, based on the user's current pointer position on the page. */
+    /**
+     * Updates the current drag delta, based on the user's current pointer position on the page.
+     * @private
+     * @param {?} pointerPositionOnPage
+     * @return {?}
+     */
+    DragRef.prototype._updatePointerDirectionDelta = /**
+     * Updates the current drag delta, based on the user's current pointer position on the page.
+     * @private
+     * @param {?} pointerPositionOnPage
+     * @return {?}
+     */
+    function (pointerPositionOnPage) {
+        var x = pointerPositionOnPage.x, y = pointerPositionOnPage.y;
+        /** @type {?} */
+        var delta = this._pointerDirectionDelta;
+        /** @type {?} */
+        var positionSinceLastChange = this._pointerPositionAtLastDirectionChange;
+        // Amount of pixels the user has dragged since the last time the direction changed.
+        /** @type {?} */
+        var changeX = Math.abs(x - positionSinceLastChange.x);
+        /** @type {?} */
+        var changeY = Math.abs(y - positionSinceLastChange.y);
+        // Because we handle pointer events on a per-pixel basis, we don't want the delta
+        // to change for every pixel, otherwise anything that depends on it can look erratic.
+        // To make the delta more consistent, we track how much the user has moved since the last
+        // delta change and we only update it after it has reached a certain threshold.
+        if (changeX > this._config.pointerDirectionChangeThreshold) {
+            delta.x = x > positionSinceLastChange.x ? 1 : -1;
+            positionSinceLastChange.x = x;
+        }
+        if (changeY > this._config.pointerDirectionChangeThreshold) {
+            delta.y = y > positionSinceLastChange.y ? 1 : -1;
+            positionSinceLastChange.y = y;
+        }
+        return delta;
+    };
+    /** Toggles the native drag interactions, based on how many handles are registered. */
+    /**
+     * Toggles the native drag interactions, based on how many handles are registered.
+     * @private
+     * @return {?}
+     */
+    DragRef.prototype._toggleNativeDragInteractions = /**
+     * Toggles the native drag interactions, based on how many handles are registered.
+     * @private
+     * @return {?}
+     */
+    function () {
+        if (!this._rootElement || !this._handles) {
+            return;
+        }
+        /** @type {?} */
+        var shouldEnable = this.disabled || this._handles.length > 0;
+        if (shouldEnable !== this._nativeInteractionsEnabled) {
+            this._nativeInteractionsEnabled = shouldEnable;
+            toggleNativeDragInteractions(this._rootElement, shouldEnable);
+        }
+    };
+    /** Removes the manually-added event listeners from the root element. */
+    /**
+     * Removes the manually-added event listeners from the root element.
+     * @private
+     * @param {?} element
+     * @return {?}
+     */
+    DragRef.prototype._removeRootElementListeners = /**
+     * Removes the manually-added event listeners from the root element.
+     * @private
+     * @param {?} element
+     * @return {?}
+     */
+    function (element) {
+        element.removeEventListener('mousedown', this._pointerDown, activeEventListenerOptions);
+        element.removeEventListener('touchstart', this._pointerDown, passiveEventListenerOptions);
+    };
+    return DragRef;
+}());
+/**
+ * Gets a 3d `transform` that can be applied to an element.
+ * @param {?} x Desired position of the element along the X axis.
+ * @param {?} y Desired position of the element along the Y axis.
+ * @return {?}
+ */
+function getTransform(x, y) {
+    // Round the transforms since some browsers will
+    // blur the elements for sub-pixel transforms.
+    return "translate3d(" + Math.round(x) + "px, " + Math.round(y) + "px, 0)";
+}
+/**
+ * Creates a deep clone of an element.
+ * @param {?} node
+ * @return {?}
+ */
+function deepCloneNode(node) {
+    /** @type {?} */
+    var clone = (/** @type {?} */ (node.cloneNode(true)));
+    // Remove the `id` to avoid having multiple elements with the same id on the page.
+    clone.removeAttribute('id');
+    return clone;
+}
+/**
+ * Clamps a value between a minimum and a maximum.
+ * @param {?} value
+ * @param {?} min
+ * @param {?} max
+ * @return {?}
+ */
+function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
+}
+/**
+ * Helper to remove an element from the DOM and to do all the necessary null checks.
+ * @param {?} element Element to be removed.
+ * @return {?}
+ */
+function removeElement(element) {
+    if (element && element.parentNode) {
+        element.parentNode.removeChild(element);
+    }
+}
+/**
+ * Determines whether an event is a touch event.
+ * @param {?} event
+ * @return {?}
+ */
+function isTouchEvent(event) {
+    return event.type.startsWith('touch');
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * Moves an item one index in an array to another.
+ * @template T
+ * @param {?} array Array in which to move the item.
+ * @param {?} fromIndex Starting index of the item.
+ * @param {?} toIndex Index to which the item should be moved.
+ * @return {?}
+ */
+function moveItemInArray(array, fromIndex, toIndex) {
+    /** @type {?} */
+    var from = clamp$1(fromIndex, array.length - 1);
+    /** @type {?} */
+    var to = clamp$1(toIndex, array.length - 1);
+    if (from === to) {
+        return;
+    }
+    /** @type {?} */
+    var target = array[from];
+    /** @type {?} */
+    var delta = to < from ? -1 : 1;
+    for (var i = from; i !== to; i += delta) {
+        array[i] = array[i + delta];
+    }
+    array[to] = target;
+}
+/**
+ * Moves an item from one array to another.
+ * @template T
+ * @param {?} currentArray Array from which to transfer the item.
+ * @param {?} targetArray Array into which to put the item.
+ * @param {?} currentIndex Index of the item in its current array.
+ * @param {?} targetIndex Index at which to insert the item.
+ * @return {?}
+ */
+function transferArrayItem(currentArray, targetArray, currentIndex, targetIndex) {
+    /** @type {?} */
+    var from = clamp$1(currentIndex, currentArray.length - 1);
+    /** @type {?} */
+    var to = clamp$1(targetIndex, targetArray.length);
+    if (currentArray.length) {
+        targetArray.splice(to, 0, currentArray.splice(from, 1)[0]);
+    }
+}
+/**
+ * Copies an item from one array to another, leaving it in its
+ * original position in current array.
+ * @template T
+ * @param {?} currentArray Array from which to copy the item.
+ * @param {?} targetArray Array into which is copy the item.
+ * @param {?} currentIndex Index of the item in its current array.
+ * @param {?} targetIndex Index at which to insert the item.
+ *
+ * @return {?}
+ */
+function copyArrayItem(currentArray, targetArray, currentIndex, targetIndex) {
+    /** @type {?} */
+    var to = clamp$1(targetIndex, targetArray.length);
+    if (currentArray.length) {
+        targetArray.splice(to, 0, currentArray[currentIndex]);
+    }
+}
+/**
+ * Clamps a number between zero and a maximum.
+ * @param {?} value
+ * @param {?} max
+ * @return {?}
+ */
+function clamp$1(value, max) {
+    return Math.max(0, Math.min(max, value));
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * Counter used to generate unique ids for drop refs.
+ * @type {?}
+ */
+var _uniqueIdCounter = 0;
+/**
+ * Proximity, as a ratio to width/height, at which a
+ * dragged item will affect the drop container.
+ * @type {?}
+ */
+var DROP_PROXIMITY_THRESHOLD = 0.05;
+/**
+ * Reference to a drop list. Used to manipulate or dispose of the container.
+ * \@docs-private
+ * @template T
+ */
+var  /**
+ * Reference to a drop list. Used to manipulate or dispose of the container.
+ * \@docs-private
+ * @template T
+ */
+DropListRef = /** @class */ (function () {
+    function DropListRef(element, _dragDropRegistry, _document) {
+        this._dragDropRegistry = _dragDropRegistry;
+        /**
+         * Unique ID for the drop list.
+         * @deprecated No longer being used. To be removed.
+         * \@breaking-change 8.0.0
+         */
+        this.id = "cdk-drop-list-ref-" + _uniqueIdCounter++;
+        /**
+         * Whether starting a dragging sequence from this container is disabled.
+         */
+        this.disabled = false;
+        /**
+         * Function that is used to determine whether an item
+         * is allowed to be moved into a drop container.
+         */
+        this.enterPredicate = function () { return true; };
+        /**
+         * Emits right before dragging has started.
+         */
+        this.beforeStarted = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        /**
+         * Emits when the user has moved a new drag item into this container.
+         */
+        this.entered = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        /**
+         * Emits when the user removes an item from the container
+         * by dragging it into another container.
+         */
+        this.exited = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        /**
+         * Emits when the user drops an item inside the container.
+         */
+        this.dropped = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        /**
+         * Emits as the user is swapping items while actively dragging.
+         */
+        this.sorted = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        /**
+         * Whether an item in the list is being dragged.
+         */
+        this._isDragging = false;
+        /**
+         * Cache of the dimensions of all the items inside the container.
+         */
+        this._itemPositions = [];
+        /**
+         * Keeps track of the item that was last swapped with the dragged item, as
+         * well as what direction the pointer was moving in when the swap occured.
+         */
+        this._previousSwap = { drag: (/** @type {?} */ (null)), delta: 0 };
+        /**
+         * Drop lists that are connected to the current one.
+         */
+        this._siblings = [];
+        /**
+         * Direction in which the list is oriented.
+         */
+        this._orientation = 'vertical';
+        /**
+         * Connected siblings that currently have a dragged item.
+         */
+        this._activeSiblings = new Set();
+        /**
+         * Layout direction of the drop list.
+         */
+        this._direction = 'ltr';
+        _dragDropRegistry.registerDropContainer(this);
+        this._document = _document;
+        this.element = element instanceof _angular_core__WEBPACK_IMPORTED_MODULE_3__["ElementRef"] ? element.nativeElement : element;
+    }
+    /** Removes the drop list functionality from the DOM element. */
+    /**
+     * Removes the drop list functionality from the DOM element.
+     * @return {?}
+     */
+    DropListRef.prototype.dispose = /**
+     * Removes the drop list functionality from the DOM element.
+     * @return {?}
+     */
+    function () {
+        this.beforeStarted.complete();
+        this.entered.complete();
+        this.exited.complete();
+        this.dropped.complete();
+        this.sorted.complete();
+        this._activeSiblings.clear();
+        this._dragDropRegistry.removeDropContainer(this);
+    };
+    /** Whether an item from this list is currently being dragged. */
+    /**
+     * Whether an item from this list is currently being dragged.
+     * @return {?}
+     */
+    DropListRef.prototype.isDragging = /**
+     * Whether an item from this list is currently being dragged.
+     * @return {?}
+     */
+    function () {
+        return this._isDragging;
+    };
+    /** Starts dragging an item. */
+    /**
+     * Starts dragging an item.
+     * @return {?}
+     */
+    DropListRef.prototype.start = /**
+     * Starts dragging an item.
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        this.beforeStarted.next();
+        this._isDragging = true;
+        this._activeDraggables = this._draggables.slice();
+        this._cacheOwnPosition();
+        this._cacheItemPositions();
+        this._siblings.forEach(function (sibling) { return sibling._startReceiving(_this); });
+    };
+    /**
+     * Emits an event to indicate that the user moved an item into the container.
+     * @param item Item that was moved into the container.
+     * @param pointerX Position of the item along the X axis.
+     * @param pointerY Position of the item along the Y axis.
+     */
+    /**
+     * Emits an event to indicate that the user moved an item into the container.
+     * @param {?} item Item that was moved into the container.
+     * @param {?} pointerX Position of the item along the X axis.
+     * @param {?} pointerY Position of the item along the Y axis.
+     * @return {?}
+     */
+    DropListRef.prototype.enter = /**
+     * Emits an event to indicate that the user moved an item into the container.
+     * @param {?} item Item that was moved into the container.
+     * @param {?} pointerX Position of the item along the X axis.
+     * @param {?} pointerY Position of the item along the Y axis.
+     * @return {?}
+     */
+    function (item, pointerX, pointerY) {
+        this.entered.next({ item: item, container: this });
+        this.start();
+        // We use the coordinates of where the item entered the drop
+        // zone to figure out at which index it should be inserted.
+        /** @type {?} */
+        var newIndex = this._getItemIndexFromPointerPosition(item, pointerX, pointerY);
+        /** @type {?} */
+        var currentIndex = this._activeDraggables.indexOf(item);
+        /** @type {?} */
+        var newPositionReference = this._activeDraggables[newIndex];
+        /** @type {?} */
+        var placeholder = item.getPlaceholderElement();
+        // Since the item may be in the `activeDraggables` already (e.g. if the user dragged it
+        // into another container and back again), we have to ensure that it isn't duplicated.
+        if (currentIndex > -1) {
+            this._activeDraggables.splice(currentIndex, 1);
+        }
+        // Don't use items that are being dragged as a reference, because
+        // their element has been moved down to the bottom of the body.
+        if (newPositionReference && !this._dragDropRegistry.isDragging(newPositionReference)) {
+            /** @type {?} */
+            var element = newPositionReference.getRootElement();
+            (/** @type {?} */ (element.parentElement)).insertBefore(placeholder, element);
+            this._activeDraggables.splice(newIndex, 0, item);
+        }
+        else {
+            this.element.appendChild(placeholder);
+            this._activeDraggables.push(item);
+        }
+        // The transform needs to be cleared so it doesn't throw off the measurements.
+        placeholder.style.transform = '';
+        // Note that the positions were already cached when we called `start` above,
+        // but we need to refresh them since the amount of items has changed.
+        this._cacheItemPositions();
+    };
+    /**
+     * Removes an item from the container after it was dragged into another container by the user.
+     * @param item Item that was dragged out.
+     */
+    /**
+     * Removes an item from the container after it was dragged into another container by the user.
+     * @param {?} item Item that was dragged out.
+     * @return {?}
+     */
+    DropListRef.prototype.exit = /**
+     * Removes an item from the container after it was dragged into another container by the user.
+     * @param {?} item Item that was dragged out.
+     * @return {?}
+     */
+    function (item) {
+        this._reset();
+        this.exited.next({ item: item, container: this });
+    };
+    /**
+     * Drops an item into this container.
+     * @param item Item being dropped into the container.
+     * @param currentIndex Index at which the item should be inserted.
+     * @param previousContainer Container from which the item got dragged in.
+     * @param isPointerOverContainer Whether the user's pointer was over the
+     *    container when the item was dropped.
+     */
+    /**
+     * Drops an item into this container.
+     * @param {?} item Item being dropped into the container.
+     * @param {?} currentIndex Index at which the item should be inserted.
+     * @param {?} previousContainer Container from which the item got dragged in.
+     * @param {?} isPointerOverContainer Whether the user's pointer was over the
+     *    container when the item was dropped.
+     * @return {?}
+     */
+    DropListRef.prototype.drop = /**
+     * Drops an item into this container.
+     * @param {?} item Item being dropped into the container.
+     * @param {?} currentIndex Index at which the item should be inserted.
+     * @param {?} previousContainer Container from which the item got dragged in.
+     * @param {?} isPointerOverContainer Whether the user's pointer was over the
+     *    container when the item was dropped.
+     * @return {?}
+     */
+    function (item, currentIndex, previousContainer, isPointerOverContainer) {
+        this._reset();
+        this.dropped.next({
+            item: item,
+            currentIndex: currentIndex,
+            previousIndex: previousContainer.getItemIndex(item),
+            container: this,
+            previousContainer: previousContainer,
+            isPointerOverContainer: isPointerOverContainer
+        });
+    };
+    /**
+     * Sets the draggable items that are a part of this list.
+     * @param items Items that are a part of this list.
+     */
+    /**
+     * Sets the draggable items that are a part of this list.
+     * @template THIS
+     * @this {THIS}
+     * @param {?} items Items that are a part of this list.
+     * @return {THIS}
+     */
+    DropListRef.prototype.withItems = /**
+     * Sets the draggable items that are a part of this list.
+     * @template THIS
+     * @this {THIS}
+     * @param {?} items Items that are a part of this list.
+     * @return {THIS}
+     */
+    function (items) {
+        var _this = this;
+        (/** @type {?} */ (this))._draggables = items;
+        items.forEach(function (item) { return item._withDropContainer((/** @type {?} */ (_this))); });
+        return (/** @type {?} */ (this));
+    };
+    /** Sets the layout direction of the drop list. */
+    /**
+     * Sets the layout direction of the drop list.
+     * @template THIS
+     * @this {THIS}
+     * @param {?} direction
+     * @return {THIS}
+     */
+    DropListRef.prototype.withDirection = /**
+     * Sets the layout direction of the drop list.
+     * @template THIS
+     * @this {THIS}
+     * @param {?} direction
+     * @return {THIS}
+     */
+    function (direction) {
+        (/** @type {?} */ (this))._direction = direction;
+        return (/** @type {?} */ (this));
+    };
+    /**
+     * Sets the containers that are connected to this one. When two or more containers are
+     * connected, the user will be allowed to transfer items between them.
+     * @param connectedTo Other containers that the current containers should be connected to.
+     */
+    /**
+     * Sets the containers that are connected to this one. When two or more containers are
+     * connected, the user will be allowed to transfer items between them.
+     * @template THIS
+     * @this {THIS}
+     * @param {?} connectedTo Other containers that the current containers should be connected to.
+     * @return {THIS}
+     */
+    DropListRef.prototype.connectedTo = /**
+     * Sets the containers that are connected to this one. When two or more containers are
+     * connected, the user will be allowed to transfer items between them.
+     * @template THIS
+     * @this {THIS}
+     * @param {?} connectedTo Other containers that the current containers should be connected to.
+     * @return {THIS}
+     */
+    function (connectedTo) {
+        (/** @type {?} */ (this))._siblings = connectedTo.slice();
+        return (/** @type {?} */ (this));
+    };
+    /**
+     * Sets the orientation of the container.
+     * @param orientation New orientation for the container.
+     */
+    /**
+     * Sets the orientation of the container.
+     * @template THIS
+     * @this {THIS}
+     * @param {?} orientation New orientation for the container.
+     * @return {THIS}
+     */
+    DropListRef.prototype.withOrientation = /**
+     * Sets the orientation of the container.
+     * @template THIS
+     * @this {THIS}
+     * @param {?} orientation New orientation for the container.
+     * @return {THIS}
+     */
+    function (orientation) {
+        (/** @type {?} */ (this))._orientation = orientation;
+        return (/** @type {?} */ (this));
+    };
+    /**
+     * Figures out the index of an item in the container.
+     * @param item Item whose index should be determined.
+     */
+    /**
+     * Figures out the index of an item in the container.
+     * @param {?} item Item whose index should be determined.
+     * @return {?}
+     */
+    DropListRef.prototype.getItemIndex = /**
+     * Figures out the index of an item in the container.
+     * @param {?} item Item whose index should be determined.
+     * @return {?}
+     */
+    function (item) {
+        if (!this._isDragging) {
+            return this._draggables.indexOf(item);
+        }
+        // Items are sorted always by top/left in the cache, however they flow differently in RTL.
+        // The rest of the logic still stands no matter what orientation we're in, however
+        // we need to invert the array when determining the index.
+        /** @type {?} */
+        var items = this._orientation === 'horizontal' && this._direction === 'rtl' ?
+            this._itemPositions.slice().reverse() : this._itemPositions;
+        return findIndex(items, function (currentItem) { return currentItem.drag === item; });
+    };
+    /**
+     * Whether the list is able to receive the item that
+     * is currently being dragged inside a connected drop list.
+     */
+    /**
+     * Whether the list is able to receive the item that
+     * is currently being dragged inside a connected drop list.
+     * @return {?}
+     */
+    DropListRef.prototype.isReceiving = /**
+     * Whether the list is able to receive the item that
+     * is currently being dragged inside a connected drop list.
+     * @return {?}
+     */
+    function () {
+        return this._activeSiblings.size > 0;
+    };
+    /**
+     * Sorts an item inside the container based on its position.
+     * @param item Item to be sorted.
+     * @param pointerX Position of the item along the X axis.
+     * @param pointerY Position of the item along the Y axis.
+     * @param pointerDelta Direction in which the pointer is moving along each axis.
+     */
+    /**
+     * Sorts an item inside the container based on its position.
+     * @param {?} item Item to be sorted.
+     * @param {?} pointerX Position of the item along the X axis.
+     * @param {?} pointerY Position of the item along the Y axis.
+     * @param {?} pointerDelta Direction in which the pointer is moving along each axis.
+     * @return {?}
+     */
+    DropListRef.prototype._sortItem = /**
+     * Sorts an item inside the container based on its position.
+     * @param {?} item Item to be sorted.
+     * @param {?} pointerX Position of the item along the X axis.
+     * @param {?} pointerY Position of the item along the Y axis.
+     * @param {?} pointerDelta Direction in which the pointer is moving along each axis.
+     * @return {?}
+     */
+    function (item, pointerX, pointerY, pointerDelta) {
+        // Don't sort the item if it's out of range.
+        if (!this._isPointerNearDropContainer(pointerX, pointerY)) {
+            return;
+        }
+        /** @type {?} */
+        var siblings = this._itemPositions;
+        /** @type {?} */
+        var newIndex = this._getItemIndexFromPointerPosition(item, pointerX, pointerY, pointerDelta);
+        if (newIndex === -1 && siblings.length > 0) {
+            return;
+        }
+        /** @type {?} */
+        var isHorizontal = this._orientation === 'horizontal';
+        /** @type {?} */
+        var currentIndex = findIndex(siblings, function (currentItem) { return currentItem.drag === item; });
+        /** @type {?} */
+        var siblingAtNewPosition = siblings[newIndex];
+        /** @type {?} */
+        var currentPosition = siblings[currentIndex].clientRect;
+        /** @type {?} */
+        var newPosition = siblingAtNewPosition.clientRect;
+        /** @type {?} */
+        var delta = currentIndex > newIndex ? 1 : -1;
+        this._previousSwap.drag = siblingAtNewPosition.drag;
+        this._previousSwap.delta = isHorizontal ? pointerDelta.x : pointerDelta.y;
+        // How many pixels the item's placeholder should be offset.
+        /** @type {?} */
+        var itemOffset = this._getItemOffsetPx(currentPosition, newPosition, delta);
+        // How many pixels all the other items should be offset.
+        /** @type {?} */
+        var siblingOffset = this._getSiblingOffsetPx(currentIndex, siblings, delta);
+        // Save the previous order of the items before moving the item to its new index.
+        // We use this to check whether an item has been moved as a result of the sorting.
+        /** @type {?} */
+        var oldOrder = siblings.slice();
+        // Shuffle the array in place.
+        moveItemInArray(siblings, currentIndex, newIndex);
+        this.sorted.next({
+            previousIndex: currentIndex,
+            currentIndex: newIndex,
+            container: this,
+            item: item
+        });
+        siblings.forEach(function (sibling, index) {
+            // Don't do anything if the position hasn't changed.
+            if (oldOrder[index] === sibling) {
+                return;
+            }
+            /** @type {?} */
+            var isDraggedItem = sibling.drag === item;
+            /** @type {?} */
+            var offset = isDraggedItem ? itemOffset : siblingOffset;
+            /** @type {?} */
+            var elementToOffset = isDraggedItem ? item.getPlaceholderElement() :
+                sibling.drag.getRootElement();
+            // Update the offset to reflect the new position.
+            sibling.offset += offset;
+            // Since we're moving the items with a `transform`, we need to adjust their cached
+            // client rects to reflect their new position, as well as swap their positions in the cache.
+            // Note that we shouldn't use `getBoundingClientRect` here to update the cache, because the
+            // elements may be mid-animation which will give us a wrong result.
+            if (isHorizontal) {
+                // Round the transforms since some browsers will
+                // blur the elements, for sub-pixel transforms.
+                elementToOffset.style.transform = "translate3d(" + Math.round(sibling.offset) + "px, 0, 0)";
+                adjustClientRect(sibling.clientRect, 0, offset);
+            }
+            else {
+                elementToOffset.style.transform = "translate3d(0, " + Math.round(sibling.offset) + "px, 0)";
+                adjustClientRect(sibling.clientRect, offset, 0);
+            }
+        });
+    };
+    /** Caches the position of the drop list. */
+    /**
+     * Caches the position of the drop list.
+     * @private
+     * @return {?}
+     */
+    DropListRef.prototype._cacheOwnPosition = /**
+     * Caches the position of the drop list.
+     * @private
+     * @return {?}
+     */
+    function () {
+        this._clientRect = this.element.getBoundingClientRect();
+    };
+    /** Refreshes the position cache of the items and sibling containers. */
+    /**
+     * Refreshes the position cache of the items and sibling containers.
+     * @private
+     * @return {?}
+     */
+    DropListRef.prototype._cacheItemPositions = /**
+     * Refreshes the position cache of the items and sibling containers.
+     * @private
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        /** @type {?} */
+        var isHorizontal = this._orientation === 'horizontal';
+        this._itemPositions = this._activeDraggables.map(function (drag) {
+            /** @type {?} */
+            var elementToMeasure = _this._dragDropRegistry.isDragging(drag) ?
+                // If the element is being dragged, we have to measure the
+                // placeholder, because the element is hidden.
+                drag.getPlaceholderElement() :
+                drag.getRootElement();
+            /** @type {?} */
+            var clientRect = elementToMeasure.getBoundingClientRect();
+            return {
+                drag: drag,
+                offset: 0,
+                // We need to clone the `clientRect` here, because all the values on it are readonly
+                // and we need to be able to update them. Also we can't use a spread here, because
+                // the values on a `ClientRect` aren't own properties. See:
+                // https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect#Notes
+                clientRect: {
+                    top: clientRect.top,
+                    right: clientRect.right,
+                    bottom: clientRect.bottom,
+                    left: clientRect.left,
+                    width: clientRect.width,
+                    height: clientRect.height
+                }
+            };
+        }).sort(function (a, b) {
+            return isHorizontal ? a.clientRect.left - b.clientRect.left :
+                a.clientRect.top - b.clientRect.top;
+        });
+    };
+    /** Resets the container to its initial state. */
+    /**
+     * Resets the container to its initial state.
+     * @private
+     * @return {?}
+     */
+    DropListRef.prototype._reset = /**
+     * Resets the container to its initial state.
+     * @private
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        this._isDragging = false;
+        // TODO(crisbeto): may have to wait for the animations to finish.
+        this._activeDraggables.forEach(function (item) { return item.getRootElement().style.transform = ''; });
+        this._siblings.forEach(function (sibling) { return sibling._stopReceiving(_this); });
+        this._activeDraggables = [];
+        this._itemPositions = [];
+        this._previousSwap.drag = null;
+        this._previousSwap.delta = 0;
+    };
+    /**
+     * Gets the offset in pixels by which the items that aren't being dragged should be moved.
+     * @param currentIndex Index of the item currently being dragged.
+     * @param siblings All of the items in the list.
+     * @param delta Direction in which the user is moving.
+     */
+    /**
+     * Gets the offset in pixels by which the items that aren't being dragged should be moved.
+     * @private
+     * @param {?} currentIndex Index of the item currently being dragged.
+     * @param {?} siblings All of the items in the list.
+     * @param {?} delta Direction in which the user is moving.
+     * @return {?}
+     */
+    DropListRef.prototype._getSiblingOffsetPx = /**
+     * Gets the offset in pixels by which the items that aren't being dragged should be moved.
+     * @private
+     * @param {?} currentIndex Index of the item currently being dragged.
+     * @param {?} siblings All of the items in the list.
+     * @param {?} delta Direction in which the user is moving.
+     * @return {?}
+     */
+    function (currentIndex, siblings, delta) {
+        /** @type {?} */
+        var isHorizontal = this._orientation === 'horizontal';
+        /** @type {?} */
+        var currentPosition = siblings[currentIndex].clientRect;
+        /** @type {?} */
+        var immediateSibling = siblings[currentIndex + delta * -1];
+        /** @type {?} */
+        var siblingOffset = currentPosition[isHorizontal ? 'width' : 'height'] * delta;
+        if (immediateSibling) {
+            /** @type {?} */
+            var start = isHorizontal ? 'left' : 'top';
+            /** @type {?} */
+            var end = isHorizontal ? 'right' : 'bottom';
+            // Get the spacing between the start of the current item and the end of the one immediately
+            // after it in the direction in which the user is dragging, or vice versa. We add it to the
+            // offset in order to push the element to where it will be when it's inline and is influenced
+            // by the `margin` of its siblings.
+            if (delta === -1) {
+                siblingOffset -= immediateSibling.clientRect[start] - currentPosition[end];
+            }
+            else {
+                siblingOffset += currentPosition[start] - immediateSibling.clientRect[end];
+            }
+        }
+        return siblingOffset;
+    };
+    /**
+     * Checks whether the pointer coordinates are close to the drop container.
+     * @param pointerX Coordinates along the X axis.
+     * @param pointerY Coordinates along the Y axis.
+     */
+    /**
+     * Checks whether the pointer coordinates are close to the drop container.
+     * @private
+     * @param {?} pointerX Coordinates along the X axis.
+     * @param {?} pointerY Coordinates along the Y axis.
+     * @return {?}
+     */
+    DropListRef.prototype._isPointerNearDropContainer = /**
+     * Checks whether the pointer coordinates are close to the drop container.
+     * @private
+     * @param {?} pointerX Coordinates along the X axis.
+     * @param {?} pointerY Coordinates along the Y axis.
+     * @return {?}
+     */
+    function (pointerX, pointerY) {
+        var _a = this._clientRect, top = _a.top, right = _a.right, bottom = _a.bottom, left = _a.left, width = _a.width, height = _a.height;
+        /** @type {?} */
+        var xThreshold = width * DROP_PROXIMITY_THRESHOLD;
+        /** @type {?} */
+        var yThreshold = height * DROP_PROXIMITY_THRESHOLD;
+        return pointerY > top - yThreshold && pointerY < bottom + yThreshold &&
+            pointerX > left - xThreshold && pointerX < right + xThreshold;
+    };
+    /**
+     * Gets the offset in pixels by which the item that is being dragged should be moved.
+     * @param currentPosition Current position of the item.
+     * @param newPosition Position of the item where the current item should be moved.
+     * @param delta Direction in which the user is moving.
+     */
+    /**
+     * Gets the offset in pixels by which the item that is being dragged should be moved.
+     * @private
+     * @param {?} currentPosition Current position of the item.
+     * @param {?} newPosition Position of the item where the current item should be moved.
+     * @param {?} delta Direction in which the user is moving.
+     * @return {?}
+     */
+    DropListRef.prototype._getItemOffsetPx = /**
+     * Gets the offset in pixels by which the item that is being dragged should be moved.
+     * @private
+     * @param {?} currentPosition Current position of the item.
+     * @param {?} newPosition Position of the item where the current item should be moved.
+     * @param {?} delta Direction in which the user is moving.
+     * @return {?}
+     */
+    function (currentPosition, newPosition, delta) {
+        /** @type {?} */
+        var isHorizontal = this._orientation === 'horizontal';
+        /** @type {?} */
+        var itemOffset = isHorizontal ? newPosition.left - currentPosition.left :
+            newPosition.top - currentPosition.top;
+        // Account for differences in the item width/height.
+        if (delta === -1) {
+            itemOffset += isHorizontal ? newPosition.width - currentPosition.width :
+                newPosition.height - currentPosition.height;
+        }
+        return itemOffset;
+    };
+    /**
+     * Gets the index of an item in the drop container, based on the position of the user's pointer.
+     * @param item Item that is being sorted.
+     * @param pointerX Position of the user's pointer along the X axis.
+     * @param pointerY Position of the user's pointer along the Y axis.
+     * @param delta Direction in which the user is moving their pointer.
+     */
+    /**
+     * Gets the index of an item in the drop container, based on the position of the user's pointer.
+     * @private
+     * @param {?} item Item that is being sorted.
+     * @param {?} pointerX Position of the user's pointer along the X axis.
+     * @param {?} pointerY Position of the user's pointer along the Y axis.
+     * @param {?=} delta Direction in which the user is moving their pointer.
+     * @return {?}
+     */
+    DropListRef.prototype._getItemIndexFromPointerPosition = /**
+     * Gets the index of an item in the drop container, based on the position of the user's pointer.
+     * @private
+     * @param {?} item Item that is being sorted.
+     * @param {?} pointerX Position of the user's pointer along the X axis.
+     * @param {?} pointerY Position of the user's pointer along the Y axis.
+     * @param {?=} delta Direction in which the user is moving their pointer.
+     * @return {?}
+     */
+    function (item, pointerX, pointerY, delta) {
+        var _this = this;
+        /** @type {?} */
+        var isHorizontal = this._orientation === 'horizontal';
+        return findIndex(this._itemPositions, function (_a, _, array) {
+            var drag = _a.drag, clientRect = _a.clientRect;
+            if (drag === item) {
+                // If there's only one item left in the container, it must be
+                // the dragged item itself so we use it as a reference.
+                return array.length < 2;
+            }
+            if (delta) {
+                /** @type {?} */
+                var direction = isHorizontal ? delta.x : delta.y;
+                // If the user is still hovering over the same item as last time, and they didn't change
+                // the direction in which they're dragging, we don't consider it a direction swap.
+                if (drag === _this._previousSwap.drag && direction === _this._previousSwap.delta) {
+                    return false;
+                }
+            }
+            return isHorizontal ?
+                // Round these down since most browsers report client rects with
+                // sub-pixel precision, whereas the pointer coordinates are rounded to pixels.
+                pointerX >= Math.floor(clientRect.left) && pointerX <= Math.floor(clientRect.right) :
+                pointerY >= Math.floor(clientRect.top) && pointerY <= Math.floor(clientRect.bottom);
+        });
+    };
+    /**
+     * Checks whether the user's pointer is positioned over the container.
+     * @param x Pointer position along the X axis.
+     * @param y Pointer position along the Y axis.
+     */
+    /**
+     * Checks whether the user's pointer is positioned over the container.
+     * @param {?} x Pointer position along the X axis.
+     * @param {?} y Pointer position along the Y axis.
+     * @return {?}
+     */
+    DropListRef.prototype._isOverContainer = /**
+     * Checks whether the user's pointer is positioned over the container.
+     * @param {?} x Pointer position along the X axis.
+     * @param {?} y Pointer position along the Y axis.
+     * @return {?}
+     */
+    function (x, y) {
+        return isInsideClientRect(this._clientRect, x, y);
+    };
+    /**
+     * Figures out whether an item should be moved into a sibling
+     * drop container, based on its current position.
+     * @param item Drag item that is being moved.
+     * @param x Position of the item along the X axis.
+     * @param y Position of the item along the Y axis.
+     */
+    /**
+     * Figures out whether an item should be moved into a sibling
+     * drop container, based on its current position.
+     * @param {?} item Drag item that is being moved.
+     * @param {?} x Position of the item along the X axis.
+     * @param {?} y Position of the item along the Y axis.
+     * @return {?}
+     */
+    DropListRef.prototype._getSiblingContainerFromPosition = /**
+     * Figures out whether an item should be moved into a sibling
+     * drop container, based on its current position.
+     * @param {?} item Drag item that is being moved.
+     * @param {?} x Position of the item along the X axis.
+     * @param {?} y Position of the item along the Y axis.
+     * @return {?}
+     */
+    function (item, x, y) {
+        return this._siblings.find(function (sibling) { return sibling._canReceive(item, x, y); });
+    };
+    /**
+     * Checks whether the drop list can receive the passed-in item.
+     * @param item Item that is being dragged into the list.
+     * @param x Position of the item along the X axis.
+     * @param y Position of the item along the Y axis.
+     */
+    /**
+     * Checks whether the drop list can receive the passed-in item.
+     * @param {?} item Item that is being dragged into the list.
+     * @param {?} x Position of the item along the X axis.
+     * @param {?} y Position of the item along the Y axis.
+     * @return {?}
+     */
+    DropListRef.prototype._canReceive = /**
+     * Checks whether the drop list can receive the passed-in item.
+     * @param {?} item Item that is being dragged into the list.
+     * @param {?} x Position of the item along the X axis.
+     * @param {?} y Position of the item along the Y axis.
+     * @return {?}
+     */
+    function (item, x, y) {
+        if (!this.enterPredicate(item, this) || !isInsideClientRect(this._clientRect, x, y)) {
+            return false;
+        }
+        /** @type {?} */
+        var elementFromPoint = this._document.elementFromPoint(x, y);
+        // If there's no element at the pointer position, then
+        // the client rect is probably scrolled out of the view.
+        if (!elementFromPoint) {
+            return false;
+        }
+        // The `ClientRect`, that we're using to find the container over which the user is
+        // hovering, doesn't give us any information on whether the element has been scrolled
+        // out of the view or whether it's overlapping with other containers. This means that
+        // we could end up transferring the item into a container that's invisible or is positioned
+        // below another one. We use the result from `elementFromPoint` to get the top-most element
+        // at the pointer position and to find whether it's one of the intersecting drop containers.
+        return elementFromPoint === this.element || this.element.contains(elementFromPoint);
+    };
+    /**
+     * Called by one of the connected drop lists when a dragging sequence has started.
+     * @param sibling Sibling in which dragging has started.
+     */
+    /**
+     * Called by one of the connected drop lists when a dragging sequence has started.
+     * @param {?} sibling Sibling in which dragging has started.
+     * @return {?}
+     */
+    DropListRef.prototype._startReceiving = /**
+     * Called by one of the connected drop lists when a dragging sequence has started.
+     * @param {?} sibling Sibling in which dragging has started.
+     * @return {?}
+     */
+    function (sibling) {
+        /** @type {?} */
+        var activeSiblings = this._activeSiblings;
+        if (!activeSiblings.has(sibling)) {
+            activeSiblings.add(sibling);
+            this._cacheOwnPosition();
+        }
+    };
+    /**
+     * Called by a connected drop list when dragging has stopped.
+     * @param sibling Sibling whose dragging has stopped.
+     */
+    /**
+     * Called by a connected drop list when dragging has stopped.
+     * @param {?} sibling Sibling whose dragging has stopped.
+     * @return {?}
+     */
+    DropListRef.prototype._stopReceiving = /**
+     * Called by a connected drop list when dragging has stopped.
+     * @param {?} sibling Sibling whose dragging has stopped.
+     * @return {?}
+     */
+    function (sibling) {
+        this._activeSiblings.delete(sibling);
+    };
+    return DropListRef;
+}());
+/**
+ * Updates the top/left positions of a `ClientRect`, as well as their bottom/right counterparts.
+ * @param {?} clientRect `ClientRect` that should be updated.
+ * @param {?} top Amount to add to the `top` position.
+ * @param {?} left Amount to add to the `left` position.
+ * @return {?}
+ */
+function adjustClientRect(clientRect, top, left) {
+    clientRect.top += top;
+    clientRect.bottom = clientRect.top + clientRect.height;
+    clientRect.left += left;
+    clientRect.right = clientRect.left + clientRect.width;
+}
+/**
+ * Finds the index of an item that matches a predicate function. Used as an equivalent
+ * of `Array.prototype.find` which isn't part of the standard Google typings.
+ * @template T
+ * @param {?} array Array in which to look for matches.
+ * @param {?} predicate Function used to determine whether an item is a match.
+ * @return {?}
+ */
+function findIndex(array, predicate) {
+    for (var i = 0; i < array.length; i++) {
+        if (predicate(array[i], i, array)) {
+            return i;
+        }
+    }
+    return -1;
+}
+/**
+ * Checks whether some coordinates are within a `ClientRect`.
+ * @param {?} clientRect ClientRect that is being checked.
+ * @param {?} x Coordinates along the X axis.
+ * @param {?} y Coordinates along the Y axis.
+ * @return {?}
+ */
+function isInsideClientRect(clientRect, x, y) {
+    var top = clientRect.top, bottom = clientRect.bottom, left = clientRect.left, right = clientRect.right;
+    return y >= top && y <= bottom && x >= left && x <= right;
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * Event options that can be used to bind an active, capturing event.
+ * @type {?}
+ */
+var activeCapturingEventOptions = Object(_angular_cdk_platform__WEBPACK_IMPORTED_MODULE_0__["normalizePassiveListenerOptions"])({
+    passive: false,
+    capture: true
+});
+/**
+ * Service that keeps track of all the drag item and drop container
+ * instances, and manages global event listeners on the `document`.
+ * \@docs-private
+ * @template I, C
+ */
+// Note: this class is generic, rather than referencing CdkDrag and CdkDropList directly, in order
+// to avoid circular imports. If we were to reference them here, importing the registry into the
+// classes that are registering themselves will introduce a circular import.
+var DragDropRegistry = /** @class */ (function () {
+    function DragDropRegistry(_ngZone, _document) {
+        var _this = this;
+        this._ngZone = _ngZone;
+        /**
+         * Registered drop container instances.
+         */
+        this._dropInstances = new Set();
+        /**
+         * Registered drag item instances.
+         */
+        this._dragInstances = new Set();
+        /**
+         * Drag item instances that are currently being dragged.
+         */
+        this._activeDragInstances = new Set();
+        /**
+         * Keeps track of the event listeners that we've bound to the `document`.
+         */
+        this._globalListeners = new Map();
+        /**
+         * Emits the `touchmove` or `mousemove` events that are dispatched
+         * while the user is dragging a drag item instance.
+         */
+        this.pointerMove = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        /**
+         * Emits the `touchend` or `mouseup` events that are dispatched
+         * while the user is dragging a drag item instance.
+         */
+        this.pointerUp = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        /**
+         * Event listener that will prevent the default browser action while the user is dragging.
+         * @param event Event whose default action should be prevented.
+         */
+        this._preventDefaultWhileDragging = function (event) {
+            if (_this._activeDragInstances.size) {
+                event.preventDefault();
+            }
+        };
+        this._document = _document;
+    }
+    /** Adds a drop container to the registry. */
+    /**
+     * Adds a drop container to the registry.
+     * @param {?} drop
+     * @return {?}
+     */
+    DragDropRegistry.prototype.registerDropContainer = /**
+     * Adds a drop container to the registry.
+     * @param {?} drop
+     * @return {?}
+     */
+    function (drop) {
+        if (!this._dropInstances.has(drop)) {
+            if (this.getDropContainer(drop.id)) {
+                throw Error("Drop instance with id \"" + drop.id + "\" has already been registered.");
+            }
+            this._dropInstances.add(drop);
+        }
+    };
+    /** Adds a drag item instance to the registry. */
+    /**
+     * Adds a drag item instance to the registry.
+     * @param {?} drag
+     * @return {?}
+     */
+    DragDropRegistry.prototype.registerDragItem = /**
+     * Adds a drag item instance to the registry.
+     * @param {?} drag
+     * @return {?}
+     */
+    function (drag) {
+        var _this = this;
+        this._dragInstances.add(drag);
+        // The `touchmove` event gets bound once, ahead of time, because WebKit
+        // won't preventDefault on a dynamically-added `touchmove` listener.
+        // See https://bugs.webkit.org/show_bug.cgi?id=184250.
+        if (this._dragInstances.size === 1) {
+            this._ngZone.runOutsideAngular(function () {
+                // The event handler has to be explicitly active,
+                // because newer browsers make it passive by default.
+                _this._document.addEventListener('touchmove', _this._preventDefaultWhileDragging, activeCapturingEventOptions);
+            });
+        }
+    };
+    /** Removes a drop container from the registry. */
+    /**
+     * Removes a drop container from the registry.
+     * @param {?} drop
+     * @return {?}
+     */
+    DragDropRegistry.prototype.removeDropContainer = /**
+     * Removes a drop container from the registry.
+     * @param {?} drop
+     * @return {?}
+     */
+    function (drop) {
+        this._dropInstances.delete(drop);
+    };
+    /** Removes a drag item instance from the registry. */
+    /**
+     * Removes a drag item instance from the registry.
+     * @param {?} drag
+     * @return {?}
+     */
+    DragDropRegistry.prototype.removeDragItem = /**
+     * Removes a drag item instance from the registry.
+     * @param {?} drag
+     * @return {?}
+     */
+    function (drag) {
+        this._dragInstances.delete(drag);
+        this.stopDragging(drag);
+        if (this._dragInstances.size === 0) {
+            this._document.removeEventListener('touchmove', this._preventDefaultWhileDragging, activeCapturingEventOptions);
+        }
+    };
+    /**
+     * Starts the dragging sequence for a drag instance.
+     * @param drag Drag instance which is being dragged.
+     * @param event Event that initiated the dragging.
+     */
+    /**
+     * Starts the dragging sequence for a drag instance.
+     * @param {?} drag Drag instance which is being dragged.
+     * @param {?} event Event that initiated the dragging.
+     * @return {?}
+     */
+    DragDropRegistry.prototype.startDragging = /**
+     * Starts the dragging sequence for a drag instance.
+     * @param {?} drag Drag instance which is being dragged.
+     * @param {?} event Event that initiated the dragging.
+     * @return {?}
+     */
+    function (drag, event) {
+        var _this = this;
+        this._activeDragInstances.add(drag);
+        if (this._activeDragInstances.size === 1) {
+            /** @type {?} */
+            var isTouchEvent = event.type.startsWith('touch');
+            /** @type {?} */
+            var moveEvent = isTouchEvent ? 'touchmove' : 'mousemove';
+            /** @type {?} */
+            var upEvent = isTouchEvent ? 'touchend' : 'mouseup';
+            // We explicitly bind __active__ listeners here, because newer browsers will default to
+            // passive ones for `mousemove` and `touchmove`. The events need to be active, because we
+            // use `preventDefault` to prevent the page from scrolling while the user is dragging.
+            this._globalListeners
+                .set(moveEvent, {
+                handler: function (e) { return _this.pointerMove.next((/** @type {?} */ (e))); },
+                options: activeCapturingEventOptions
+            })
+                .set(upEvent, {
+                handler: function (e) { return _this.pointerUp.next((/** @type {?} */ (e))); },
+                options: true
+            })
+                // Preventing the default action on `mousemove` isn't enough to disable text selection
+                // on Safari so we need to prevent the selection event as well. Alternatively this can
+                // be done by setting `user-select: none` on the `body`, however it has causes a style
+                // recalculation which can be expensive on pages with a lot of elements.
+                .set('selectstart', {
+                handler: this._preventDefaultWhileDragging,
+                options: activeCapturingEventOptions
+            });
+            // TODO(crisbeto): prevent mouse wheel scrolling while
+            // dragging until we've set up proper scroll handling.
+            if (!isTouchEvent) {
+                this._globalListeners.set('wheel', {
+                    handler: this._preventDefaultWhileDragging,
+                    options: activeCapturingEventOptions
+                });
+            }
+            this._ngZone.runOutsideAngular(function () {
+                _this._globalListeners.forEach(function (config, name) {
+                    _this._document.addEventListener(name, config.handler, config.options);
+                });
+            });
+        }
+    };
+    /** Stops dragging a drag item instance. */
+    /**
+     * Stops dragging a drag item instance.
+     * @param {?} drag
+     * @return {?}
+     */
+    DragDropRegistry.prototype.stopDragging = /**
+     * Stops dragging a drag item instance.
+     * @param {?} drag
+     * @return {?}
+     */
+    function (drag) {
+        this._activeDragInstances.delete(drag);
+        if (this._activeDragInstances.size === 0) {
+            this._clearGlobalListeners();
+        }
+    };
+    /** Gets whether a drag item instance is currently being dragged. */
+    /**
+     * Gets whether a drag item instance is currently being dragged.
+     * @param {?} drag
+     * @return {?}
+     */
+    DragDropRegistry.prototype.isDragging = /**
+     * Gets whether a drag item instance is currently being dragged.
+     * @param {?} drag
+     * @return {?}
+     */
+    function (drag) {
+        return this._activeDragInstances.has(drag);
+    };
+    /**
+     * Gets a drop container by its id.
+     * @deprecated No longer being used. To be removed.
+     * @breaking-change 8.0.0
+     */
+    /**
+     * Gets a drop container by its id.
+     * @deprecated No longer being used. To be removed.
+     * \@breaking-change 8.0.0
+     * @param {?} id
+     * @return {?}
+     */
+    DragDropRegistry.prototype.getDropContainer = /**
+     * Gets a drop container by its id.
+     * @deprecated No longer being used. To be removed.
+     * \@breaking-change 8.0.0
+     * @param {?} id
+     * @return {?}
+     */
+    function (id) {
+        return Array.from(this._dropInstances).find(function (instance) { return instance.id === id; });
+    };
+    /**
+     * @return {?}
+     */
+    DragDropRegistry.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        this._dragInstances.forEach(function (instance) { return _this.removeDragItem(instance); });
+        this._dropInstances.forEach(function (instance) { return _this.removeDropContainer(instance); });
+        this._clearGlobalListeners();
+        this.pointerMove.complete();
+        this.pointerUp.complete();
+    };
+    /** Clears out the global event listeners from the `document`. */
+    /**
+     * Clears out the global event listeners from the `document`.
+     * @private
+     * @return {?}
+     */
+    DragDropRegistry.prototype._clearGlobalListeners = /**
+     * Clears out the global event listeners from the `document`.
+     * @private
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        this._globalListeners.forEach(function (config, name) {
+            _this._document.removeEventListener(name, config.handler, config.options);
+        });
+        this._globalListeners.clear();
+    };
+    DragDropRegistry.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Injectable"], args: [{ providedIn: 'root' },] },
+    ];
+    /** @nocollapse */
+    DragDropRegistry.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["NgZone"] },
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Inject"], args: [_angular_common__WEBPACK_IMPORTED_MODULE_4__["DOCUMENT"],] }] }
+    ]; };
+    /** @nocollapse */ DragDropRegistry.ngInjectableDef = Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["defineInjectable"])({ factory: function DragDropRegistry_Factory() { return new DragDropRegistry(Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["inject"])(_angular_core__WEBPACK_IMPORTED_MODULE_3__["NgZone"]), Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["inject"])(_angular_common__WEBPACK_IMPORTED_MODULE_4__["DOCUMENT"])); }, token: DragDropRegistry, providedIn: "root" });
+    return DragDropRegistry;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * Default configuration to be used when creating a `DragRef`.
+ * @type {?}
+ */
+var DEFAULT_CONFIG = {
+    dragStartThreshold: 5,
+    pointerDirectionChangeThreshold: 5
+};
+/**
+ * Service that allows for drag-and-drop functionality to be attached to DOM elements.
+ */
+var DragDrop = /** @class */ (function () {
+    function DragDrop(_document, _ngZone, _viewportRuler, _dragDropRegistry) {
+        this._document = _document;
+        this._ngZone = _ngZone;
+        this._viewportRuler = _viewportRuler;
+        this._dragDropRegistry = _dragDropRegistry;
+    }
+    /**
+     * Turns an element into a draggable item.
+     * @param element Element to which to attach the dragging functionality.
+     * @param config Object used to configure the dragging behavior.
+     */
+    /**
+     * Turns an element into a draggable item.
+     * @template T
+     * @param {?} element Element to which to attach the dragging functionality.
+     * @param {?=} config Object used to configure the dragging behavior.
+     * @return {?}
+     */
+    DragDrop.prototype.createDrag = /**
+     * Turns an element into a draggable item.
+     * @template T
+     * @param {?} element Element to which to attach the dragging functionality.
+     * @param {?=} config Object used to configure the dragging behavior.
+     * @return {?}
+     */
+    function (element, config) {
+        if (config === void 0) { config = DEFAULT_CONFIG; }
+        return new DragRef(element, config, this._document, this._ngZone, this._viewportRuler, this._dragDropRegistry);
+    };
+    /**
+     * Turns an element into a drop list.
+     * @param element Element to which to attach the drop list functionality.
+     */
+    /**
+     * Turns an element into a drop list.
+     * @template T
+     * @param {?} element Element to which to attach the drop list functionality.
+     * @return {?}
+     */
+    DragDrop.prototype.createDropList = /**
+     * Turns an element into a drop list.
+     * @template T
+     * @param {?} element Element to which to attach the drop list functionality.
+     * @return {?}
+     */
+    function (element) {
+        return new DropListRef(element, this._dragDropRegistry, this._document);
+    };
+    DragDrop.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Injectable"], args: [{ providedIn: 'root' },] },
+    ];
+    /** @nocollapse */
+    DragDrop.ctorParameters = function () { return [
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Inject"], args: [_angular_common__WEBPACK_IMPORTED_MODULE_4__["DOCUMENT"],] }] },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["NgZone"] },
+        { type: _angular_cdk_scrolling__WEBPACK_IMPORTED_MODULE_5__["ViewportRuler"] },
+        { type: DragDropRegistry }
+    ]; };
+    /** @nocollapse */ DragDrop.ngInjectableDef = Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["defineInjectable"])({ factory: function DragDrop_Factory() { return new DragDrop(Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["inject"])(_angular_common__WEBPACK_IMPORTED_MODULE_4__["DOCUMENT"]), Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["inject"])(_angular_core__WEBPACK_IMPORTED_MODULE_3__["NgZone"]), Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["inject"])(_angular_cdk_scrolling__WEBPACK_IMPORTED_MODULE_5__["ViewportRuler"]), Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["inject"])(DragDropRegistry)); }, token: DragDrop, providedIn: "root" });
+    return DragDrop;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * Injection token that is used to provide a CdkDropList instance to CdkDrag.
+ * Used for avoiding circular imports.
+ * @type {?}
+ */
+var CDK_DROP_LIST = new _angular_core__WEBPACK_IMPORTED_MODULE_3__["InjectionToken"]('CDK_DROP_LIST');
+/**
+ * Injection token that is used to provide a CdkDropList instance to CdkDrag.
+ * Used for avoiding circular imports.
+ * @deprecated Use `CDK_DROP_LIST` instead.
+ * \@breaking-change 8.0.0
+ * @type {?}
+ */
+var CDK_DROP_LIST_CONTAINER = CDK_DROP_LIST;
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * Injection token that can be used for a `CdkDrag` to provide itself as a parent to the
+ * drag-specific child directive (`CdkDragHandle`, `CdkDragPreview` etc.). Used primarily
+ * to avoid circular imports.
+ * \@docs-private
+ * @type {?}
+ */
+var CDK_DRAG_PARENT = new _angular_core__WEBPACK_IMPORTED_MODULE_3__["InjectionToken"]('CDK_DRAG_PARENT');
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * Handle that can be used to drag and CdkDrag instance.
+ */
+var CdkDragHandle = /** @class */ (function () {
+    function CdkDragHandle(element, parentDrag) {
+        this.element = element;
+        /**
+         * Emits when the state of the handle has changed.
+         */
+        this._stateChanges = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        this._disabled = false;
+        this._parentDrag = parentDrag;
+        toggleNativeDragInteractions(element.nativeElement, false);
+    }
+    Object.defineProperty(CdkDragHandle.prototype, "disabled", {
+        /** Whether starting to drag through this handle is disabled. */
+        get: /**
+         * Whether starting to drag through this handle is disabled.
+         * @return {?}
+         */
+        function () { return this._disabled; },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._disabled = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceBooleanProperty"])(value);
+            this._stateChanges.next(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @return {?}
+     */
+    CdkDragHandle.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        this._stateChanges.complete();
+    };
+    CdkDragHandle.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Directive"], args: [{
+                    selector: '[cdkDragHandle]',
+                    host: {
+                        'class': 'cdk-drag-handle'
+                    }
+                },] },
+    ];
+    /** @nocollapse */
+    CdkDragHandle.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["ElementRef"] },
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Inject"], args: [CDK_DRAG_PARENT,] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Optional"] }] }
+    ]; };
+    CdkDragHandle.propDecorators = {
+        disabled: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Input"], args: ['cdkDragHandleDisabled',] }]
+    };
+    return CdkDragHandle;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * Element that will be used as a template for the placeholder of a CdkDrag when
+ * it is being dragged. The placeholder is displayed in place of the element being dragged.
+ * @template T
+ */
+var CdkDragPlaceholder = /** @class */ (function () {
+    function CdkDragPlaceholder(templateRef) {
+        this.templateRef = templateRef;
+    }
+    CdkDragPlaceholder.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Directive"], args: [{
+                    selector: 'ng-template[cdkDragPlaceholder]'
+                },] },
+    ];
+    /** @nocollapse */
+    CdkDragPlaceholder.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["TemplateRef"] }
+    ]; };
+    CdkDragPlaceholder.propDecorators = {
+        data: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Input"] }]
+    };
+    return CdkDragPlaceholder;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * Element that will be used as a template for the preview
+ * of a CdkDrag when it is being dragged.
+ * @template T
+ */
+var CdkDragPreview = /** @class */ (function () {
+    function CdkDragPreview(templateRef) {
+        this.templateRef = templateRef;
+    }
+    CdkDragPreview.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Directive"], args: [{
+                    selector: 'ng-template[cdkDragPreview]'
+                },] },
+    ];
+    /** @nocollapse */
+    CdkDragPreview.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["TemplateRef"] }
+    ]; };
+    CdkDragPreview.propDecorators = {
+        data: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Input"] }]
+    };
+    return CdkDragPreview;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * Injection token that can be used to configure the behavior of `CdkDrag`.
+ * @type {?}
+ */
+var CDK_DRAG_CONFIG = new _angular_core__WEBPACK_IMPORTED_MODULE_3__["InjectionToken"]('CDK_DRAG_CONFIG', {
+    providedIn: 'root',
+    factory: CDK_DRAG_CONFIG_FACTORY
+});
+/**
+ * \@docs-private
+ * @return {?}
+ */
+function CDK_DRAG_CONFIG_FACTORY() {
+    return { dragStartThreshold: 5, pointerDirectionChangeThreshold: 5 };
+}
+/**
+ * Element that can be moved inside a CdkDropList container.
+ * @template T
+ */
+var CdkDrag = /** @class */ (function () {
+    function CdkDrag(element, dropContainer, _document, _ngZone, _viewContainerRef, viewportRuler, dragDropRegistry, config, _dir, 
+    /**
+     * @deprecated `viewportRuler`, `dragDropRegistry` and `_changeDetectorRef` parameters
+     * to be removed. Also `dragDrop` parameter to be made required.
+     * @breaking-change 8.0.0.
+     */
+    dragDrop, _changeDetectorRef) {
+        var _this = this;
+        this.element = element;
+        this.dropContainer = dropContainer;
+        this._document = _document;
+        this._ngZone = _ngZone;
+        this._viewContainerRef = _viewContainerRef;
+        this._dir = _dir;
+        this._changeDetectorRef = _changeDetectorRef;
+        this._destroyed = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        this._disabled = false;
+        /**
+         * Emits when the user starts dragging the item.
+         */
+        this.started = new _angular_core__WEBPACK_IMPORTED_MODULE_3__["EventEmitter"]();
+        /**
+         * Emits when the user has released a drag item, before any animations have started.
+         */
+        this.released = new _angular_core__WEBPACK_IMPORTED_MODULE_3__["EventEmitter"]();
+        /**
+         * Emits when the user stops dragging an item in the container.
+         */
+        this.ended = new _angular_core__WEBPACK_IMPORTED_MODULE_3__["EventEmitter"]();
+        /**
+         * Emits when the user has moved the item into a new container.
+         */
+        this.entered = new _angular_core__WEBPACK_IMPORTED_MODULE_3__["EventEmitter"]();
+        /**
+         * Emits when the user removes the item its container by dragging it into another container.
+         */
+        this.exited = new _angular_core__WEBPACK_IMPORTED_MODULE_3__["EventEmitter"]();
+        /**
+         * Emits when the user drops the item inside a container.
+         */
+        this.dropped = new _angular_core__WEBPACK_IMPORTED_MODULE_3__["EventEmitter"]();
+        /**
+         * Emits as the user is dragging the item. Use with caution,
+         * because this event will fire for every pixel that the user has dragged.
+         */
+        this.moved = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"](function (observer) {
+            /** @type {?} */
+            var subscription = _this._dragRef.moved.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["map"])(function (movedEvent) { return ({
+                source: _this,
+                pointerPosition: movedEvent.pointerPosition,
+                event: movedEvent.event,
+                delta: movedEvent.delta
+            }); })).subscribe(observer);
+            return function () {
+                subscription.unsubscribe();
+            };
+        });
+        // @breaking-change 8.0.0 Remove null check once the paramter is made required.
+        if (dragDrop) {
+            this._dragRef = dragDrop.createDrag(element, config);
+        }
+        else {
+            this._dragRef = new DragRef(element, config, _document, _ngZone, viewportRuler, dragDropRegistry);
+        }
+        this._dragRef.data = this;
+        this._syncInputs(this._dragRef);
+        this._handleEvents(this._dragRef);
+    }
+    Object.defineProperty(CdkDrag.prototype, "disabled", {
+        /** Whether starting to drag this element is disabled. */
+        get: /**
+         * Whether starting to drag this element is disabled.
+         * @return {?}
+         */
+        function () {
+            return this._disabled || (this.dropContainer && this.dropContainer.disabled);
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._disabled = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceBooleanProperty"])(value);
+            this._dragRef.disabled = this._disabled;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Returns the element that is being used as a placeholder
+     * while the current element is being dragged.
+     */
+    /**
+     * Returns the element that is being used as a placeholder
+     * while the current element is being dragged.
+     * @return {?}
+     */
+    CdkDrag.prototype.getPlaceholderElement = /**
+     * Returns the element that is being used as a placeholder
+     * while the current element is being dragged.
+     * @return {?}
+     */
+    function () {
+        return this._dragRef.getPlaceholderElement();
+    };
+    /** Returns the root draggable element. */
+    /**
+     * Returns the root draggable element.
+     * @return {?}
+     */
+    CdkDrag.prototype.getRootElement = /**
+     * Returns the root draggable element.
+     * @return {?}
+     */
+    function () {
+        return this._dragRef.getRootElement();
+    };
+    /** Resets a standalone drag item to its initial position. */
+    /**
+     * Resets a standalone drag item to its initial position.
+     * @return {?}
+     */
+    CdkDrag.prototype.reset = /**
+     * Resets a standalone drag item to its initial position.
+     * @return {?}
+     */
+    function () {
+        this._dragRef.reset();
+    };
+    /**
+     * @return {?}
+     */
+    CdkDrag.prototype.ngAfterViewInit = /**
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        // We need to wait for the zone to stabilize, in order for the reference
+        // element to be in the proper place in the DOM. This is mostly relevant
+        // for draggable elements inside portals since they get stamped out in
+        // their original DOM position and then they get transferred to the portal.
+        this._ngZone.onStable.asObservable()
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["take"])(1), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["takeUntil"])(this._destroyed))
+            .subscribe(function () {
+            _this._updateRootElement();
+            // Listen for any newly-added handles.
+            _this._handles.changes.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["startWith"])(_this._handles), 
+            // Sync the new handles with the DragRef.
+            Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["tap"])(function (handles) {
+                /** @type {?} */
+                var childHandleElements = handles
+                    .filter(function (handle) { return handle._parentDrag === _this; })
+                    .map(function (handle) { return handle.element; });
+                _this._dragRef.withHandles(childHandleElements);
+            }), 
+            // Listen if the state of any of the handles changes.
+            Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["switchMap"])(function (handles) {
+                return rxjs__WEBPACK_IMPORTED_MODULE_2__["merge"].apply(void 0, handles.map(function (item) { return item._stateChanges; }));
+            }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["takeUntil"])(_this._destroyed)).subscribe(function (handleInstance) {
+                // Enabled/disable the handle that changed in the DragRef.
+                /** @type {?} */
+                var dragRef = _this._dragRef;
+                /** @type {?} */
+                var handle = handleInstance.element.nativeElement;
+                handleInstance.disabled ? dragRef.disableHandle(handle) : dragRef.enableHandle(handle);
+            });
+        });
+    };
+    /**
+     * @param {?} changes
+     * @return {?}
+     */
+    CdkDrag.prototype.ngOnChanges = /**
+     * @param {?} changes
+     * @return {?}
+     */
+    function (changes) {
+        /** @type {?} */
+        var rootSelectorChange = changes['rootElementSelector'];
+        // We don't have to react to the first change since it's being
+        // handled in `ngAfterViewInit` where it needs to be deferred.
+        if (rootSelectorChange && !rootSelectorChange.firstChange) {
+            this._updateRootElement();
+        }
+    };
+    /**
+     * @return {?}
+     */
+    CdkDrag.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        this._destroyed.next();
+        this._destroyed.complete();
+        this._dragRef.dispose();
+    };
+    /** Syncs the root element with the `DragRef`. */
+    /**
+     * Syncs the root element with the `DragRef`.
+     * @private
+     * @return {?}
+     */
+    CdkDrag.prototype._updateRootElement = /**
+     * Syncs the root element with the `DragRef`.
+     * @private
+     * @return {?}
+     */
+    function () {
+        /** @type {?} */
+        var element = this.element.nativeElement;
+        /** @type {?} */
+        var rootElement = this.rootElementSelector ?
+            getClosestMatchingAncestor(element, this.rootElementSelector) : element;
+        if (rootElement && rootElement.nodeType !== this._document.ELEMENT_NODE) {
+            throw Error("cdkDrag must be attached to an element node. " +
+                ("Currently attached to \"" + rootElement.nodeName + "\"."));
+        }
+        this._dragRef.withRootElement(rootElement || element);
+    };
+    /** Gets the boundary element, based on the `boundaryElementSelector`. */
+    /**
+     * Gets the boundary element, based on the `boundaryElementSelector`.
+     * @private
+     * @return {?}
+     */
+    CdkDrag.prototype._getBoundaryElement = /**
+     * Gets the boundary element, based on the `boundaryElementSelector`.
+     * @private
+     * @return {?}
+     */
+    function () {
+        /** @type {?} */
+        var selector = this.boundaryElementSelector;
+        return selector ? getClosestMatchingAncestor(this.element.nativeElement, selector) : null;
+    };
+    /** Syncs the inputs of the CdkDrag with the options of the underlying DragRef. */
+    /**
+     * Syncs the inputs of the CdkDrag with the options of the underlying DragRef.
+     * @private
+     * @param {?} ref
+     * @return {?}
+     */
+    CdkDrag.prototype._syncInputs = /**
+     * Syncs the inputs of the CdkDrag with the options of the underlying DragRef.
+     * @private
+     * @param {?} ref
+     * @return {?}
+     */
+    function (ref) {
+        var _this = this;
+        ref.beforeStarted.subscribe(function () {
+            if (!ref.isDragging()) {
+                /** @type {?} */
+                var dir = _this._dir;
+                /** @type {?} */
+                var placeholder = _this._placeholderTemplate ? {
+                    template: _this._placeholderTemplate.templateRef,
+                    context: _this._placeholderTemplate.data,
+                    viewContainer: _this._viewContainerRef
+                } : null;
+                /** @type {?} */
+                var preview = _this._previewTemplate ? {
+                    template: _this._previewTemplate.templateRef,
+                    context: _this._previewTemplate.data,
+                    viewContainer: _this._viewContainerRef
+                } : null;
+                ref.disabled = _this.disabled;
+                ref.lockAxis = _this.lockAxis;
+                ref
+                    .withBoundaryElement(_this._getBoundaryElement())
+                    .withPlaceholderTemplate(placeholder)
+                    .withPreviewTemplate(preview);
+                if (dir) {
+                    ref.withDirection(dir.value);
+                }
+            }
+        });
+    };
+    /** Handles the events from the underlying `DragRef`. */
+    /**
+     * Handles the events from the underlying `DragRef`.
+     * @private
+     * @param {?} ref
+     * @return {?}
+     */
+    CdkDrag.prototype._handleEvents = /**
+     * Handles the events from the underlying `DragRef`.
+     * @private
+     * @param {?} ref
+     * @return {?}
+     */
+    function (ref) {
+        var _this = this;
+        ref.started.subscribe(function () {
+            _this.started.emit({ source: _this });
+            // Since all of these events run outside of change detection,
+            // we need to ensure that everything is marked correctly.
+            if (_this._changeDetectorRef) {
+                // @breaking-change 8.0.0 Remove null check for _changeDetectorRef
+                _this._changeDetectorRef.markForCheck();
+            }
+        });
+        ref.released.subscribe(function () {
+            _this.released.emit({ source: _this });
+        });
+        ref.ended.subscribe(function () {
+            _this.ended.emit({ source: _this });
+            // Since all of these events run outside of change detection,
+            // we need to ensure that everything is marked correctly.
+            if (_this._changeDetectorRef) {
+                // @breaking-change 8.0.0 Remove null check for _changeDetectorRef
+                _this._changeDetectorRef.markForCheck();
+            }
+        });
+        ref.entered.subscribe(function (event) {
+            _this.entered.emit({
+                container: event.container.data,
+                item: _this
+            });
+        });
+        ref.exited.subscribe(function (event) {
+            _this.exited.emit({
+                container: event.container.data,
+                item: _this
+            });
+        });
+        ref.dropped.subscribe(function (event) {
+            _this.dropped.emit({
+                previousIndex: event.previousIndex,
+                currentIndex: event.currentIndex,
+                previousContainer: event.previousContainer.data,
+                container: event.container.data,
+                isPointerOverContainer: event.isPointerOverContainer,
+                item: _this
+            });
+        });
+    };
+    CdkDrag.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Directive"], args: [{
+                    selector: '[cdkDrag]',
+                    exportAs: 'cdkDrag',
+                    host: {
+                        'class': 'cdk-drag',
+                        '[class.cdk-drag-disabled]': 'disabled',
+                        '[class.cdk-drag-dragging]': '_dragRef.isDragging()',
+                    },
+                    providers: [{ provide: CDK_DRAG_PARENT, useExisting: CdkDrag }]
+                },] },
+    ];
+    /** @nocollapse */
+    CdkDrag.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["ElementRef"] },
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Inject"], args: [CDK_DROP_LIST,] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Optional"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["SkipSelf"] }] },
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Inject"], args: [_angular_common__WEBPACK_IMPORTED_MODULE_4__["DOCUMENT"],] }] },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["NgZone"] },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["ViewContainerRef"] },
+        { type: _angular_cdk_scrolling__WEBPACK_IMPORTED_MODULE_5__["ViewportRuler"] },
+        { type: DragDropRegistry },
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Inject"], args: [CDK_DRAG_CONFIG,] }] },
+        { type: _angular_cdk_bidi__WEBPACK_IMPORTED_MODULE_6__["Directionality"], decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Optional"] }] },
+        { type: DragDrop },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["ChangeDetectorRef"] }
+    ]; };
+    CdkDrag.propDecorators = {
+        _handles: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["ContentChildren"], args: [CdkDragHandle, { descendants: true },] }],
+        _previewTemplate: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["ContentChild"], args: [CdkDragPreview,] }],
+        _placeholderTemplate: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["ContentChild"], args: [CdkDragPlaceholder,] }],
+        data: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Input"], args: ['cdkDragData',] }],
+        lockAxis: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Input"], args: ['cdkDragLockAxis',] }],
+        rootElementSelector: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Input"], args: ['cdkDragRootElement',] }],
+        boundaryElementSelector: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Input"], args: ['cdkDragBoundary',] }],
+        disabled: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Input"], args: ['cdkDragDisabled',] }],
+        started: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Output"], args: ['cdkDragStarted',] }],
+        released: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Output"], args: ['cdkDragReleased',] }],
+        ended: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Output"], args: ['cdkDragEnded',] }],
+        entered: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Output"], args: ['cdkDragEntered',] }],
+        exited: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Output"], args: ['cdkDragExited',] }],
+        dropped: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Output"], args: ['cdkDragDropped',] }],
+        moved: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Output"], args: ['cdkDragMoved',] }]
+    };
+    return CdkDrag;
+}());
+/**
+ * Gets the closest ancestor of an element that matches a selector.
+ * @param {?} element
+ * @param {?} selector
+ * @return {?}
+ */
+function getClosestMatchingAncestor(element, selector) {
+    /** @type {?} */
+    var currentElement = (/** @type {?} */ (element.parentElement));
+    while (currentElement) {
+        // IE doesn't support `matches` so we have to fall back to `msMatchesSelector`.
+        if (currentElement.matches ? currentElement.matches(selector) :
+            ((/** @type {?} */ (currentElement))).msMatchesSelector(selector)) {
+            return currentElement;
+        }
+        currentElement = currentElement.parentElement;
+    }
+    return null;
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * Declaratively connects sibling `cdkDropList` instances together. All of the `cdkDropList`
+ * elements that are placed inside a `cdkDropListGroup` will be connected to each other
+ * automatically. Can be used as an alternative to the `cdkDropListConnectedTo` input
+ * from `cdkDropList`.
+ * @template T
+ */
+var CdkDropListGroup = /** @class */ (function () {
+    function CdkDropListGroup() {
+        /**
+         * Drop lists registered inside the group.
+         */
+        this._items = new Set();
+        this._disabled = false;
+    }
+    Object.defineProperty(CdkDropListGroup.prototype, "disabled", {
+        /** Whether starting a dragging sequence from inside this group is disabled. */
+        get: /**
+         * Whether starting a dragging sequence from inside this group is disabled.
+         * @return {?}
+         */
+        function () { return this._disabled; },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._disabled = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceBooleanProperty"])(value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @return {?}
+     */
+    CdkDropListGroup.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        this._items.clear();
+    };
+    CdkDropListGroup.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Directive"], args: [{
+                    selector: '[cdkDropListGroup]',
+                    exportAs: 'cdkDropListGroup',
+                },] },
+    ];
+    CdkDropListGroup.propDecorators = {
+        disabled: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Input"], args: ['cdkDropListGroupDisabled',] }]
+    };
+    return CdkDropListGroup;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * Counter used to generate unique ids for drop zones.
+ * @type {?}
+ */
+var _uniqueIdCounter$1 = 0;
+var ɵ0 = undefined;
+// @breaking-change 8.0.0 `CdkDropList` implements `CdkDropListContainer` for backwards
+// compatiblity. The implements clause, as well as all the methods that it enforces can
+// be removed when `CdkDropListContainer` is deleted.
+/**
+ * Container that wraps a set of draggable items.
+ * @template T
+ */
+var CdkDropList = /** @class */ (function () {
+    function CdkDropList(element, dragDropRegistry, _changeDetectorRef, _dir, _group, _document, 
+    /**
+     * @deprecated `dragDropRegistry` and `_document` parameters to be removed.
+     * Also `dragDrop` parameter to be made required.
+     * @breaking-change 8.0.0.
+     */
+    dragDrop) {
+        var _this = this;
+        this.element = element;
+        this._changeDetectorRef = _changeDetectorRef;
+        this._dir = _dir;
+        this._group = _group;
+        /**
+         * Emits when the list has been destroyed.
+         */
+        this._destroyed = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        /**
+         * Other draggable containers that this container is connected to and into which the
+         * container's items can be transferred. Can either be references to other drop containers,
+         * or their unique IDs.
+         */
+        this.connectedTo = [];
+        /**
+         * Direction in which the list is oriented.
+         */
+        this.orientation = 'vertical';
+        /**
+         * Unique ID for the drop zone. Can be used as a reference
+         * in the `connectedTo` of another `CdkDropList`.
+         */
+        this.id = "cdk-drop-list-" + _uniqueIdCounter$1++;
+        this._disabled = false;
+        /**
+         * Function that is used to determine whether an item
+         * is allowed to be moved into a drop container.
+         */
+        this.enterPredicate = function () { return true; };
+        /**
+         * Emits when the user drops an item inside the container.
+         */
+        this.dropped = new _angular_core__WEBPACK_IMPORTED_MODULE_3__["EventEmitter"]();
+        /**
+         * Emits when the user has moved a new drag item into this container.
+         */
+        this.entered = new _angular_core__WEBPACK_IMPORTED_MODULE_3__["EventEmitter"]();
+        /**
+         * Emits when the user removes an item from the container
+         * by dragging it into another container.
+         */
+        this.exited = new _angular_core__WEBPACK_IMPORTED_MODULE_3__["EventEmitter"]();
+        /**
+         * Emits as the user is swapping items while actively dragging.
+         */
+        this.sorted = new _angular_core__WEBPACK_IMPORTED_MODULE_3__["EventEmitter"]();
+        // @breaking-change 8.0.0 Remove null check once `dragDrop` parameter is made required.
+        if (dragDrop) {
+            this._dropListRef = dragDrop.createDropList(element);
+        }
+        else {
+            this._dropListRef = new DropListRef(element, dragDropRegistry, _document || document);
+        }
+        this._dropListRef.data = this;
+        this._dropListRef.enterPredicate = function (drag, drop) {
+            return _this.enterPredicate(drag.data, drop.data);
+        };
+        this._syncInputs(this._dropListRef);
+        this._handleEvents(this._dropListRef);
+        CdkDropList._dropLists.push(this);
+        if (_group) {
+            _group._items.add(this);
+        }
+    }
+    Object.defineProperty(CdkDropList.prototype, "disabled", {
+        /** Whether starting a dragging sequence from this container is disabled. */
+        get: /**
+         * Whether starting a dragging sequence from this container is disabled.
+         * @return {?}
+         */
+        function () {
+            return this._disabled || (!!this._group && this._group.disabled);
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._disabled = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceBooleanProperty"])(value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @return {?}
+     */
+    CdkDropList.prototype.ngAfterContentInit = /**
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        this._draggables.changes
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["startWith"])(this._draggables), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["takeUntil"])(this._destroyed))
+            .subscribe(function (items) {
+            _this._dropListRef.withItems(items.map(function (drag) { return drag._dragRef; }));
+        });
+    };
+    /**
+     * @return {?}
+     */
+    CdkDropList.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        /** @type {?} */
+        var index = CdkDropList._dropLists.indexOf(this);
+        if (index > -1) {
+            CdkDropList._dropLists.splice(index, 1);
+        }
+        if (this._group) {
+            this._group._items.delete(this);
+        }
+        this._dropListRef.dispose();
+        this._destroyed.next();
+        this._destroyed.complete();
+    };
+    /** Starts dragging an item. */
+    /**
+     * Starts dragging an item.
+     * @return {?}
+     */
+    CdkDropList.prototype.start = /**
+     * Starts dragging an item.
+     * @return {?}
+     */
+    function () {
+        this._dropListRef.start();
+    };
+    /**
+     * Drops an item into this container.
+     * @param item Item being dropped into the container.
+     * @param currentIndex Index at which the item should be inserted.
+     * @param previousContainer Container from which the item got dragged in.
+     * @param isPointerOverContainer Whether the user's pointer was over the
+     *    container when the item was dropped.
+     */
+    /**
+     * Drops an item into this container.
+     * @param {?} item Item being dropped into the container.
+     * @param {?} currentIndex Index at which the item should be inserted.
+     * @param {?} previousContainer Container from which the item got dragged in.
+     * @param {?} isPointerOverContainer Whether the user's pointer was over the
+     *    container when the item was dropped.
+     * @return {?}
+     */
+    CdkDropList.prototype.drop = /**
+     * Drops an item into this container.
+     * @param {?} item Item being dropped into the container.
+     * @param {?} currentIndex Index at which the item should be inserted.
+     * @param {?} previousContainer Container from which the item got dragged in.
+     * @param {?} isPointerOverContainer Whether the user's pointer was over the
+     *    container when the item was dropped.
+     * @return {?}
+     */
+    function (item, currentIndex, previousContainer, isPointerOverContainer) {
+        this._dropListRef.drop(item._dragRef, currentIndex, ((/** @type {?} */ (previousContainer)))._dropListRef, isPointerOverContainer);
+    };
+    /**
+     * Emits an event to indicate that the user moved an item into the container.
+     * @param item Item that was moved into the container.
+     * @param pointerX Position of the item along the X axis.
+     * @param pointerY Position of the item along the Y axis.
+     */
+    /**
+     * Emits an event to indicate that the user moved an item into the container.
+     * @param {?} item Item that was moved into the container.
+     * @param {?} pointerX Position of the item along the X axis.
+     * @param {?} pointerY Position of the item along the Y axis.
+     * @return {?}
+     */
+    CdkDropList.prototype.enter = /**
+     * Emits an event to indicate that the user moved an item into the container.
+     * @param {?} item Item that was moved into the container.
+     * @param {?} pointerX Position of the item along the X axis.
+     * @param {?} pointerY Position of the item along the Y axis.
+     * @return {?}
+     */
+    function (item, pointerX, pointerY) {
+        this._dropListRef.enter(item._dragRef, pointerX, pointerY);
+    };
+    /**
+     * Removes an item from the container after it was dragged into another container by the user.
+     * @param item Item that was dragged out.
+     */
+    /**
+     * Removes an item from the container after it was dragged into another container by the user.
+     * @param {?} item Item that was dragged out.
+     * @return {?}
+     */
+    CdkDropList.prototype.exit = /**
+     * Removes an item from the container after it was dragged into another container by the user.
+     * @param {?} item Item that was dragged out.
+     * @return {?}
+     */
+    function (item) {
+        this._dropListRef.exit(item._dragRef);
+    };
+    /**
+     * Figures out the index of an item in the container.
+     * @param item Item whose index should be determined.
+     */
+    /**
+     * Figures out the index of an item in the container.
+     * @param {?} item Item whose index should be determined.
+     * @return {?}
+     */
+    CdkDropList.prototype.getItemIndex = /**
+     * Figures out the index of an item in the container.
+     * @param {?} item Item whose index should be determined.
+     * @return {?}
+     */
+    function (item) {
+        return this._dropListRef.getItemIndex(item._dragRef);
+    };
+    /**
+     * Sorts an item inside the container based on its position.
+     * @param item Item to be sorted.
+     * @param pointerX Position of the item along the X axis.
+     * @param pointerY Position of the item along the Y axis.
+     * @param pointerDelta Direction in which the pointer is moving along each axis.
+     */
+    /**
+     * Sorts an item inside the container based on its position.
+     * @param {?} item Item to be sorted.
+     * @param {?} pointerX Position of the item along the X axis.
+     * @param {?} pointerY Position of the item along the Y axis.
+     * @param {?} pointerDelta Direction in which the pointer is moving along each axis.
+     * @return {?}
+     */
+    CdkDropList.prototype._sortItem = /**
+     * Sorts an item inside the container based on its position.
+     * @param {?} item Item to be sorted.
+     * @param {?} pointerX Position of the item along the X axis.
+     * @param {?} pointerY Position of the item along the Y axis.
+     * @param {?} pointerDelta Direction in which the pointer is moving along each axis.
+     * @return {?}
+     */
+    function (item, pointerX, pointerY, pointerDelta) {
+        return this._dropListRef._sortItem(item._dragRef, pointerX, pointerY, pointerDelta);
+    };
+    /**
+     * Figures out whether an item should be moved into a sibling
+     * drop container, based on its current position.
+     * @param item Drag item that is being moved.
+     * @param x Position of the item along the X axis.
+     * @param y Position of the item along the Y axis.
+     */
+    /**
+     * Figures out whether an item should be moved into a sibling
+     * drop container, based on its current position.
+     * @param {?} item Drag item that is being moved.
+     * @param {?} x Position of the item along the X axis.
+     * @param {?} y Position of the item along the Y axis.
+     * @return {?}
+     */
+    CdkDropList.prototype._getSiblingContainerFromPosition = /**
+     * Figures out whether an item should be moved into a sibling
+     * drop container, based on its current position.
+     * @param {?} item Drag item that is being moved.
+     * @param {?} x Position of the item along the X axis.
+     * @param {?} y Position of the item along the Y axis.
+     * @return {?}
+     */
+    function (item, x, y) {
+        /** @type {?} */
+        var result = this._dropListRef._getSiblingContainerFromPosition(item._dragRef, x, y);
+        return result ? result.data : null;
+    };
+    /**
+     * Checks whether the user's pointer is positioned over the container.
+     * @param x Pointer position along the X axis.
+     * @param y Pointer position along the Y axis.
+     */
+    /**
+     * Checks whether the user's pointer is positioned over the container.
+     * @param {?} x Pointer position along the X axis.
+     * @param {?} y Pointer position along the Y axis.
+     * @return {?}
+     */
+    CdkDropList.prototype._isOverContainer = /**
+     * Checks whether the user's pointer is positioned over the container.
+     * @param {?} x Pointer position along the X axis.
+     * @param {?} y Pointer position along the Y axis.
+     * @return {?}
+     */
+    function (x, y) {
+        return this._dropListRef._isOverContainer(x, y);
+    };
+    /** Syncs the inputs of the CdkDropList with the options of the underlying DropListRef. */
+    /**
+     * Syncs the inputs of the CdkDropList with the options of the underlying DropListRef.
+     * @private
+     * @param {?} ref
+     * @return {?}
+     */
+    CdkDropList.prototype._syncInputs = /**
+     * Syncs the inputs of the CdkDropList with the options of the underlying DropListRef.
+     * @private
+     * @param {?} ref
+     * @return {?}
+     */
+    function (ref) {
+        var _this = this;
+        if (this._dir) {
+            this._dir.change
+                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["startWith"])(this._dir.value), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["takeUntil"])(this._destroyed))
+                .subscribe(function (value) { return ref.withDirection(value); });
+        }
+        ref.beforeStarted.subscribe(function () {
+            /** @type {?} */
+            var siblings = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceArray"])(_this.connectedTo).map(function (drop) {
+                return typeof drop === 'string' ?
+                    (/** @type {?} */ (CdkDropList._dropLists.find(function (list) { return list.id === drop; }))) : drop;
+            });
+            if (_this._group) {
+                _this._group._items.forEach(function (drop) {
+                    if (siblings.indexOf(drop) === -1) {
+                        siblings.push(drop);
+                    }
+                });
+            }
+            ref.lockAxis = _this.lockAxis;
+            ref
+                .connectedTo(siblings.filter(function (drop) { return drop && drop !== _this; }).map(function (list) { return list._dropListRef; }))
+                .withOrientation(_this.orientation);
+        });
+    };
+    /** Handles events from the underlying DropListRef. */
+    /**
+     * Handles events from the underlying DropListRef.
+     * @private
+     * @param {?} ref
+     * @return {?}
+     */
+    CdkDropList.prototype._handleEvents = /**
+     * Handles events from the underlying DropListRef.
+     * @private
+     * @param {?} ref
+     * @return {?}
+     */
+    function (ref) {
+        var _this = this;
+        ref.beforeStarted.subscribe(function () {
+            _this._changeDetectorRef.markForCheck();
+        });
+        ref.entered.subscribe(function (event) {
+            _this.entered.emit({
+                container: _this,
+                item: event.item.data
+            });
+        });
+        ref.exited.subscribe(function (event) {
+            _this.exited.emit({
+                container: _this,
+                item: event.item.data
+            });
+        });
+        ref.sorted.subscribe(function (event) {
+            _this.sorted.emit({
+                previousIndex: event.previousIndex,
+                currentIndex: event.currentIndex,
+                container: _this,
+                item: event.item.data
+            });
+        });
+        ref.dropped.subscribe(function (event) {
+            _this.dropped.emit({
+                previousIndex: event.previousIndex,
+                currentIndex: event.currentIndex,
+                previousContainer: event.previousContainer.data,
+                container: event.container.data,
+                item: event.item.data,
+                isPointerOverContainer: event.isPointerOverContainer
+            });
+            // Mark for check since all of these events run outside of change
+            // detection and we're not guaranteed for something else to have triggered it.
+            _this._changeDetectorRef.markForCheck();
+        });
+    };
+    /**
+     * Keeps track of the drop lists that are currently on the page.
+     */
+    CdkDropList._dropLists = [];
+    CdkDropList.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Directive"], args: [{
+                    selector: '[cdkDropList], cdk-drop-list',
+                    exportAs: 'cdkDropList',
+                    providers: [
+                        // Prevent child drop lists from picking up the same group as their parent.
+                        { provide: CdkDropListGroup, useValue: ɵ0 },
+                        { provide: CDK_DROP_LIST_CONTAINER, useExisting: CdkDropList },
+                    ],
+                    host: {
+                        'class': 'cdk-drop-list',
+                        '[id]': 'id',
+                        '[class.cdk-drop-list-disabled]': 'disabled',
+                        '[class.cdk-drop-list-dragging]': '_dropListRef.isDragging()',
+                        '[class.cdk-drop-list-receiving]': '_dropListRef.isReceiving()',
+                    }
+                },] },
+    ];
+    /** @nocollapse */
+    CdkDropList.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["ElementRef"] },
+        { type: DragDropRegistry },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["ChangeDetectorRef"] },
+        { type: _angular_cdk_bidi__WEBPACK_IMPORTED_MODULE_6__["Directionality"], decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Optional"] }] },
+        { type: CdkDropListGroup, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Optional"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["SkipSelf"] }] },
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Optional"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Inject"], args: [_angular_common__WEBPACK_IMPORTED_MODULE_4__["DOCUMENT"],] }] },
+        { type: DragDrop }
+    ]; };
+    CdkDropList.propDecorators = {
+        _draggables: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["ContentChildren"], args: [Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["forwardRef"])(function () { return CdkDrag; }), {
+                        // Explicitly set to false since some of the logic below makes assumptions about it.
+                        // The `.withItems` call below should be updated if we ever need to switch this to `true`.
+                        descendants: false
+                    },] }],
+        connectedTo: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Input"], args: ['cdkDropListConnectedTo',] }],
+        data: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Input"], args: ['cdkDropListData',] }],
+        orientation: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Input"], args: ['cdkDropListOrientation',] }],
+        id: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Input"] }],
+        lockAxis: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Input"], args: ['cdkDropListLockAxis',] }],
+        disabled: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Input"], args: ['cdkDropListDisabled',] }],
+        enterPredicate: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Input"], args: ['cdkDropListEnterPredicate',] }],
+        dropped: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Output"], args: ['cdkDropListDropped',] }],
+        entered: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Output"], args: ['cdkDropListEntered',] }],
+        exited: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Output"], args: ['cdkDropListExited',] }],
+        sorted: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Output"], args: ['cdkDropListSorted',] }]
+    };
+    return CdkDropList;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+var DragDropModule = /** @class */ (function () {
+    function DragDropModule() {
+    }
+    DragDropModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["NgModule"], args: [{
+                    declarations: [
+                        CdkDropList,
+                        CdkDropListGroup,
+                        CdkDrag,
+                        CdkDragHandle,
+                        CdkDragPreview,
+                        CdkDragPlaceholder,
+                    ],
+                    exports: [
+                        CdkDropList,
+                        CdkDropListGroup,
+                        CdkDrag,
+                        CdkDragHandle,
+                        CdkDragPreview,
+                        CdkDragPlaceholder,
+                    ],
+                    providers: [
+                        DragDrop,
+                    ]
+                },] },
+    ];
+    return DragDropModule;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+
+//# sourceMappingURL=drag-drop.es5.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@angular/cdk/esm5/platform.es5.js":
+/*!********************************************************!*\
+  !*** ./node_modules/@angular/cdk/esm5/platform.es5.js ***!
+  \********************************************************/
+/*! exports provided: Platform, PlatformModule, getSupportedInputTypes, supportsPassiveEventListeners, normalizePassiveListenerOptions, supportsScrollBehavior, getRtlScrollAxisType, RtlScrollAxisType */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Platform", function() { return Platform; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PlatformModule", function() { return PlatformModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getSupportedInputTypes", function() { return getSupportedInputTypes; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "supportsPassiveEventListeners", function() { return supportsPassiveEventListeners; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "normalizePassiveListenerOptions", function() { return normalizePassiveListenerOptions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "supportsScrollBehavior", function() { return supportsScrollBehavior; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getRtlScrollAxisType", function() { return getRtlScrollAxisType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RtlScrollAxisType", function() { return RtlScrollAxisType; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/**
+ * @license
+ * Copyright Google LLC All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+// Whether the current platform supports the V8 Break Iterator. The V8 check
+// is necessary to detect all Blink based browsers.
+/** @type {?} */
+var hasV8BreakIterator = (typeof Intl !== 'undefined' && ((/** @type {?} */ (Intl))).v8BreakIterator);
+/**
+ * Service to detect the current platform by comparing the userAgent strings and
+ * checking browser-specific global properties.
+ */
+var Platform = /** @class */ (function () {
+    /**
+     * @breaking-change 8.0.0 remove optional decorator
+     */
+    function Platform(_platformId) {
+        this._platformId = _platformId;
+        /**
+         * Whether the Angular application is being rendered in the browser.
+         * We want to use the Angular platform check because if the Document is shimmed
+         * without the navigator, the following checks will fail. This is preferred because
+         * sometimes the Document may be shimmed without the user's knowledge or intention
+         */
+        this.isBrowser = this._platformId ?
+            Object(_angular_common__WEBPACK_IMPORTED_MODULE_1__["isPlatformBrowser"])(this._platformId) : typeof document === 'object' && !!document;
+        /**
+         * Whether the current browser is Microsoft Edge.
+         */
+        this.EDGE = this.isBrowser && /(edge)/i.test(navigator.userAgent);
+        /**
+         * Whether the current rendering engine is Microsoft Trident.
+         */
+        this.TRIDENT = this.isBrowser && /(msie|trident)/i.test(navigator.userAgent);
+        /**
+         * Whether the current rendering engine is Blink.
+         */
+        // EdgeHTML and Trident mock Blink specific things and need to be excluded from this check.
+        this.BLINK = this.isBrowser && (!!(((/** @type {?} */ (window))).chrome || hasV8BreakIterator) &&
+            typeof CSS !== 'undefined' && !this.EDGE && !this.TRIDENT);
+        /**
+         * Whether the current rendering engine is WebKit.
+         */
+        // Webkit is part of the userAgent in EdgeHTML, Blink and Trident. Therefore we need to
+        // ensure that Webkit runs standalone and is not used as another engine's base.
+        this.WEBKIT = this.isBrowser &&
+            /AppleWebKit/i.test(navigator.userAgent) && !this.BLINK && !this.EDGE && !this.TRIDENT;
+        /**
+         * Whether the current platform is Apple iOS.
+         */
+        this.IOS = this.isBrowser && /iPad|iPhone|iPod/.test(navigator.userAgent) &&
+            !('MSStream' in window);
+        /**
+         * Whether the current browser is Firefox.
+         */
+        // It's difficult to detect the plain Gecko engine, because most of the browsers identify
+        // them self as Gecko-like browsers and modify the userAgent's according to that.
+        // Since we only cover one explicit Firefox case, we can simply check for Firefox
+        // instead of having an unstable check for Gecko.
+        this.FIREFOX = this.isBrowser && /(firefox|minefield)/i.test(navigator.userAgent);
+        /**
+         * Whether the current platform is Android.
+         */
+        // Trident on mobile adds the android platform to the userAgent to trick detections.
+        this.ANDROID = this.isBrowser && /android/i.test(navigator.userAgent) && !this.TRIDENT;
+        /**
+         * Whether the current browser is Safari.
+         */
+        // Safari browsers will include the Safari keyword in their userAgent. Some browsers may fake
+        // this and just place the Safari keyword in the userAgent. To be more safe about Safari every
+        // Safari browser should also use Webkit as its layout engine.
+        this.SAFARI = this.isBrowser && /safari/i.test(navigator.userAgent) && this.WEBKIT;
+    }
+    Platform.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"], args: [{ providedIn: 'root' },] },
+    ];
+    /** @nocollapse */
+    Platform.ctorParameters = function () { return [
+        { type: Object, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"], args: [_angular_core__WEBPACK_IMPORTED_MODULE_0__["PLATFORM_ID"],] }] }
+    ]; };
+    /** @nocollapse */ Platform.ngInjectableDef = Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["defineInjectable"])({ factory: function Platform_Factory() { return new Platform(Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["inject"])(_angular_core__WEBPACK_IMPORTED_MODULE_0__["PLATFORM_ID"], 8)); }, token: Platform, providedIn: "root" });
+    return Platform;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+var PlatformModule = /** @class */ (function () {
+    function PlatformModule() {
+    }
+    PlatformModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"], args: [{},] },
+    ];
+    return PlatformModule;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * Cached result Set of input types support by the current browser.
+ * @type {?}
+ */
+var supportedInputTypes;
+/**
+ * Types of `<input>` that *might* be supported.
+ * @type {?}
+ */
+var candidateInputTypes = [
+    // `color` must come first. Chrome 56 shows a warning if we change the type to `color` after
+    // first changing it to something else:
+    // The specified value "" does not conform to the required format.
+    // The format is "#rrggbb" where rr, gg, bb are two-digit hexadecimal numbers.
+    'color',
+    'button',
+    'checkbox',
+    'date',
+    'datetime-local',
+    'email',
+    'file',
+    'hidden',
+    'image',
+    'month',
+    'number',
+    'password',
+    'radio',
+    'range',
+    'reset',
+    'search',
+    'submit',
+    'tel',
+    'text',
+    'time',
+    'url',
+    'week',
+];
+/**
+ * @return {?} The input types supported by this browser.
+ */
+function getSupportedInputTypes() {
+    // Result is cached.
+    if (supportedInputTypes) {
+        return supportedInputTypes;
+    }
+    // We can't check if an input type is not supported until we're on the browser, so say that
+    // everything is supported when not on the browser. We don't use `Platform` here since it's
+    // just a helper function and can't inject it.
+    if (typeof document !== 'object' || !document) {
+        supportedInputTypes = new Set(candidateInputTypes);
+        return supportedInputTypes;
+    }
+    /** @type {?} */
+    var featureTestInput = document.createElement('input');
+    supportedInputTypes = new Set(candidateInputTypes.filter(function (value) {
+        featureTestInput.setAttribute('type', value);
+        return featureTestInput.type === value;
+    }));
+    return supportedInputTypes;
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * Cached result of whether the user's browser supports passive event listeners.
+ * @type {?}
+ */
+var supportsPassiveEvents;
+/**
+ * Checks whether the user's browser supports passive event listeners.
+ * See: https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md
+ * @return {?}
+ */
+function supportsPassiveEventListeners() {
+    if (supportsPassiveEvents == null && typeof window !== 'undefined') {
+        try {
+            window.addEventListener('test', (/** @type {?} */ (null)), Object.defineProperty({}, 'passive', {
+                get: function () { return supportsPassiveEvents = true; }
+            }));
+        }
+        finally {
+            supportsPassiveEvents = supportsPassiveEvents || false;
+        }
+    }
+    return supportsPassiveEvents;
+}
+/**
+ * Normalizes an `AddEventListener` object to something that can be passed
+ * to `addEventListener` on any browser, no matter whether it supports the
+ * `options` parameter.
+ * @param {?} options Object to be normalized.
+ * @return {?}
+ */
+function normalizePassiveListenerOptions(options) {
+    return supportsPassiveEventListeners() ? options : !!options.capture;
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/** @enum {number} */
+var RtlScrollAxisType = {
+    /**
+     * scrollLeft is 0 when scrolled all the way left and (scrollWidth - clientWidth) when scrolled
+     * all the way right.
+     */
+    NORMAL: 0,
+    /**
+     * scrollLeft is -(scrollWidth - clientWidth) when scrolled all the way left and 0 when scrolled
+     * all the way right.
+     */
+    NEGATED: 1,
+    /**
+     * scrollLeft is (scrollWidth - clientWidth) when scrolled all the way left and 0 when scrolled
+     * all the way right.
+     */
+    INVERTED: 2,
+};
+RtlScrollAxisType[RtlScrollAxisType.NORMAL] = 'NORMAL';
+RtlScrollAxisType[RtlScrollAxisType.NEGATED] = 'NEGATED';
+RtlScrollAxisType[RtlScrollAxisType.INVERTED] = 'INVERTED';
+/**
+ * Cached result of the way the browser handles the horizontal scroll axis in RTL mode.
+ * @type {?}
+ */
+var rtlScrollAxisType;
+/**
+ * Check whether the browser supports scroll behaviors.
+ * @return {?}
+ */
+function supportsScrollBehavior() {
+    return !!(typeof document == 'object' && 'scrollBehavior' in (/** @type {?} */ (document.documentElement)).style);
+}
+/**
+ * Checks the type of RTL scroll axis used by this browser. As of time of writing, Chrome is NORMAL,
+ * Firefox & Safari are NEGATED, and IE & Edge are INVERTED.
+ * @return {?}
+ */
+function getRtlScrollAxisType() {
+    // We can't check unless we're on the browser. Just assume 'normal' if we're not.
+    if (typeof document !== 'object' || !document) {
+        return RtlScrollAxisType.NORMAL;
+    }
+    if (!rtlScrollAxisType) {
+        // Create a 1px wide scrolling container and a 2px wide content element.
+        /** @type {?} */
+        var scrollContainer = document.createElement('div');
+        /** @type {?} */
+        var containerStyle = scrollContainer.style;
+        scrollContainer.dir = 'rtl';
+        containerStyle.height = '1px';
+        containerStyle.width = '1px';
+        containerStyle.overflow = 'auto';
+        containerStyle.visibility = 'hidden';
+        containerStyle.pointerEvents = 'none';
+        containerStyle.position = 'absolute';
+        /** @type {?} */
+        var content = document.createElement('div');
+        /** @type {?} */
+        var contentStyle = content.style;
+        contentStyle.width = '2px';
+        contentStyle.height = '1px';
+        scrollContainer.appendChild(content);
+        document.body.appendChild(scrollContainer);
+        rtlScrollAxisType = RtlScrollAxisType.NORMAL;
+        // The viewport starts scrolled all the way to the right in RTL mode. If we are in a NORMAL
+        // browser this would mean that the scrollLeft should be 1. If it's zero instead we know we're
+        // dealing with one of the other two types of browsers.
+        if (scrollContainer.scrollLeft === 0) {
+            // In a NEGATED browser the scrollLeft is always somewhere in [-maxScrollAmount, 0]. For an
+            // INVERTED browser it is always somewhere in [0, maxScrollAmount]. We can determine which by
+            // setting to the scrollLeft to 1. This is past the max for a NEGATED browser, so it will
+            // return 0 when we read it again.
+            scrollContainer.scrollLeft = 1;
+            rtlScrollAxisType =
+                scrollContainer.scrollLeft === 0 ? RtlScrollAxisType.NEGATED : RtlScrollAxisType.INVERTED;
+        }
+        (/** @type {?} */ (scrollContainer.parentNode)).removeChild(scrollContainer);
+    }
+    return rtlScrollAxisType;
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+
+//# sourceMappingURL=platform.es5.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@angular/cdk/esm5/scrolling.es5.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/@angular/cdk/esm5/scrolling.es5.js ***!
+  \*********************************************************/
+/*! exports provided: _fixedSizeVirtualScrollStrategyFactory, FixedSizeVirtualScrollStrategy, CdkFixedSizeVirtualScroll, SCROLL_DISPATCHER_PROVIDER_FACTORY, DEFAULT_SCROLL_TIME, ScrollDispatcher, SCROLL_DISPATCHER_PROVIDER, CdkScrollable, ScrollingModule, ScrollDispatchModule, VIEWPORT_RULER_PROVIDER_FACTORY, DEFAULT_RESIZE_TIME, ViewportRuler, VIEWPORT_RULER_PROVIDER, CdkVirtualForOf, VIRTUAL_SCROLL_STRATEGY, CdkVirtualScrollViewport */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_fixedSizeVirtualScrollStrategyFactory", function() { return _fixedSizeVirtualScrollStrategyFactory; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FixedSizeVirtualScrollStrategy", function() { return FixedSizeVirtualScrollStrategy; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CdkFixedSizeVirtualScroll", function() { return CdkFixedSizeVirtualScroll; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SCROLL_DISPATCHER_PROVIDER_FACTORY", function() { return SCROLL_DISPATCHER_PROVIDER_FACTORY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DEFAULT_SCROLL_TIME", function() { return DEFAULT_SCROLL_TIME; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ScrollDispatcher", function() { return ScrollDispatcher; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SCROLL_DISPATCHER_PROVIDER", function() { return SCROLL_DISPATCHER_PROVIDER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CdkScrollable", function() { return CdkScrollable; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ScrollingModule", function() { return ScrollingModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ScrollDispatchModule", function() { return ScrollDispatchModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VIEWPORT_RULER_PROVIDER_FACTORY", function() { return VIEWPORT_RULER_PROVIDER_FACTORY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DEFAULT_RESIZE_TIME", function() { return DEFAULT_RESIZE_TIME; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ViewportRuler", function() { return ViewportRuler; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VIEWPORT_RULER_PROVIDER", function() { return VIEWPORT_RULER_PROVIDER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CdkVirtualForOf", function() { return CdkVirtualForOf; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VIRTUAL_SCROLL_STRATEGY", function() { return VIRTUAL_SCROLL_STRATEGY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CdkVirtualScrollViewport", function() { return CdkVirtualScrollViewport; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/cdk/coercion */ "./node_modules/@angular/cdk/esm5/coercion.es5.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var _angular_cdk_platform__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/cdk/platform */ "./node_modules/@angular/cdk/esm5/platform.es5.js");
+/* harmony import */ var _angular_cdk_bidi__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/cdk/bidi */ "./node_modules/@angular/cdk/esm5/bidi.es5.js");
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_cdk_collections__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/cdk/collections */ "./node_modules/@angular/cdk/esm5/collections.es5.js");
+/**
+ * @license
+ * Copyright Google LLC All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+
+
+
+
+
+
+
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * The injection token used to specify the virtual scrolling strategy.
+ * @type {?}
+ */
+var VIRTUAL_SCROLL_STRATEGY = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["InjectionToken"]('VIRTUAL_SCROLL_STRATEGY');
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * Virtual scrolling strategy for lists with items of known fixed size.
+ */
+var  /**
+ * Virtual scrolling strategy for lists with items of known fixed size.
+ */
+FixedSizeVirtualScrollStrategy = /** @class */ (function () {
+    /**
+     * @param itemSize The size of the items in the virtually scrolling list.
+     * @param minBufferPx The minimum amount of buffer (in pixels) before needing to render more
+     * @param maxBufferPx The amount of buffer (in pixels) to render when rendering more.
+     */
+    function FixedSizeVirtualScrollStrategy(itemSize, minBufferPx, maxBufferPx) {
+        this._scrolledIndexChange = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        /**
+         * \@docs-private Implemented as part of VirtualScrollStrategy.
+         */
+        this.scrolledIndexChange = this._scrolledIndexChange.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["distinctUntilChanged"])());
+        /**
+         * The attached viewport.
+         */
+        this._viewport = null;
+        this._itemSize = itemSize;
+        this._minBufferPx = minBufferPx;
+        this._maxBufferPx = maxBufferPx;
+    }
+    /**
+     * Attaches this scroll strategy to a viewport.
+     * @param viewport The viewport to attach this strategy to.
+     */
+    /**
+     * Attaches this scroll strategy to a viewport.
+     * @param {?} viewport The viewport to attach this strategy to.
+     * @return {?}
+     */
+    FixedSizeVirtualScrollStrategy.prototype.attach = /**
+     * Attaches this scroll strategy to a viewport.
+     * @param {?} viewport The viewport to attach this strategy to.
+     * @return {?}
+     */
+    function (viewport) {
+        this._viewport = viewport;
+        this._updateTotalContentSize();
+        this._updateRenderedRange();
+    };
+    /** Detaches this scroll strategy from the currently attached viewport. */
+    /**
+     * Detaches this scroll strategy from the currently attached viewport.
+     * @return {?}
+     */
+    FixedSizeVirtualScrollStrategy.prototype.detach = /**
+     * Detaches this scroll strategy from the currently attached viewport.
+     * @return {?}
+     */
+    function () {
+        this._scrolledIndexChange.complete();
+        this._viewport = null;
+    };
+    /**
+     * Update the item size and buffer size.
+     * @param itemSize The size of the items in the virtually scrolling list.
+     * @param minBufferPx The minimum amount of buffer (in pixels) before needing to render more
+     * @param maxBufferPx The amount of buffer (in pixels) to render when rendering more.
+     */
+    /**
+     * Update the item size and buffer size.
+     * @param {?} itemSize The size of the items in the virtually scrolling list.
+     * @param {?} minBufferPx The minimum amount of buffer (in pixels) before needing to render more
+     * @param {?} maxBufferPx The amount of buffer (in pixels) to render when rendering more.
+     * @return {?}
+     */
+    FixedSizeVirtualScrollStrategy.prototype.updateItemAndBufferSize = /**
+     * Update the item size and buffer size.
+     * @param {?} itemSize The size of the items in the virtually scrolling list.
+     * @param {?} minBufferPx The minimum amount of buffer (in pixels) before needing to render more
+     * @param {?} maxBufferPx The amount of buffer (in pixels) to render when rendering more.
+     * @return {?}
+     */
+    function (itemSize, minBufferPx, maxBufferPx) {
+        if (maxBufferPx < minBufferPx) {
+            throw Error('CDK virtual scroll: maxBufferPx must be greater than or equal to minBufferPx');
+        }
+        this._itemSize = itemSize;
+        this._minBufferPx = minBufferPx;
+        this._maxBufferPx = maxBufferPx;
+        this._updateTotalContentSize();
+        this._updateRenderedRange();
+    };
+    /** @docs-private Implemented as part of VirtualScrollStrategy. */
+    /**
+     * \@docs-private Implemented as part of VirtualScrollStrategy.
+     * @return {?}
+     */
+    FixedSizeVirtualScrollStrategy.prototype.onContentScrolled = /**
+     * \@docs-private Implemented as part of VirtualScrollStrategy.
+     * @return {?}
+     */
+    function () {
+        this._updateRenderedRange();
+    };
+    /** @docs-private Implemented as part of VirtualScrollStrategy. */
+    /**
+     * \@docs-private Implemented as part of VirtualScrollStrategy.
+     * @return {?}
+     */
+    FixedSizeVirtualScrollStrategy.prototype.onDataLengthChanged = /**
+     * \@docs-private Implemented as part of VirtualScrollStrategy.
+     * @return {?}
+     */
+    function () {
+        this._updateTotalContentSize();
+        this._updateRenderedRange();
+    };
+    /** @docs-private Implemented as part of VirtualScrollStrategy. */
+    /**
+     * \@docs-private Implemented as part of VirtualScrollStrategy.
+     * @return {?}
+     */
+    FixedSizeVirtualScrollStrategy.prototype.onContentRendered = /**
+     * \@docs-private Implemented as part of VirtualScrollStrategy.
+     * @return {?}
+     */
+    function () { };
+    /** @docs-private Implemented as part of VirtualScrollStrategy. */
+    /**
+     * \@docs-private Implemented as part of VirtualScrollStrategy.
+     * @return {?}
+     */
+    FixedSizeVirtualScrollStrategy.prototype.onRenderedOffsetChanged = /**
+     * \@docs-private Implemented as part of VirtualScrollStrategy.
+     * @return {?}
+     */
+    function () { };
+    /**
+     * Scroll to the offset for the given index.
+     * @param index The index of the element to scroll to.
+     * @param behavior The ScrollBehavior to use when scrolling.
+     */
+    /**
+     * Scroll to the offset for the given index.
+     * @param {?} index The index of the element to scroll to.
+     * @param {?} behavior The ScrollBehavior to use when scrolling.
+     * @return {?}
+     */
+    FixedSizeVirtualScrollStrategy.prototype.scrollToIndex = /**
+     * Scroll to the offset for the given index.
+     * @param {?} index The index of the element to scroll to.
+     * @param {?} behavior The ScrollBehavior to use when scrolling.
+     * @return {?}
+     */
+    function (index, behavior) {
+        if (this._viewport) {
+            this._viewport.scrollToOffset(index * this._itemSize, behavior);
+        }
+    };
+    /** Update the viewport's total content size. */
+    /**
+     * Update the viewport's total content size.
+     * @private
+     * @return {?}
+     */
+    FixedSizeVirtualScrollStrategy.prototype._updateTotalContentSize = /**
+     * Update the viewport's total content size.
+     * @private
+     * @return {?}
+     */
+    function () {
+        if (!this._viewport) {
+            return;
+        }
+        this._viewport.setTotalContentSize(this._viewport.getDataLength() * this._itemSize);
+    };
+    /** Update the viewport's rendered range. */
+    /**
+     * Update the viewport's rendered range.
+     * @private
+     * @return {?}
+     */
+    FixedSizeVirtualScrollStrategy.prototype._updateRenderedRange = /**
+     * Update the viewport's rendered range.
+     * @private
+     * @return {?}
+     */
+    function () {
+        if (!this._viewport) {
+            return;
+        }
+        /** @type {?} */
+        var scrollOffset = this._viewport.measureScrollOffset();
+        /** @type {?} */
+        var firstVisibleIndex = scrollOffset / this._itemSize;
+        /** @type {?} */
+        var renderedRange = this._viewport.getRenderedRange();
+        /** @type {?} */
+        var newRange = { start: renderedRange.start, end: renderedRange.end };
+        /** @type {?} */
+        var viewportSize = this._viewport.getViewportSize();
+        /** @type {?} */
+        var dataLength = this._viewport.getDataLength();
+        /** @type {?} */
+        var startBuffer = scrollOffset - newRange.start * this._itemSize;
+        if (startBuffer < this._minBufferPx && newRange.start != 0) {
+            /** @type {?} */
+            var expandStart = Math.ceil((this._maxBufferPx - startBuffer) / this._itemSize);
+            newRange.start = Math.max(0, newRange.start - expandStart);
+            newRange.end = Math.min(dataLength, Math.ceil(firstVisibleIndex + (viewportSize + this._minBufferPx) / this._itemSize));
+        }
+        else {
+            /** @type {?} */
+            var endBuffer = newRange.end * this._itemSize - (scrollOffset + viewportSize);
+            if (endBuffer < this._minBufferPx && newRange.end != dataLength) {
+                /** @type {?} */
+                var expandEnd = Math.ceil((this._maxBufferPx - endBuffer) / this._itemSize);
+                if (expandEnd > 0) {
+                    newRange.end = Math.min(dataLength, newRange.end + expandEnd);
+                    newRange.start = Math.max(0, Math.floor(firstVisibleIndex - this._minBufferPx / this._itemSize));
+                }
+            }
+        }
+        this._viewport.setRenderedRange(newRange);
+        this._viewport.setRenderedContentOffset(this._itemSize * newRange.start);
+        this._scrolledIndexChange.next(Math.floor(firstVisibleIndex));
+    };
+    return FixedSizeVirtualScrollStrategy;
+}());
+/**
+ * Provider factory for `FixedSizeVirtualScrollStrategy` that simply extracts the already created
+ * `FixedSizeVirtualScrollStrategy` from the given directive.
+ * @param {?} fixedSizeDir The instance of `CdkFixedSizeVirtualScroll` to extract the
+ *     `FixedSizeVirtualScrollStrategy` from.
+ * @return {?}
+ */
+function _fixedSizeVirtualScrollStrategyFactory(fixedSizeDir) {
+    return fixedSizeDir._scrollStrategy;
+}
+/**
+ * A virtual scroll strategy that supports fixed-size items.
+ */
+var CdkFixedSizeVirtualScroll = /** @class */ (function () {
+    function CdkFixedSizeVirtualScroll() {
+        this._itemSize = 20;
+        this._minBufferPx = 100;
+        this._maxBufferPx = 200;
+        /**
+         * The scroll strategy used by this directive.
+         */
+        this._scrollStrategy = new FixedSizeVirtualScrollStrategy(this.itemSize, this.minBufferPx, this.maxBufferPx);
+    }
+    Object.defineProperty(CdkFixedSizeVirtualScroll.prototype, "itemSize", {
+        /** The size of the items in the list (in pixels). */
+        get: /**
+         * The size of the items in the list (in pixels).
+         * @return {?}
+         */
+        function () { return this._itemSize; },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) { this._itemSize = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceNumberProperty"])(value); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(CdkFixedSizeVirtualScroll.prototype, "minBufferPx", {
+        /**
+         * The minimum amount of buffer rendered beyond the viewport (in pixels).
+         * If the amount of buffer dips below this number, more items will be rendered. Defaults to 100px.
+         */
+        get: /**
+         * The minimum amount of buffer rendered beyond the viewport (in pixels).
+         * If the amount of buffer dips below this number, more items will be rendered. Defaults to 100px.
+         * @return {?}
+         */
+        function () { return this._minBufferPx; },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) { this._minBufferPx = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceNumberProperty"])(value); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(CdkFixedSizeVirtualScroll.prototype, "maxBufferPx", {
+        /**
+         * The number of pixels worth of buffer to render for when rendering new items. Defaults to 200px.
+         */
+        get: /**
+         * The number of pixels worth of buffer to render for when rendering new items. Defaults to 200px.
+         * @return {?}
+         */
+        function () { return this._maxBufferPx; },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) { this._maxBufferPx = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceNumberProperty"])(value); },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @return {?}
+     */
+    CdkFixedSizeVirtualScroll.prototype.ngOnChanges = /**
+     * @return {?}
+     */
+    function () {
+        this._scrollStrategy.updateItemAndBufferSize(this.itemSize, this.minBufferPx, this.maxBufferPx);
+    };
+    CdkFixedSizeVirtualScroll.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"], args: [{
+                    selector: 'cdk-virtual-scroll-viewport[itemSize]',
+                    providers: [{
+                            provide: VIRTUAL_SCROLL_STRATEGY,
+                            useFactory: _fixedSizeVirtualScrollStrategyFactory,
+                            deps: [Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["forwardRef"])(function () { return CdkFixedSizeVirtualScroll; })],
+                        }],
+                },] },
+    ];
+    CdkFixedSizeVirtualScroll.propDecorators = {
+        itemSize: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] }],
+        minBufferPx: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] }],
+        maxBufferPx: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] }]
+    };
+    return CdkFixedSizeVirtualScroll;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * Time in ms to throttle the scrolling events by default.
+ * @type {?}
+ */
+var DEFAULT_SCROLL_TIME = 20;
+/**
+ * Service contained all registered Scrollable references and emits an event when any one of the
+ * Scrollable references emit a scrolled event.
+ */
+var ScrollDispatcher = /** @class */ (function () {
+    function ScrollDispatcher(_ngZone, _platform) {
+        this._ngZone = _ngZone;
+        this._platform = _platform;
+        /**
+         * Subject for notifying that a registered scrollable reference element has been scrolled.
+         */
+        this._scrolled = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        /**
+         * Keeps track of the global `scroll` and `resize` subscriptions.
+         */
+        this._globalSubscription = null;
+        /**
+         * Keeps track of the amount of subscriptions to `scrolled`. Used for cleaning up afterwards.
+         */
+        this._scrolledCount = 0;
+        /**
+         * Map of all the scrollable references that are registered with the service and their
+         * scroll event subscriptions.
+         */
+        this.scrollContainers = new Map();
+    }
+    /**
+     * Registers a scrollable instance with the service and listens for its scrolled events. When the
+     * scrollable is scrolled, the service emits the event to its scrolled observable.
+     * @param scrollable Scrollable instance to be registered.
+     */
+    /**
+     * Registers a scrollable instance with the service and listens for its scrolled events. When the
+     * scrollable is scrolled, the service emits the event to its scrolled observable.
+     * @param {?} scrollable Scrollable instance to be registered.
+     * @return {?}
+     */
+    ScrollDispatcher.prototype.register = /**
+     * Registers a scrollable instance with the service and listens for its scrolled events. When the
+     * scrollable is scrolled, the service emits the event to its scrolled observable.
+     * @param {?} scrollable Scrollable instance to be registered.
+     * @return {?}
+     */
+    function (scrollable) {
+        var _this = this;
+        if (!this.scrollContainers.has(scrollable)) {
+            this.scrollContainers.set(scrollable, scrollable.elementScrolled()
+                .subscribe(function () { return _this._scrolled.next(scrollable); }));
+        }
+    };
+    /**
+     * Deregisters a Scrollable reference and unsubscribes from its scroll event observable.
+     * @param scrollable Scrollable instance to be deregistered.
+     */
+    /**
+     * Deregisters a Scrollable reference and unsubscribes from its scroll event observable.
+     * @param {?} scrollable Scrollable instance to be deregistered.
+     * @return {?}
+     */
+    ScrollDispatcher.prototype.deregister = /**
+     * Deregisters a Scrollable reference and unsubscribes from its scroll event observable.
+     * @param {?} scrollable Scrollable instance to be deregistered.
+     * @return {?}
+     */
+    function (scrollable) {
+        /** @type {?} */
+        var scrollableReference = this.scrollContainers.get(scrollable);
+        if (scrollableReference) {
+            scrollableReference.unsubscribe();
+            this.scrollContainers.delete(scrollable);
+        }
+    };
+    /**
+     * Returns an observable that emits an event whenever any of the registered Scrollable
+     * references (or window, document, or body) fire a scrolled event. Can provide a time in ms
+     * to override the default "throttle" time.
+     *
+     * **Note:** in order to avoid hitting change detection for every scroll event,
+     * all of the events emitted from this stream will be run outside the Angular zone.
+     * If you need to update any data bindings as a result of a scroll event, you have
+     * to run the callback using `NgZone.run`.
+     */
+    /**
+     * Returns an observable that emits an event whenever any of the registered Scrollable
+     * references (or window, document, or body) fire a scrolled event. Can provide a time in ms
+     * to override the default "throttle" time.
+     *
+     * **Note:** in order to avoid hitting change detection for every scroll event,
+     * all of the events emitted from this stream will be run outside the Angular zone.
+     * If you need to update any data bindings as a result of a scroll event, you have
+     * to run the callback using `NgZone.run`.
+     * @param {?=} auditTimeInMs
+     * @return {?}
+     */
+    ScrollDispatcher.prototype.scrolled = /**
+     * Returns an observable that emits an event whenever any of the registered Scrollable
+     * references (or window, document, or body) fire a scrolled event. Can provide a time in ms
+     * to override the default "throttle" time.
+     *
+     * **Note:** in order to avoid hitting change detection for every scroll event,
+     * all of the events emitted from this stream will be run outside the Angular zone.
+     * If you need to update any data bindings as a result of a scroll event, you have
+     * to run the callback using `NgZone.run`.
+     * @param {?=} auditTimeInMs
+     * @return {?}
+     */
+    function (auditTimeInMs) {
+        var _this = this;
+        if (auditTimeInMs === void 0) { auditTimeInMs = DEFAULT_SCROLL_TIME; }
+        if (!this._platform.isBrowser) {
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["of"])();
+        }
+        return new rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"](function (observer) {
+            if (!_this._globalSubscription) {
+                _this._addGlobalListener();
+            }
+            // In the case of a 0ms delay, use an observable without auditTime
+            // since it does add a perceptible delay in processing overhead.
+            /** @type {?} */
+            var subscription = auditTimeInMs > 0 ?
+                _this._scrolled.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["auditTime"])(auditTimeInMs)).subscribe(observer) :
+                _this._scrolled.subscribe(observer);
+            _this._scrolledCount++;
+            return function () {
+                subscription.unsubscribe();
+                _this._scrolledCount--;
+                if (!_this._scrolledCount) {
+                    _this._removeGlobalListener();
+                }
+            };
+        });
+    };
+    /**
+     * @return {?}
+     */
+    ScrollDispatcher.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        this._removeGlobalListener();
+        this.scrollContainers.forEach(function (_, container) { return _this.deregister(container); });
+        this._scrolled.complete();
+    };
+    /**
+     * Returns an observable that emits whenever any of the
+     * scrollable ancestors of an element are scrolled.
+     * @param elementRef Element whose ancestors to listen for.
+     * @param auditTimeInMs Time to throttle the scroll events.
+     */
+    /**
+     * Returns an observable that emits whenever any of the
+     * scrollable ancestors of an element are scrolled.
+     * @param {?} elementRef Element whose ancestors to listen for.
+     * @param {?=} auditTimeInMs Time to throttle the scroll events.
+     * @return {?}
+     */
+    ScrollDispatcher.prototype.ancestorScrolled = /**
+     * Returns an observable that emits whenever any of the
+     * scrollable ancestors of an element are scrolled.
+     * @param {?} elementRef Element whose ancestors to listen for.
+     * @param {?=} auditTimeInMs Time to throttle the scroll events.
+     * @return {?}
+     */
+    function (elementRef, auditTimeInMs) {
+        /** @type {?} */
+        var ancestors = this.getAncestorScrollContainers(elementRef);
+        return this.scrolled(auditTimeInMs).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["filter"])(function (target) {
+            return !target || ancestors.indexOf(target) > -1;
+        }));
+    };
+    /** Returns all registered Scrollables that contain the provided element. */
+    /**
+     * Returns all registered Scrollables that contain the provided element.
+     * @param {?} elementRef
+     * @return {?}
+     */
+    ScrollDispatcher.prototype.getAncestorScrollContainers = /**
+     * Returns all registered Scrollables that contain the provided element.
+     * @param {?} elementRef
+     * @return {?}
+     */
+    function (elementRef) {
+        var _this = this;
+        /** @type {?} */
+        var scrollingContainers = [];
+        this.scrollContainers.forEach(function (_subscription, scrollable) {
+            if (_this._scrollableContainsElement(scrollable, elementRef)) {
+                scrollingContainers.push(scrollable);
+            }
+        });
+        return scrollingContainers;
+    };
+    /** Returns true if the element is contained within the provided Scrollable. */
+    /**
+     * Returns true if the element is contained within the provided Scrollable.
+     * @private
+     * @param {?} scrollable
+     * @param {?} elementRef
+     * @return {?}
+     */
+    ScrollDispatcher.prototype._scrollableContainsElement = /**
+     * Returns true if the element is contained within the provided Scrollable.
+     * @private
+     * @param {?} scrollable
+     * @param {?} elementRef
+     * @return {?}
+     */
+    function (scrollable, elementRef) {
+        /** @type {?} */
+        var element = elementRef.nativeElement;
+        /** @type {?} */
+        var scrollableElement = scrollable.getElementRef().nativeElement;
+        // Traverse through the element parents until we reach null, checking if any of the elements
+        // are the scrollable's element.
+        do {
+            if (element == scrollableElement) {
+                return true;
+            }
+        } while (element = (/** @type {?} */ (element)).parentElement);
+        return false;
+    };
+    /** Sets up the global scroll listeners. */
+    /**
+     * Sets up the global scroll listeners.
+     * @private
+     * @return {?}
+     */
+    ScrollDispatcher.prototype._addGlobalListener = /**
+     * Sets up the global scroll listeners.
+     * @private
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        this._globalSubscription = this._ngZone.runOutsideAngular(function () {
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["fromEvent"])(window.document, 'scroll').subscribe(function () { return _this._scrolled.next(); });
+        });
+    };
+    /** Cleans up the global scroll listener. */
+    /**
+     * Cleans up the global scroll listener.
+     * @private
+     * @return {?}
+     */
+    ScrollDispatcher.prototype._removeGlobalListener = /**
+     * Cleans up the global scroll listener.
+     * @private
+     * @return {?}
+     */
+    function () {
+        if (this._globalSubscription) {
+            this._globalSubscription.unsubscribe();
+            this._globalSubscription = null;
+        }
+    };
+    ScrollDispatcher.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"], args: [{ providedIn: 'root' },] },
+    ];
+    /** @nocollapse */
+    ScrollDispatcher.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgZone"] },
+        { type: _angular_cdk_platform__WEBPACK_IMPORTED_MODULE_4__["Platform"] }
+    ]; };
+    /** @nocollapse */ ScrollDispatcher.ngInjectableDef = Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["defineInjectable"])({ factory: function ScrollDispatcher_Factory() { return new ScrollDispatcher(Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["inject"])(_angular_core__WEBPACK_IMPORTED_MODULE_0__["NgZone"]), Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["inject"])(_angular_cdk_platform__WEBPACK_IMPORTED_MODULE_4__["Platform"])); }, token: ScrollDispatcher, providedIn: "root" });
+    return ScrollDispatcher;
+}());
+/**
+ * \@docs-private \@deprecated \@breaking-change 8.0.0
+ * @param {?} parentDispatcher
+ * @param {?} ngZone
+ * @param {?} platform
+ * @return {?}
+ */
+function SCROLL_DISPATCHER_PROVIDER_FACTORY(parentDispatcher, ngZone, platform) {
+    return parentDispatcher || new ScrollDispatcher(ngZone, platform);
+}
+/**
+ * \@docs-private \@deprecated \@breaking-change 8.0.0
+ * @type {?}
+ */
+var SCROLL_DISPATCHER_PROVIDER = {
+    // If there is already a ScrollDispatcher available, use that. Otherwise, provide a new one.
+    provide: ScrollDispatcher,
+    deps: [[new _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"](), new _angular_core__WEBPACK_IMPORTED_MODULE_0__["SkipSelf"](), ScrollDispatcher], _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgZone"], _angular_cdk_platform__WEBPACK_IMPORTED_MODULE_4__["Platform"]],
+    useFactory: SCROLL_DISPATCHER_PROVIDER_FACTORY
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * Sends an event when the directive's element is scrolled. Registers itself with the
+ * ScrollDispatcher service to include itself as part of its collection of scrolling events that it
+ * can be listened to through the service.
+ */
+var CdkScrollable = /** @class */ (function () {
+    function CdkScrollable(elementRef, scrollDispatcher, ngZone, dir) {
+        var _this = this;
+        this.elementRef = elementRef;
+        this.scrollDispatcher = scrollDispatcher;
+        this.ngZone = ngZone;
+        this.dir = dir;
+        this._destroyed = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        this._elementScrolled = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"](function (observer) {
+            return _this.ngZone.runOutsideAngular(function () {
+                return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["fromEvent"])(_this.elementRef.nativeElement, 'scroll').pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["takeUntil"])(_this._destroyed))
+                    .subscribe(observer);
+            });
+        });
+    }
+    /**
+     * @return {?}
+     */
+    CdkScrollable.prototype.ngOnInit = /**
+     * @return {?}
+     */
+    function () {
+        this.scrollDispatcher.register(this);
+    };
+    /**
+     * @return {?}
+     */
+    CdkScrollable.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        this.scrollDispatcher.deregister(this);
+        this._destroyed.next();
+        this._destroyed.complete();
+    };
+    /** Returns observable that emits when a scroll event is fired on the host element. */
+    /**
+     * Returns observable that emits when a scroll event is fired on the host element.
+     * @return {?}
+     */
+    CdkScrollable.prototype.elementScrolled = /**
+     * Returns observable that emits when a scroll event is fired on the host element.
+     * @return {?}
+     */
+    function () {
+        return this._elementScrolled;
+    };
+    /** Gets the ElementRef for the viewport. */
+    /**
+     * Gets the ElementRef for the viewport.
+     * @return {?}
+     */
+    CdkScrollable.prototype.getElementRef = /**
+     * Gets the ElementRef for the viewport.
+     * @return {?}
+     */
+    function () {
+        return this.elementRef;
+    };
+    /**
+     * Scrolls to the specified offsets. This is a normalized version of the browser's native scrollTo
+     * method, since browsers are not consistent about what scrollLeft means in RTL. For this method
+     * left and right always refer to the left and right side of the scrolling container irrespective
+     * of the layout direction. start and end refer to left and right in an LTR context and vice-versa
+     * in an RTL context.
+     * @param options specified the offsets to scroll to.
+     */
+    /**
+     * Scrolls to the specified offsets. This is a normalized version of the browser's native scrollTo
+     * method, since browsers are not consistent about what scrollLeft means in RTL. For this method
+     * left and right always refer to the left and right side of the scrolling container irrespective
+     * of the layout direction. start and end refer to left and right in an LTR context and vice-versa
+     * in an RTL context.
+     * @param {?} options specified the offsets to scroll to.
+     * @return {?}
+     */
+    CdkScrollable.prototype.scrollTo = /**
+     * Scrolls to the specified offsets. This is a normalized version of the browser's native scrollTo
+     * method, since browsers are not consistent about what scrollLeft means in RTL. For this method
+     * left and right always refer to the left and right side of the scrolling container irrespective
+     * of the layout direction. start and end refer to left and right in an LTR context and vice-versa
+     * in an RTL context.
+     * @param {?} options specified the offsets to scroll to.
+     * @return {?}
+     */
+    function (options) {
+        /** @type {?} */
+        var el = this.elementRef.nativeElement;
+        /** @type {?} */
+        var isRtl = this.dir && this.dir.value == 'rtl';
+        // Rewrite start & end offsets as right or left offsets.
+        options.left = options.left == null ? (isRtl ? options.end : options.start) : options.left;
+        options.right = options.right == null ? (isRtl ? options.start : options.end) : options.right;
+        // Rewrite the bottom offset as a top offset.
+        if (options.bottom != null) {
+            ((/** @type {?} */ (options))).top =
+                el.scrollHeight - el.clientHeight - options.bottom;
+        }
+        // Rewrite the right offset as a left offset.
+        if (isRtl && Object(_angular_cdk_platform__WEBPACK_IMPORTED_MODULE_4__["getRtlScrollAxisType"])() != _angular_cdk_platform__WEBPACK_IMPORTED_MODULE_4__["RtlScrollAxisType"].NORMAL) {
+            if (options.left != null) {
+                ((/** @type {?} */ (options))).right =
+                    el.scrollWidth - el.clientWidth - options.left;
+            }
+            if (Object(_angular_cdk_platform__WEBPACK_IMPORTED_MODULE_4__["getRtlScrollAxisType"])() == _angular_cdk_platform__WEBPACK_IMPORTED_MODULE_4__["RtlScrollAxisType"].INVERTED) {
+                options.left = options.right;
+            }
+            else if (Object(_angular_cdk_platform__WEBPACK_IMPORTED_MODULE_4__["getRtlScrollAxisType"])() == _angular_cdk_platform__WEBPACK_IMPORTED_MODULE_4__["RtlScrollAxisType"].NEGATED) {
+                options.left = options.right ? -options.right : options.right;
+            }
+        }
+        else {
+            if (options.right != null) {
+                ((/** @type {?} */ (options))).left =
+                    el.scrollWidth - el.clientWidth - options.right;
+            }
+        }
+        this._applyScrollToOptions(options);
+    };
+    /**
+     * @private
+     * @param {?} options
+     * @return {?}
+     */
+    CdkScrollable.prototype._applyScrollToOptions = /**
+     * @private
+     * @param {?} options
+     * @return {?}
+     */
+    function (options) {
+        /** @type {?} */
+        var el = this.elementRef.nativeElement;
+        if (Object(_angular_cdk_platform__WEBPACK_IMPORTED_MODULE_4__["supportsScrollBehavior"])()) {
+            el.scrollTo(options);
+        }
+        else {
+            if (options.top != null) {
+                el.scrollTop = options.top;
+            }
+            if (options.left != null) {
+                el.scrollLeft = options.left;
+            }
+        }
+    };
+    /**
+     * Measures the scroll offset relative to the specified edge of the viewport. This method can be
+     * used instead of directly checking scrollLeft or scrollTop, since browsers are not consistent
+     * about what scrollLeft means in RTL. The values returned by this method are normalized such that
+     * left and right always refer to the left and right side of the scrolling container irrespective
+     * of the layout direction. start and end refer to left and right in an LTR context and vice-versa
+     * in an RTL context.
+     * @param from The edge to measure from.
+     */
+    /**
+     * Measures the scroll offset relative to the specified edge of the viewport. This method can be
+     * used instead of directly checking scrollLeft or scrollTop, since browsers are not consistent
+     * about what scrollLeft means in RTL. The values returned by this method are normalized such that
+     * left and right always refer to the left and right side of the scrolling container irrespective
+     * of the layout direction. start and end refer to left and right in an LTR context and vice-versa
+     * in an RTL context.
+     * @param {?} from The edge to measure from.
+     * @return {?}
+     */
+    CdkScrollable.prototype.measureScrollOffset = /**
+     * Measures the scroll offset relative to the specified edge of the viewport. This method can be
+     * used instead of directly checking scrollLeft or scrollTop, since browsers are not consistent
+     * about what scrollLeft means in RTL. The values returned by this method are normalized such that
+     * left and right always refer to the left and right side of the scrolling container irrespective
+     * of the layout direction. start and end refer to left and right in an LTR context and vice-versa
+     * in an RTL context.
+     * @param {?} from The edge to measure from.
+     * @return {?}
+     */
+    function (from) {
+        /** @type {?} */
+        var LEFT = 'left';
+        /** @type {?} */
+        var RIGHT = 'right';
+        /** @type {?} */
+        var el = this.elementRef.nativeElement;
+        if (from == 'top') {
+            return el.scrollTop;
+        }
+        if (from == 'bottom') {
+            return el.scrollHeight - el.clientHeight - el.scrollTop;
+        }
+        // Rewrite start & end as left or right offsets.
+        /** @type {?} */
+        var isRtl = this.dir && this.dir.value == 'rtl';
+        if (from == 'start') {
+            from = isRtl ? RIGHT : LEFT;
+        }
+        else if (from == 'end') {
+            from = isRtl ? LEFT : RIGHT;
+        }
+        if (isRtl && Object(_angular_cdk_platform__WEBPACK_IMPORTED_MODULE_4__["getRtlScrollAxisType"])() == _angular_cdk_platform__WEBPACK_IMPORTED_MODULE_4__["RtlScrollAxisType"].INVERTED) {
+            // For INVERTED, scrollLeft is (scrollWidth - clientWidth) when scrolled all the way left and
+            // 0 when scrolled all the way right.
+            if (from == LEFT) {
+                return el.scrollWidth - el.clientWidth - el.scrollLeft;
+            }
+            else {
+                return el.scrollLeft;
+            }
+        }
+        else if (isRtl && Object(_angular_cdk_platform__WEBPACK_IMPORTED_MODULE_4__["getRtlScrollAxisType"])() == _angular_cdk_platform__WEBPACK_IMPORTED_MODULE_4__["RtlScrollAxisType"].NEGATED) {
+            // For NEGATED, scrollLeft is -(scrollWidth - clientWidth) when scrolled all the way left and
+            // 0 when scrolled all the way right.
+            if (from == LEFT) {
+                return el.scrollLeft + el.scrollWidth - el.clientWidth;
+            }
+            else {
+                return -el.scrollLeft;
+            }
+        }
+        else {
+            // For NORMAL, as well as non-RTL contexts, scrollLeft is 0 when scrolled all the way left and
+            // (scrollWidth - clientWidth) when scrolled all the way right.
+            if (from == LEFT) {
+                return el.scrollLeft;
+            }
+            else {
+                return el.scrollWidth - el.clientWidth - el.scrollLeft;
+            }
+        }
+    };
+    CdkScrollable.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"], args: [{
+                    selector: '[cdk-scrollable], [cdkScrollable]'
+                },] },
+    ];
+    /** @nocollapse */
+    CdkScrollable.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"] },
+        { type: ScrollDispatcher },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgZone"] },
+        { type: _angular_cdk_bidi__WEBPACK_IMPORTED_MODULE_5__["Directionality"], decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] }] }
+    ]; };
+    return CdkScrollable;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * Checks if the given ranges are equal.
+ * @param {?} r1
+ * @param {?} r2
+ * @return {?}
+ */
+function rangesEqual(r1, r2) {
+    return r1.start == r2.start && r1.end == r2.end;
+}
+/**
+ * Scheduler to be used for scroll events. Needs to fall back to
+ * something that doesn't rely on requestAnimationFrame on environments
+ * that don't support it (e.g. server-side rendering).
+ * @type {?}
+ */
+var SCROLL_SCHEDULER = typeof requestAnimationFrame !== 'undefined' ? rxjs__WEBPACK_IMPORTED_MODULE_2__["animationFrameScheduler"] : rxjs__WEBPACK_IMPORTED_MODULE_2__["asapScheduler"];
+/**
+ * A viewport that virtualizes it's scrolling with the help of `CdkVirtualForOf`.
+ */
+var CdkVirtualScrollViewport = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_6__["__extends"])(CdkVirtualScrollViewport, _super);
+    function CdkVirtualScrollViewport(elementRef, _changeDetectorRef, ngZone, _scrollStrategy, dir, scrollDispatcher) {
+        var _this = _super.call(this, elementRef, scrollDispatcher, ngZone, dir) || this;
+        _this.elementRef = elementRef;
+        _this._changeDetectorRef = _changeDetectorRef;
+        _this._scrollStrategy = _scrollStrategy;
+        /**
+         * Emits when the viewport is detached from a CdkVirtualForOf.
+         */
+        _this._detachedSubject = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        /**
+         * Emits when the rendered range changes.
+         */
+        _this._renderedRangeSubject = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        /**
+         * The direction the viewport scrolls.
+         */
+        _this.orientation = 'vertical';
+        // Note: we don't use the typical EventEmitter here because we need to subscribe to the scroll
+        // strategy lazily (i.e. only if the user is actually listening to the events). We do this because
+        // depending on how the strategy calculates the scrolled index, it may come at a cost to
+        // performance.
+        /**
+         * Emits when the index of the first element visible in the viewport changes.
+         */
+        _this.scrolledIndexChange = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"](function (observer) {
+            return _this._scrollStrategy.scrolledIndexChange.subscribe(function (index) {
+                return Promise.resolve().then(function () { return _this.ngZone.run(function () { return observer.next(index); }); });
+            });
+        });
+        /**
+         * A stream that emits whenever the rendered range changes.
+         */
+        _this.renderedRangeStream = _this._renderedRangeSubject.asObservable();
+        /**
+         * The transform used to scale the spacer to the same size as all content, including content that
+         * is not currently rendered.
+         */
+        _this._totalContentSizeTransform = '';
+        /**
+         * The total size of all content (in pixels), including content that is not currently rendered.
+         */
+        _this._totalContentSize = 0;
+        /**
+         * The currently rendered range of indices.
+         */
+        _this._renderedRange = { start: 0, end: 0 };
+        /**
+         * The length of the data bound to this viewport (in number of items).
+         */
+        _this._dataLength = 0;
+        /**
+         * The size of the viewport (in pixels).
+         */
+        _this._viewportSize = 0;
+        /**
+         * The last rendered content offset that was set.
+         */
+        _this._renderedContentOffset = 0;
+        /**
+         * Whether the last rendered content offset was to the end of the content (and therefore needs to
+         * be rewritten as an offset to the start of the content).
+         */
+        _this._renderedContentOffsetNeedsRewrite = false;
+        /**
+         * Whether there is a pending change detection cycle.
+         */
+        _this._isChangeDetectionPending = false;
+        /**
+         * A list of functions to run after the next change detection cycle.
+         */
+        _this._runAfterChangeDetection = [];
+        if (!_scrollStrategy) {
+            throw Error('Error: cdk-virtual-scroll-viewport requires the "itemSize" property to be set.');
+        }
+        return _this;
+    }
+    /**
+     * @return {?}
+     */
+    CdkVirtualScrollViewport.prototype.ngOnInit = /**
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        _super.prototype.ngOnInit.call(this);
+        // It's still too early to measure the viewport at this point. Deferring with a promise allows
+        // the Viewport to be rendered with the correct size before we measure. We run this outside the
+        // zone to avoid causing more change detection cycles. We handle the change detection loop
+        // ourselves instead.
+        this.ngZone.runOutsideAngular(function () { return Promise.resolve().then(function () {
+            _this._measureViewportSize();
+            _this._scrollStrategy.attach(_this);
+            _this.elementScrolled()
+                .pipe(
+            // Start off with a fake scroll event so we properly detect our initial position.
+            Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["startWith"])((/** @type {?} */ (null))), 
+            // Collect multiple events into one until the next animation frame. This way if
+            // there are multiple scroll events in the same frame we only need to recheck
+            // our layout once.
+            Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["auditTime"])(0, SCROLL_SCHEDULER))
+                .subscribe(function () { return _this._scrollStrategy.onContentScrolled(); });
+            _this._markChangeDetectionNeeded();
+        }); });
+    };
+    /**
+     * @return {?}
+     */
+    CdkVirtualScrollViewport.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        this.detach();
+        this._scrollStrategy.detach();
+        // Complete all subjects
+        this._renderedRangeSubject.complete();
+        this._detachedSubject.complete();
+        _super.prototype.ngOnDestroy.call(this);
+    };
+    /** Attaches a `CdkVirtualForOf` to this viewport. */
+    /**
+     * Attaches a `CdkVirtualForOf` to this viewport.
+     * @param {?} forOf
+     * @return {?}
+     */
+    CdkVirtualScrollViewport.prototype.attach = /**
+     * Attaches a `CdkVirtualForOf` to this viewport.
+     * @param {?} forOf
+     * @return {?}
+     */
+    function (forOf) {
+        var _this = this;
+        if (this._forOf) {
+            throw Error('CdkVirtualScrollViewport is already attached.');
+        }
+        // Subscribe to the data stream of the CdkVirtualForOf to keep track of when the data length
+        // changes. Run outside the zone to avoid triggering change detection, since we're managing the
+        // change detection loop ourselves.
+        this.ngZone.runOutsideAngular(function () {
+            _this._forOf = forOf;
+            _this._forOf.dataStream.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["takeUntil"])(_this._detachedSubject)).subscribe(function (data) {
+                /** @type {?} */
+                var newLength = data.length;
+                if (newLength !== _this._dataLength) {
+                    _this._dataLength = newLength;
+                    _this._scrollStrategy.onDataLengthChanged();
+                }
+                _this._doChangeDetection();
+            });
+        });
+    };
+    /** Detaches the current `CdkVirtualForOf`. */
+    /**
+     * Detaches the current `CdkVirtualForOf`.
+     * @return {?}
+     */
+    CdkVirtualScrollViewport.prototype.detach = /**
+     * Detaches the current `CdkVirtualForOf`.
+     * @return {?}
+     */
+    function () {
+        this._forOf = null;
+        this._detachedSubject.next();
+    };
+    /** Gets the length of the data bound to this viewport (in number of items). */
+    /**
+     * Gets the length of the data bound to this viewport (in number of items).
+     * @return {?}
+     */
+    CdkVirtualScrollViewport.prototype.getDataLength = /**
+     * Gets the length of the data bound to this viewport (in number of items).
+     * @return {?}
+     */
+    function () {
+        return this._dataLength;
+    };
+    /** Gets the size of the viewport (in pixels). */
+    /**
+     * Gets the size of the viewport (in pixels).
+     * @return {?}
+     */
+    CdkVirtualScrollViewport.prototype.getViewportSize = /**
+     * Gets the size of the viewport (in pixels).
+     * @return {?}
+     */
+    function () {
+        return this._viewportSize;
+    };
+    // TODO(mmalerba): This is technically out of sync with what's really rendered until a render
+    // cycle happens. I'm being careful to only call it after the render cycle is complete and before
+    // setting it to something else, but its error prone and should probably be split into
+    // `pendingRange` and `renderedRange`, the latter reflecting whats actually in the DOM.
+    /** Get the current rendered range of items. */
+    // TODO(mmalerba): This is technically out of sync with what's really rendered until a render
+    // cycle happens. I'm being careful to only call it after the render cycle is complete and before
+    // setting it to something else, but its error prone and should probably be split into
+    // `pendingRange` and `renderedRange`, the latter reflecting whats actually in the DOM.
+    /**
+     * Get the current rendered range of items.
+     * @return {?}
+     */
+    CdkVirtualScrollViewport.prototype.getRenderedRange = 
+    // TODO(mmalerba): This is technically out of sync with what's really rendered until a render
+    // cycle happens. I'm being careful to only call it after the render cycle is complete and before
+    // setting it to something else, but its error prone and should probably be split into
+    // `pendingRange` and `renderedRange`, the latter reflecting whats actually in the DOM.
+    /**
+     * Get the current rendered range of items.
+     * @return {?}
+     */
+    function () {
+        return this._renderedRange;
+    };
+    /**
+     * Sets the total size of all content (in pixels), including content that is not currently
+     * rendered.
+     */
+    /**
+     * Sets the total size of all content (in pixels), including content that is not currently
+     * rendered.
+     * @param {?} size
+     * @return {?}
+     */
+    CdkVirtualScrollViewport.prototype.setTotalContentSize = /**
+     * Sets the total size of all content (in pixels), including content that is not currently
+     * rendered.
+     * @param {?} size
+     * @return {?}
+     */
+    function (size) {
+        if (this._totalContentSize !== size) {
+            this._totalContentSize = size;
+            /** @type {?} */
+            var axis = this.orientation == 'horizontal' ? 'X' : 'Y';
+            this._totalContentSizeTransform = "scale" + axis + "(" + this._totalContentSize + ")";
+            this._markChangeDetectionNeeded();
+        }
+    };
+    /** Sets the currently rendered range of indices. */
+    /**
+     * Sets the currently rendered range of indices.
+     * @param {?} range
+     * @return {?}
+     */
+    CdkVirtualScrollViewport.prototype.setRenderedRange = /**
+     * Sets the currently rendered range of indices.
+     * @param {?} range
+     * @return {?}
+     */
+    function (range) {
+        var _this = this;
+        if (!rangesEqual(this._renderedRange, range)) {
+            this._renderedRangeSubject.next(this._renderedRange = range);
+            this._markChangeDetectionNeeded(function () { return _this._scrollStrategy.onContentRendered(); });
+        }
+    };
+    /**
+     * Gets the offset from the start of the viewport to the start of the rendered data (in pixels).
+     */
+    /**
+     * Gets the offset from the start of the viewport to the start of the rendered data (in pixels).
+     * @return {?}
+     */
+    CdkVirtualScrollViewport.prototype.getOffsetToRenderedContentStart = /**
+     * Gets the offset from the start of the viewport to the start of the rendered data (in pixels).
+     * @return {?}
+     */
+    function () {
+        return this._renderedContentOffsetNeedsRewrite ? null : this._renderedContentOffset;
+    };
+    /**
+     * Sets the offset from the start of the viewport to either the start or end of the rendered data
+     * (in pixels).
+     */
+    /**
+     * Sets the offset from the start of the viewport to either the start or end of the rendered data
+     * (in pixels).
+     * @param {?} offset
+     * @param {?=} to
+     * @return {?}
+     */
+    CdkVirtualScrollViewport.prototype.setRenderedContentOffset = /**
+     * Sets the offset from the start of the viewport to either the start or end of the rendered data
+     * (in pixels).
+     * @param {?} offset
+     * @param {?=} to
+     * @return {?}
+     */
+    function (offset, to) {
+        var _this = this;
+        if (to === void 0) { to = 'to-start'; }
+        // For a horizontal viewport in a right-to-left language we need to translate along the x-axis
+        // in the negative direction.
+        /** @type {?} */
+        var isRtl = this.dir && this.dir.value == 'rtl';
+        /** @type {?} */
+        var isHorizontal = this.orientation == 'horizontal';
+        /** @type {?} */
+        var axis = isHorizontal ? 'X' : 'Y';
+        /** @type {?} */
+        var axisDirection = isHorizontal && isRtl ? -1 : 1;
+        /** @type {?} */
+        var transform = "translate" + axis + "(" + Number(axisDirection * offset) + "px)";
+        this._renderedContentOffset = offset;
+        if (to === 'to-end') {
+            transform += " translate" + axis + "(-100%)";
+            // The viewport should rewrite this as a `to-start` offset on the next render cycle. Otherwise
+            // elements will appear to expand in the wrong direction (e.g. `mat-expansion-panel` would
+            // expand upward).
+            this._renderedContentOffsetNeedsRewrite = true;
+        }
+        if (this._renderedContentTransform != transform) {
+            // We know this value is safe because we parse `offset` with `Number()` before passing it
+            // into the string.
+            this._renderedContentTransform = transform;
+            this._markChangeDetectionNeeded(function () {
+                if (_this._renderedContentOffsetNeedsRewrite) {
+                    _this._renderedContentOffset -= _this.measureRenderedContentSize();
+                    _this._renderedContentOffsetNeedsRewrite = false;
+                    _this.setRenderedContentOffset(_this._renderedContentOffset);
+                }
+                else {
+                    _this._scrollStrategy.onRenderedOffsetChanged();
+                }
+            });
+        }
+    };
+    /**
+     * Scrolls to the given offset from the start of the viewport. Please note that this is not always
+     * the same as setting `scrollTop` or `scrollLeft`. In a horizontal viewport with right-to-left
+     * direction, this would be the equivalent of setting a fictional `scrollRight` property.
+     * @param offset The offset to scroll to.
+     * @param behavior The ScrollBehavior to use when scrolling. Default is behavior is `auto`.
+     */
+    /**
+     * Scrolls to the given offset from the start of the viewport. Please note that this is not always
+     * the same as setting `scrollTop` or `scrollLeft`. In a horizontal viewport with right-to-left
+     * direction, this would be the equivalent of setting a fictional `scrollRight` property.
+     * @param {?} offset The offset to scroll to.
+     * @param {?=} behavior The ScrollBehavior to use when scrolling. Default is behavior is `auto`.
+     * @return {?}
+     */
+    CdkVirtualScrollViewport.prototype.scrollToOffset = /**
+     * Scrolls to the given offset from the start of the viewport. Please note that this is not always
+     * the same as setting `scrollTop` or `scrollLeft`. In a horizontal viewport with right-to-left
+     * direction, this would be the equivalent of setting a fictional `scrollRight` property.
+     * @param {?} offset The offset to scroll to.
+     * @param {?=} behavior The ScrollBehavior to use when scrolling. Default is behavior is `auto`.
+     * @return {?}
+     */
+    function (offset, behavior) {
+        if (behavior === void 0) { behavior = 'auto'; }
+        /** @type {?} */
+        var options = { behavior: behavior };
+        if (this.orientation === 'horizontal') {
+            options.start = offset;
+        }
+        else {
+            options.top = offset;
+        }
+        this.scrollTo(options);
+    };
+    /**
+     * Scrolls to the offset for the given index.
+     * @param index The index of the element to scroll to.
+     * @param behavior The ScrollBehavior to use when scrolling. Default is behavior is `auto`.
+     */
+    /**
+     * Scrolls to the offset for the given index.
+     * @param {?} index The index of the element to scroll to.
+     * @param {?=} behavior The ScrollBehavior to use when scrolling. Default is behavior is `auto`.
+     * @return {?}
+     */
+    CdkVirtualScrollViewport.prototype.scrollToIndex = /**
+     * Scrolls to the offset for the given index.
+     * @param {?} index The index of the element to scroll to.
+     * @param {?=} behavior The ScrollBehavior to use when scrolling. Default is behavior is `auto`.
+     * @return {?}
+     */
+    function (index, behavior) {
+        if (behavior === void 0) { behavior = 'auto'; }
+        this._scrollStrategy.scrollToIndex(index, behavior);
+    };
+    /**
+     * Gets the current scroll offset from the start of the viewport (in pixels).
+     * @param from The edge to measure the offset from. Defaults to 'top' in vertical mode and 'start'
+     *     in horizontal mode.
+     */
+    /**
+     * Gets the current scroll offset from the start of the viewport (in pixels).
+     * @param {?=} from The edge to measure the offset from. Defaults to 'top' in vertical mode and 'start'
+     *     in horizontal mode.
+     * @return {?}
+     */
+    CdkVirtualScrollViewport.prototype.measureScrollOffset = /**
+     * Gets the current scroll offset from the start of the viewport (in pixels).
+     * @param {?=} from The edge to measure the offset from. Defaults to 'top' in vertical mode and 'start'
+     *     in horizontal mode.
+     * @return {?}
+     */
+    function (from) {
+        return _super.prototype.measureScrollOffset.call(this, from ? from : this.orientation === 'horizontal' ? 'start' : 'top');
+    };
+    /** Measure the combined size of all of the rendered items. */
+    /**
+     * Measure the combined size of all of the rendered items.
+     * @return {?}
+     */
+    CdkVirtualScrollViewport.prototype.measureRenderedContentSize = /**
+     * Measure the combined size of all of the rendered items.
+     * @return {?}
+     */
+    function () {
+        /** @type {?} */
+        var contentEl = this._contentWrapper.nativeElement;
+        return this.orientation === 'horizontal' ? contentEl.offsetWidth : contentEl.offsetHeight;
+    };
+    /**
+     * Measure the total combined size of the given range. Throws if the range includes items that are
+     * not rendered.
+     */
+    /**
+     * Measure the total combined size of the given range. Throws if the range includes items that are
+     * not rendered.
+     * @param {?} range
+     * @return {?}
+     */
+    CdkVirtualScrollViewport.prototype.measureRangeSize = /**
+     * Measure the total combined size of the given range. Throws if the range includes items that are
+     * not rendered.
+     * @param {?} range
+     * @return {?}
+     */
+    function (range) {
+        if (!this._forOf) {
+            return 0;
+        }
+        return this._forOf.measureRangeSize(range, this.orientation);
+    };
+    /** Update the viewport dimensions and re-render. */
+    /**
+     * Update the viewport dimensions and re-render.
+     * @return {?}
+     */
+    CdkVirtualScrollViewport.prototype.checkViewportSize = /**
+     * Update the viewport dimensions and re-render.
+     * @return {?}
+     */
+    function () {
+        // TODO: Cleanup later when add logic for handling content resize
+        this._measureViewportSize();
+        this._scrollStrategy.onDataLengthChanged();
+    };
+    /** Measure the viewport size. */
+    /**
+     * Measure the viewport size.
+     * @private
+     * @return {?}
+     */
+    CdkVirtualScrollViewport.prototype._measureViewportSize = /**
+     * Measure the viewport size.
+     * @private
+     * @return {?}
+     */
+    function () {
+        /** @type {?} */
+        var viewportEl = this.elementRef.nativeElement;
+        this._viewportSize = this.orientation === 'horizontal' ?
+            viewportEl.clientWidth : viewportEl.clientHeight;
+    };
+    /** Queue up change detection to run. */
+    /**
+     * Queue up change detection to run.
+     * @private
+     * @param {?=} runAfter
+     * @return {?}
+     */
+    CdkVirtualScrollViewport.prototype._markChangeDetectionNeeded = /**
+     * Queue up change detection to run.
+     * @private
+     * @param {?=} runAfter
+     * @return {?}
+     */
+    function (runAfter) {
+        var _this = this;
+        if (runAfter) {
+            this._runAfterChangeDetection.push(runAfter);
+        }
+        // Use a Promise to batch together calls to `_doChangeDetection`. This way if we set a bunch of
+        // properties sequentially we only have to run `_doChangeDetection` once at the end.
+        if (!this._isChangeDetectionPending) {
+            this._isChangeDetectionPending = true;
+            this.ngZone.runOutsideAngular(function () { return Promise.resolve().then(function () {
+                _this._doChangeDetection();
+            }); });
+        }
+    };
+    /** Run change detection. */
+    /**
+     * Run change detection.
+     * @private
+     * @return {?}
+     */
+    CdkVirtualScrollViewport.prototype._doChangeDetection = /**
+     * Run change detection.
+     * @private
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        this._isChangeDetectionPending = false;
+        // Apply changes to Angular bindings. Note: We must call `markForCheck` to run change detection
+        // from the root, since the repeated items are content projected in. Calling `detectChanges`
+        // instead does not properly check the projected content.
+        this.ngZone.run(function () { return _this._changeDetectorRef.markForCheck(); });
+        // Apply the content transform. The transform can't be set via an Angular binding because
+        // bypassSecurityTrustStyle is banned in Google. However the value is safe, it's composed of
+        // string literals, a variable that can only be 'X' or 'Y', and user input that is run through
+        // the `Number` function first to coerce it to a numeric value.
+        this._contentWrapper.nativeElement.style.transform = this._renderedContentTransform;
+        /** @type {?} */
+        var runAfterChangeDetection = this._runAfterChangeDetection;
+        this._runAfterChangeDetection = [];
+        for (var _i = 0, runAfterChangeDetection_1 = runAfterChangeDetection; _i < runAfterChangeDetection_1.length; _i++) {
+            var fn = runAfterChangeDetection_1[_i];
+            fn();
+        }
+    };
+    CdkVirtualScrollViewport.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"], args: [{selector: 'cdk-virtual-scroll-viewport',
+                    template: "<div #contentWrapper class=\"cdk-virtual-scroll-content-wrapper\"><ng-content></ng-content></div><div class=\"cdk-virtual-scroll-spacer\" [style.transform]=\"_totalContentSizeTransform\"></div>",
+                    styles: ["cdk-virtual-scroll-viewport{display:block;position:relative;overflow:auto;contain:strict;transform:translateZ(0);will-change:scroll-position;-webkit-overflow-scrolling:touch}.cdk-virtual-scroll-content-wrapper{position:absolute;top:0;left:0;contain:content}[dir=rtl] .cdk-virtual-scroll-content-wrapper{right:0;left:auto}.cdk-virtual-scroll-orientation-horizontal .cdk-virtual-scroll-content-wrapper{min-height:100%}.cdk-virtual-scroll-orientation-horizontal .cdk-virtual-scroll-content-wrapper>dl:not([cdkVirtualFor]),.cdk-virtual-scroll-orientation-horizontal .cdk-virtual-scroll-content-wrapper>ol:not([cdkVirtualFor]),.cdk-virtual-scroll-orientation-horizontal .cdk-virtual-scroll-content-wrapper>table:not([cdkVirtualFor]),.cdk-virtual-scroll-orientation-horizontal .cdk-virtual-scroll-content-wrapper>ul:not([cdkVirtualFor]){padding-left:0;padding-right:0;margin-left:0;margin-right:0;border-left-width:0;border-right-width:0;outline:0}.cdk-virtual-scroll-orientation-vertical .cdk-virtual-scroll-content-wrapper{min-width:100%}.cdk-virtual-scroll-orientation-vertical .cdk-virtual-scroll-content-wrapper>dl:not([cdkVirtualFor]),.cdk-virtual-scroll-orientation-vertical .cdk-virtual-scroll-content-wrapper>ol:not([cdkVirtualFor]),.cdk-virtual-scroll-orientation-vertical .cdk-virtual-scroll-content-wrapper>table:not([cdkVirtualFor]),.cdk-virtual-scroll-orientation-vertical .cdk-virtual-scroll-content-wrapper>ul:not([cdkVirtualFor]){padding-top:0;padding-bottom:0;margin-top:0;margin-bottom:0;border-top-width:0;border-bottom-width:0;outline:0}.cdk-virtual-scroll-spacer{position:absolute;top:0;left:0;height:1px;width:1px;transform-origin:0 0}[dir=rtl] .cdk-virtual-scroll-spacer{right:0;left:auto;transform-origin:100% 0}"],
+                    host: {
+                        'class': 'cdk-virtual-scroll-viewport',
+                        '[class.cdk-virtual-scroll-orientation-horizontal]': 'orientation === "horizontal"',
+                        '[class.cdk-virtual-scroll-orientation-vertical]': 'orientation !== "horizontal"',
+                    },
+                    encapsulation: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewEncapsulation"].None,
+                    changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectionStrategy"].OnPush,
+                    providers: [{
+                            provide: CdkScrollable,
+                            useExisting: CdkVirtualScrollViewport,
+                        }]
+                },] },
+    ];
+    /** @nocollapse */
+    CdkVirtualScrollViewport.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"] },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"] },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgZone"] },
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"], args: [VIRTUAL_SCROLL_STRATEGY,] }] },
+        { type: _angular_cdk_bidi__WEBPACK_IMPORTED_MODULE_5__["Directionality"], decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] }] },
+        { type: ScrollDispatcher }
+    ]; };
+    CdkVirtualScrollViewport.propDecorators = {
+        orientation: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] }],
+        scrolledIndexChange: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] }],
+        _contentWrapper: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"], args: ['contentWrapper',] }]
+    };
+    return CdkVirtualScrollViewport;
+}(CdkScrollable));
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * Helper to extract size from a DOM Node.
+ * @param {?} orientation
+ * @param {?} node
+ * @return {?}
+ */
+function getSize(orientation, node) {
+    /** @type {?} */
+    var el = (/** @type {?} */ (node));
+    if (!el.getBoundingClientRect) {
+        return 0;
+    }
+    /** @type {?} */
+    var rect = el.getBoundingClientRect();
+    return orientation == 'horizontal' ? rect.width : rect.height;
+}
+/**
+ * A directive similar to `ngForOf` to be used for rendering data inside a virtual scrolling
+ * container.
+ * @template T
+ */
+var CdkVirtualForOf = /** @class */ (function () {
+    function CdkVirtualForOf(_viewContainerRef, _template, _differs, _viewport, ngZone) {
+        var _this = this;
+        this._viewContainerRef = _viewContainerRef;
+        this._template = _template;
+        this._differs = _differs;
+        this._viewport = _viewport;
+        /**
+         * Emits when the rendered view of the data changes.
+         */
+        this.viewChange = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        /**
+         * Subject that emits when a new DataSource instance is given.
+         */
+        this._dataSourceChanges = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        /**
+         * The size of the cache used to store templates that are not being used for re-use later.
+         * Setting the cache size to `0` will disable caching. Defaults to 20 templates.
+         */
+        this.cdkVirtualForTemplateCacheSize = 20;
+        /**
+         * Emits whenever the data in the current DataSource changes.
+         */
+        this.dataStream = this._dataSourceChanges
+            .pipe(
+        // Start off with null `DataSource`.
+        Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["startWith"])((/** @type {?} */ (null))), 
+        // Bundle up the previous and current data sources so we can work with both.
+        Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["pairwise"])(), 
+        // Use `_changeDataSource` to disconnect from the previous data source and connect to the
+        // new one, passing back a stream of data changes which we run through `switchMap` to give
+        // us a data stream that emits the latest data from whatever the current `DataSource` is.
+        Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["switchMap"])(function (_a) {
+            var prev = _a[0], cur = _a[1];
+            return _this._changeDataSource(prev, cur);
+        }), 
+        // Replay the last emitted data when someone subscribes.
+        Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["shareReplay"])(1));
+        /**
+         * The differ used to calculate changes to the data.
+         */
+        this._differ = null;
+        /**
+         * The template cache used to hold on ot template instancess that have been stamped out, but don't
+         * currently need to be rendered. These instances will be reused in the future rather than
+         * stamping out brand new ones.
+         */
+        this._templateCache = [];
+        /**
+         * Whether the rendered data should be updated during the next ngDoCheck cycle.
+         */
+        this._needsUpdate = false;
+        this._destroyed = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        this.dataStream.subscribe(function (data) {
+            _this._data = data;
+            _this._onRenderedDataChange();
+        });
+        this._viewport.renderedRangeStream.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["takeUntil"])(this._destroyed)).subscribe(function (range) {
+            _this._renderedRange = range;
+            ngZone.run(function () { return _this.viewChange.next(_this._renderedRange); });
+            _this._onRenderedDataChange();
+        });
+        this._viewport.attach(this);
+    }
+    Object.defineProperty(CdkVirtualForOf.prototype, "cdkVirtualForOf", {
+        /** The DataSource to display. */
+        get: /**
+         * The DataSource to display.
+         * @return {?}
+         */
+        function () {
+            return this._cdkVirtualForOf;
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._cdkVirtualForOf = value;
+            /** @type {?} */
+            var ds = Object(_angular_cdk_collections__WEBPACK_IMPORTED_MODULE_7__["isDataSource"])(value) ? value :
+                // Slice the value if its an NgIterable to ensure we're working with an array.
+                new _angular_cdk_collections__WEBPACK_IMPORTED_MODULE_7__["ArrayDataSource"](value instanceof rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"] ? value : Array.prototype.slice.call(value || []));
+            this._dataSourceChanges.next(ds);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(CdkVirtualForOf.prototype, "cdkVirtualForTrackBy", {
+        /**
+         * The `TrackByFunction` to use for tracking changes. The `TrackByFunction` takes the index and
+         * the item and produces a value to be used as the item's identity when tracking changes.
+         */
+        get: /**
+         * The `TrackByFunction` to use for tracking changes. The `TrackByFunction` takes the index and
+         * the item and produces a value to be used as the item's identity when tracking changes.
+         * @return {?}
+         */
+        function () {
+            return this._cdkVirtualForTrackBy;
+        },
+        set: /**
+         * @param {?} fn
+         * @return {?}
+         */
+        function (fn) {
+            var _this = this;
+            this._needsUpdate = true;
+            this._cdkVirtualForTrackBy = fn ?
+                function (index, item) { return fn(index + (_this._renderedRange ? _this._renderedRange.start : 0), item); } :
+                undefined;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(CdkVirtualForOf.prototype, "cdkVirtualForTemplate", {
+        /** The template used to stamp out new elements. */
+        set: /**
+         * The template used to stamp out new elements.
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            if (value) {
+                this._needsUpdate = true;
+                this._template = value;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Measures the combined size (width for horizontal orientation, height for vertical) of all items
+     * in the specified range. Throws an error if the range includes items that are not currently
+     * rendered.
+     */
+    /**
+     * Measures the combined size (width for horizontal orientation, height for vertical) of all items
+     * in the specified range. Throws an error if the range includes items that are not currently
+     * rendered.
+     * @param {?} range
+     * @param {?} orientation
+     * @return {?}
+     */
+    CdkVirtualForOf.prototype.measureRangeSize = /**
+     * Measures the combined size (width for horizontal orientation, height for vertical) of all items
+     * in the specified range. Throws an error if the range includes items that are not currently
+     * rendered.
+     * @param {?} range
+     * @param {?} orientation
+     * @return {?}
+     */
+    function (range, orientation) {
+        if (range.start >= range.end) {
+            return 0;
+        }
+        if (range.start < this._renderedRange.start || range.end > this._renderedRange.end) {
+            throw Error("Error: attempted to measure an item that isn't rendered.");
+        }
+        // The index into the list of rendered views for the first item in the range.
+        /** @type {?} */
+        var renderedStartIndex = range.start - this._renderedRange.start;
+        // The length of the range we're measuring.
+        /** @type {?} */
+        var rangeLen = range.end - range.start;
+        // Loop over all root nodes for all items in the range and sum up their size.
+        /** @type {?} */
+        var totalSize = 0;
+        /** @type {?} */
+        var i = rangeLen;
+        while (i--) {
+            /** @type {?} */
+            var view = (/** @type {?} */ (this._viewContainerRef.get(i + renderedStartIndex)));
+            /** @type {?} */
+            var j = view ? view.rootNodes.length : 0;
+            while (j--) {
+                totalSize += getSize(orientation, (/** @type {?} */ (view)).rootNodes[j]);
+            }
+        }
+        return totalSize;
+    };
+    /**
+     * @return {?}
+     */
+    CdkVirtualForOf.prototype.ngDoCheck = /**
+     * @return {?}
+     */
+    function () {
+        if (this._differ && this._needsUpdate) {
+            // TODO(mmalerba): We should differentiate needs update due to scrolling and a new portion of
+            // this list being rendered (can use simpler algorithm) vs needs update due to data actually
+            // changing (need to do this diff).
+            /** @type {?} */
+            var changes = this._differ.diff(this._renderedItems);
+            if (!changes) {
+                this._updateContext();
+            }
+            else {
+                this._applyChanges(changes);
+            }
+            this._needsUpdate = false;
+        }
+    };
+    /**
+     * @return {?}
+     */
+    CdkVirtualForOf.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        this._viewport.detach();
+        this._dataSourceChanges.complete();
+        this.viewChange.complete();
+        this._destroyed.next();
+        this._destroyed.complete();
+        for (var _i = 0, _a = this._templateCache; _i < _a.length; _i++) {
+            var view = _a[_i];
+            view.destroy();
+        }
+    };
+    /** React to scroll state changes in the viewport. */
+    /**
+     * React to scroll state changes in the viewport.
+     * @private
+     * @return {?}
+     */
+    CdkVirtualForOf.prototype._onRenderedDataChange = /**
+     * React to scroll state changes in the viewport.
+     * @private
+     * @return {?}
+     */
+    function () {
+        if (!this._renderedRange) {
+            return;
+        }
+        this._renderedItems = this._data.slice(this._renderedRange.start, this._renderedRange.end);
+        if (!this._differ) {
+            this._differ = this._differs.find(this._renderedItems).create(this.cdkVirtualForTrackBy);
+        }
+        this._needsUpdate = true;
+    };
+    /** Swap out one `DataSource` for another. */
+    /**
+     * Swap out one `DataSource` for another.
+     * @private
+     * @param {?} oldDs
+     * @param {?} newDs
+     * @return {?}
+     */
+    CdkVirtualForOf.prototype._changeDataSource = /**
+     * Swap out one `DataSource` for another.
+     * @private
+     * @param {?} oldDs
+     * @param {?} newDs
+     * @return {?}
+     */
+    function (oldDs, newDs) {
+        if (oldDs) {
+            oldDs.disconnect(this);
+        }
+        this._needsUpdate = true;
+        return newDs.connect(this);
+    };
+    /** Update the `CdkVirtualForOfContext` for all views. */
+    /**
+     * Update the `CdkVirtualForOfContext` for all views.
+     * @private
+     * @return {?}
+     */
+    CdkVirtualForOf.prototype._updateContext = /**
+     * Update the `CdkVirtualForOfContext` for all views.
+     * @private
+     * @return {?}
+     */
+    function () {
+        /** @type {?} */
+        var count = this._data.length;
+        /** @type {?} */
+        var i = this._viewContainerRef.length;
+        while (i--) {
+            /** @type {?} */
+            var view = (/** @type {?} */ (this._viewContainerRef.get(i)));
+            view.context.index = this._renderedRange.start + i;
+            view.context.count = count;
+            this._updateComputedContextProperties(view.context);
+            view.detectChanges();
+        }
+    };
+    /** Apply changes to the DOM. */
+    /**
+     * Apply changes to the DOM.
+     * @private
+     * @param {?} changes
+     * @return {?}
+     */
+    CdkVirtualForOf.prototype._applyChanges = /**
+     * Apply changes to the DOM.
+     * @private
+     * @param {?} changes
+     * @return {?}
+     */
+    function (changes) {
+        var _this = this;
+        // Rearrange the views to put them in the right location.
+        changes.forEachOperation(function (record, adjustedPreviousIndex, currentIndex) {
+            if (record.previousIndex == null) { // Item added.
+                // Item added.
+                /** @type {?} */
+                var view = _this._insertViewForNewItem((/** @type {?} */ (currentIndex)));
+                view.context.$implicit = record.item;
+            }
+            else if (currentIndex == null) { // Item removed.
+                _this._cacheView(_this._detachView((/** @type {?} */ (adjustedPreviousIndex))));
+            }
+            else { // Item moved.
+                // Item moved.
+                /** @type {?} */
+                var view = (/** @type {?} */ (_this._viewContainerRef.get((/** @type {?} */ (adjustedPreviousIndex)))));
+                _this._viewContainerRef.move(view, currentIndex);
+                view.context.$implicit = record.item;
+            }
+        });
+        // Update $implicit for any items that had an identity change.
+        changes.forEachIdentityChange(function (record) {
+            /** @type {?} */
+            var view = (/** @type {?} */ (_this._viewContainerRef.get((/** @type {?} */ (record.currentIndex)))));
+            view.context.$implicit = record.item;
+        });
+        // Update the context variables on all items.
+        /** @type {?} */
+        var count = this._data.length;
+        /** @type {?} */
+        var i = this._viewContainerRef.length;
+        while (i--) {
+            /** @type {?} */
+            var view = (/** @type {?} */ (this._viewContainerRef.get(i)));
+            view.context.index = this._renderedRange.start + i;
+            view.context.count = count;
+            this._updateComputedContextProperties(view.context);
+        }
+    };
+    /** Cache the given detached view. */
+    /**
+     * Cache the given detached view.
+     * @private
+     * @param {?} view
+     * @return {?}
+     */
+    CdkVirtualForOf.prototype._cacheView = /**
+     * Cache the given detached view.
+     * @private
+     * @param {?} view
+     * @return {?}
+     */
+    function (view) {
+        if (this._templateCache.length < this.cdkVirtualForTemplateCacheSize) {
+            this._templateCache.push(view);
+        }
+        else {
+            /** @type {?} */
+            var index = this._viewContainerRef.indexOf(view);
+            // It's very unlikely that the index will ever be -1, but just in case,
+            // destroy the view on its own, otherwise destroy it through the
+            // container to ensure that all the references are removed.
+            if (index === -1) {
+                view.destroy();
+            }
+            else {
+                this._viewContainerRef.remove(index);
+            }
+        }
+    };
+    /** Inserts a view for a new item, either from the cache or by creating a new one. */
+    /**
+     * Inserts a view for a new item, either from the cache or by creating a new one.
+     * @private
+     * @param {?} index
+     * @return {?}
+     */
+    CdkVirtualForOf.prototype._insertViewForNewItem = /**
+     * Inserts a view for a new item, either from the cache or by creating a new one.
+     * @private
+     * @param {?} index
+     * @return {?}
+     */
+    function (index) {
+        return this._insertViewFromCache(index) || this._createEmbeddedViewAt(index);
+    };
+    /** Update the computed properties on the `CdkVirtualForOfContext`. */
+    /**
+     * Update the computed properties on the `CdkVirtualForOfContext`.
+     * @private
+     * @param {?} context
+     * @return {?}
+     */
+    CdkVirtualForOf.prototype._updateComputedContextProperties = /**
+     * Update the computed properties on the `CdkVirtualForOfContext`.
+     * @private
+     * @param {?} context
+     * @return {?}
+     */
+    function (context) {
+        context.first = context.index === 0;
+        context.last = context.index === context.count - 1;
+        context.even = context.index % 2 === 0;
+        context.odd = !context.even;
+    };
+    /** Creates a new embedded view and moves it to the given index */
+    /**
+     * Creates a new embedded view and moves it to the given index
+     * @private
+     * @param {?} index
+     * @return {?}
+     */
+    CdkVirtualForOf.prototype._createEmbeddedViewAt = /**
+     * Creates a new embedded view and moves it to the given index
+     * @private
+     * @param {?} index
+     * @return {?}
+     */
+    function (index) {
+        /** @type {?} */
+        var view = this._viewContainerRef.createEmbeddedView(this._template, {
+            $implicit: (/** @type {?} */ (null)),
+            cdkVirtualForOf: this._cdkVirtualForOf,
+            index: -1,
+            count: -1,
+            first: false,
+            last: false,
+            odd: false,
+            even: false
+        });
+        if (index < this._viewContainerRef.length) {
+            this._viewContainerRef.move(view, index);
+        }
+        return view;
+    };
+    /** Inserts a recycled view from the cache at the given index. */
+    /**
+     * Inserts a recycled view from the cache at the given index.
+     * @private
+     * @param {?} index
+     * @return {?}
+     */
+    CdkVirtualForOf.prototype._insertViewFromCache = /**
+     * Inserts a recycled view from the cache at the given index.
+     * @private
+     * @param {?} index
+     * @return {?}
+     */
+    function (index) {
+        /** @type {?} */
+        var cachedView = this._templateCache.pop();
+        if (cachedView) {
+            this._viewContainerRef.insert(cachedView, index);
+        }
+        return cachedView || null;
+    };
+    /** Detaches the embedded view at the given index. */
+    /**
+     * Detaches the embedded view at the given index.
+     * @private
+     * @param {?} index
+     * @return {?}
+     */
+    CdkVirtualForOf.prototype._detachView = /**
+     * Detaches the embedded view at the given index.
+     * @private
+     * @param {?} index
+     * @return {?}
+     */
+    function (index) {
+        return (/** @type {?} */ (this._viewContainerRef.detach(index)));
+    };
+    CdkVirtualForOf.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"], args: [{
+                    selector: '[cdkVirtualFor][cdkVirtualForOf]',
+                },] },
+    ];
+    /** @nocollapse */
+    CdkVirtualForOf.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewContainerRef"] },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["TemplateRef"] },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["IterableDiffers"] },
+        { type: CdkVirtualScrollViewport, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["SkipSelf"] }] },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgZone"] }
+    ]; };
+    CdkVirtualForOf.propDecorators = {
+        cdkVirtualForOf: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] }],
+        cdkVirtualForTrackBy: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] }],
+        cdkVirtualForTemplate: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] }],
+        cdkVirtualForTemplateCacheSize: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] }]
+    };
+    return CdkVirtualForOf;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+var ScrollingModule = /** @class */ (function () {
+    function ScrollingModule() {
+    }
+    ScrollingModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"], args: [{
+                    imports: [_angular_cdk_bidi__WEBPACK_IMPORTED_MODULE_5__["BidiModule"], _angular_cdk_platform__WEBPACK_IMPORTED_MODULE_4__["PlatformModule"]],
+                    exports: [
+                        _angular_cdk_bidi__WEBPACK_IMPORTED_MODULE_5__["BidiModule"],
+                        CdkFixedSizeVirtualScroll,
+                        CdkScrollable,
+                        CdkVirtualForOf,
+                        CdkVirtualScrollViewport,
+                    ],
+                    declarations: [
+                        CdkFixedSizeVirtualScroll,
+                        CdkScrollable,
+                        CdkVirtualForOf,
+                        CdkVirtualScrollViewport,
+                    ],
+                },] },
+    ];
+    return ScrollingModule;
+}());
+/**
+ * @deprecated ScrollDispatchModule has been renamed to ScrollingModule.
+ * \@breaking-change 8.0.0 delete this alias
+ */
+var ScrollDispatchModule = /** @class */ (function () {
+    function ScrollDispatchModule() {
+    }
+    ScrollDispatchModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"], args: [{
+                    imports: [ScrollingModule],
+                    exports: [ScrollingModule],
+                },] },
+    ];
+    return ScrollDispatchModule;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * Time in ms to throttle the resize events by default.
+ * @type {?}
+ */
+var DEFAULT_RESIZE_TIME = 20;
+/**
+ * Simple utility for getting the bounds of the browser viewport.
+ * \@docs-private
+ */
+var ViewportRuler = /** @class */ (function () {
+    function ViewportRuler(_platform, ngZone) {
+        var _this = this;
+        this._platform = _platform;
+        ngZone.runOutsideAngular(function () {
+            _this._change = _platform.isBrowser ?
+                Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["merge"])(Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["fromEvent"])(window, 'resize'), Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["fromEvent"])(window, 'orientationchange')) :
+                Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["of"])();
+            // Note that we need to do the subscription inside `runOutsideAngular`
+            // since subscribing is what causes the event listener to be added.
+            _this._invalidateCache = _this.change().subscribe(function () { return _this._updateViewportSize(); });
+        });
+    }
+    /**
+     * @return {?}
+     */
+    ViewportRuler.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        this._invalidateCache.unsubscribe();
+    };
+    /** Returns the viewport's width and height. */
+    /**
+     * Returns the viewport's width and height.
+     * @return {?}
+     */
+    ViewportRuler.prototype.getViewportSize = /**
+     * Returns the viewport's width and height.
+     * @return {?}
+     */
+    function () {
+        if (!this._viewportSize) {
+            this._updateViewportSize();
+        }
+        /** @type {?} */
+        var output = { width: this._viewportSize.width, height: this._viewportSize.height };
+        // If we're not on a browser, don't cache the size since it'll be mocked out anyway.
+        if (!this._platform.isBrowser) {
+            this._viewportSize = (/** @type {?} */ (null));
+        }
+        return output;
+    };
+    /** Gets a ClientRect for the viewport's bounds. */
+    /**
+     * Gets a ClientRect for the viewport's bounds.
+     * @return {?}
+     */
+    ViewportRuler.prototype.getViewportRect = /**
+     * Gets a ClientRect for the viewport's bounds.
+     * @return {?}
+     */
+    function () {
+        // Use the document element's bounding rect rather than the window scroll properties
+        // (e.g. pageYOffset, scrollY) due to in issue in Chrome and IE where window scroll
+        // properties and client coordinates (boundingClientRect, clientX/Y, etc.) are in different
+        // conceptual viewports. Under most circumstances these viewports are equivalent, but they
+        // can disagree when the page is pinch-zoomed (on devices that support touch).
+        // See https://bugs.chromium.org/p/chromium/issues/detail?id=489206#c4
+        // We use the documentElement instead of the body because, by default (without a css reset)
+        // browsers typically give the document body an 8px margin, which is not included in
+        // getBoundingClientRect().
+        /** @type {?} */
+        var scrollPosition = this.getViewportScrollPosition();
+        var _a = this.getViewportSize(), width = _a.width, height = _a.height;
+        return {
+            top: scrollPosition.top,
+            left: scrollPosition.left,
+            bottom: scrollPosition.top + height,
+            right: scrollPosition.left + width,
+            height: height,
+            width: width,
+        };
+    };
+    /** Gets the (top, left) scroll position of the viewport. */
+    /**
+     * Gets the (top, left) scroll position of the viewport.
+     * @return {?}
+     */
+    ViewportRuler.prototype.getViewportScrollPosition = /**
+     * Gets the (top, left) scroll position of the viewport.
+     * @return {?}
+     */
+    function () {
+        // While we can get a reference to the fake document
+        // during SSR, it doesn't have getBoundingClientRect.
+        if (!this._platform.isBrowser) {
+            return { top: 0, left: 0 };
+        }
+        // The top-left-corner of the viewport is determined by the scroll position of the document
+        // body, normally just (scrollLeft, scrollTop). However, Chrome and Firefox disagree about
+        // whether `document.body` or `document.documentElement` is the scrolled element, so reading
+        // `scrollTop` and `scrollLeft` is inconsistent. However, using the bounding rect of
+        // `document.documentElement` works consistently, where the `top` and `left` values will
+        // equal negative the scroll position.
+        /** @type {?} */
+        var documentElement = (/** @type {?} */ (document.documentElement));
+        /** @type {?} */
+        var documentRect = documentElement.getBoundingClientRect();
+        /** @type {?} */
+        var top = -documentRect.top || document.body.scrollTop || window.scrollY ||
+            documentElement.scrollTop || 0;
+        /** @type {?} */
+        var left = -documentRect.left || document.body.scrollLeft || window.scrollX ||
+            documentElement.scrollLeft || 0;
+        return { top: top, left: left };
+    };
+    /**
+     * Returns a stream that emits whenever the size of the viewport changes.
+     * @param throttleTime Time in milliseconds to throttle the stream.
+     */
+    /**
+     * Returns a stream that emits whenever the size of the viewport changes.
+     * @param {?=} throttleTime Time in milliseconds to throttle the stream.
+     * @return {?}
+     */
+    ViewportRuler.prototype.change = /**
+     * Returns a stream that emits whenever the size of the viewport changes.
+     * @param {?=} throttleTime Time in milliseconds to throttle the stream.
+     * @return {?}
+     */
+    function (throttleTime) {
+        if (throttleTime === void 0) { throttleTime = DEFAULT_RESIZE_TIME; }
+        return throttleTime > 0 ? this._change.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["auditTime"])(throttleTime)) : this._change;
+    };
+    /** Updates the cached viewport size. */
+    /**
+     * Updates the cached viewport size.
+     * @private
+     * @return {?}
+     */
+    ViewportRuler.prototype._updateViewportSize = /**
+     * Updates the cached viewport size.
+     * @private
+     * @return {?}
+     */
+    function () {
+        this._viewportSize = this._platform.isBrowser ?
+            { width: window.innerWidth, height: window.innerHeight } :
+            { width: 0, height: 0 };
+    };
+    ViewportRuler.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"], args: [{ providedIn: 'root' },] },
+    ];
+    /** @nocollapse */
+    ViewportRuler.ctorParameters = function () { return [
+        { type: _angular_cdk_platform__WEBPACK_IMPORTED_MODULE_4__["Platform"] },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgZone"] }
+    ]; };
+    /** @nocollapse */ ViewportRuler.ngInjectableDef = Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["defineInjectable"])({ factory: function ViewportRuler_Factory() { return new ViewportRuler(Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["inject"])(_angular_cdk_platform__WEBPACK_IMPORTED_MODULE_4__["Platform"]), Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["inject"])(_angular_core__WEBPACK_IMPORTED_MODULE_0__["NgZone"])); }, token: ViewportRuler, providedIn: "root" });
+    return ViewportRuler;
+}());
+/**
+ * \@docs-private \@deprecated \@breaking-change 8.0.0
+ * @param {?} parentRuler
+ * @param {?} platform
+ * @param {?} ngZone
+ * @return {?}
+ */
+function VIEWPORT_RULER_PROVIDER_FACTORY(parentRuler, platform, ngZone) {
+    return parentRuler || new ViewportRuler(platform, ngZone);
+}
+/**
+ * \@docs-private \@deprecated \@breaking-change 8.0.0
+ * @type {?}
+ */
+var VIEWPORT_RULER_PROVIDER = {
+    // If there is already a ViewportRuler available, use that. Otherwise, provide a new one.
+    provide: ViewportRuler,
+    deps: [[new _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"](), new _angular_core__WEBPACK_IMPORTED_MODULE_0__["SkipSelf"](), ViewportRuler], _angular_cdk_platform__WEBPACK_IMPORTED_MODULE_4__["Platform"], _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgZone"]],
+    useFactory: VIEWPORT_RULER_PROVIDER_FACTORY
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+
+//# sourceMappingURL=scrolling.es5.js.map
+
+
+/***/ }),
+
 /***/ "./node_modules/@angular/common/fesm5/common.js":
 /*!******************************************************!*\
   !*** ./node_modules/@angular/common/fesm5/common.js ***!
@@ -58642,6 +71770,492 @@ var platformBrowserDynamic = Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["
 
 /***/ }),
 
+/***/ "./node_modules/@angular/platform-browser/fesm5/animations.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/@angular/platform-browser/fesm5/animations.js ***!
+  \********************************************************************/
+/*! exports provided: ɵangular_packages_platform_browser_animations_animations_f, ɵangular_packages_platform_browser_animations_animations_d, ɵangular_packages_platform_browser_animations_animations_e, ɵangular_packages_platform_browser_animations_animations_b, ɵangular_packages_platform_browser_animations_animations_c, ɵangular_packages_platform_browser_animations_animations_a, BrowserAnimationsModule, NoopAnimationsModule, ANIMATION_MODULE_TYPE, ɵBrowserAnimationBuilder, ɵBrowserAnimationFactory, ɵAnimationRenderer, ɵAnimationRendererFactory, ɵInjectableAnimationEngine */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵangular_packages_platform_browser_animations_animations_f", function() { return BaseAnimationRenderer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵangular_packages_platform_browser_animations_animations_d", function() { return BROWSER_ANIMATIONS_PROVIDERS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵangular_packages_platform_browser_animations_animations_e", function() { return BROWSER_NOOP_ANIMATIONS_PROVIDERS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵangular_packages_platform_browser_animations_animations_b", function() { return instantiateDefaultStyleNormalizer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵangular_packages_platform_browser_animations_animations_c", function() { return instantiateRendererFactory; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵangular_packages_platform_browser_animations_animations_a", function() { return instantiateSupportedAnimationDriver; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BrowserAnimationsModule", function() { return BrowserAnimationsModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NoopAnimationsModule", function() { return NoopAnimationsModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ANIMATION_MODULE_TYPE", function() { return ANIMATION_MODULE_TYPE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵBrowserAnimationBuilder", function() { return BrowserAnimationBuilder; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵBrowserAnimationFactory", function() { return BrowserAnimationFactory; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵAnimationRenderer", function() { return AnimationRenderer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵAnimationRendererFactory", function() { return AnimationRendererFactory; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵInjectableAnimationEngine", function() { return InjectableAnimationEngine; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/platform-browser */ "./node_modules/@angular/platform-browser/fesm5/platform-browser.js");
+/* harmony import */ var _angular_animations__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/animations */ "./node_modules/@angular/animations/fesm5/animations.js");
+/* harmony import */ var _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/animations/browser */ "./node_modules/@angular/animations/fesm5/browser.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/**
+ * @license Angular v7.2.2
+ * (c) 2010-2018 Google, Inc. https://angular.io/
+ * License: MIT
+ */
+
+
+
+
+
+
+
+
+var BrowserAnimationBuilder = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(BrowserAnimationBuilder, _super);
+    function BrowserAnimationBuilder(rootRenderer, doc) {
+        var _this = _super.call(this) || this;
+        _this._nextAnimationId = 0;
+        var typeData = {
+            id: '0',
+            encapsulation: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewEncapsulation"].None,
+            styles: [],
+            data: { animation: [] }
+        };
+        _this._renderer = rootRenderer.createRenderer(doc.body, typeData);
+        return _this;
+    }
+    BrowserAnimationBuilder.prototype.build = function (animation) {
+        var id = this._nextAnimationId.toString();
+        this._nextAnimationId++;
+        var entry = Array.isArray(animation) ? Object(_angular_animations__WEBPACK_IMPORTED_MODULE_3__["sequence"])(animation) : animation;
+        issueAnimationCommand(this._renderer, null, id, 'register', [entry]);
+        return new BrowserAnimationFactory(id, this._renderer);
+    };
+    BrowserAnimationBuilder = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])(),
+        Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__param"])(1, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Inject"])(_angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__["DOCUMENT"])),
+        Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [_angular_core__WEBPACK_IMPORTED_MODULE_1__["RendererFactory2"], Object])
+    ], BrowserAnimationBuilder);
+    return BrowserAnimationBuilder;
+}(_angular_animations__WEBPACK_IMPORTED_MODULE_3__["AnimationBuilder"]));
+var BrowserAnimationFactory = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(BrowserAnimationFactory, _super);
+    function BrowserAnimationFactory(_id, _renderer) {
+        var _this = _super.call(this) || this;
+        _this._id = _id;
+        _this._renderer = _renderer;
+        return _this;
+    }
+    BrowserAnimationFactory.prototype.create = function (element, options) {
+        return new RendererAnimationPlayer(this._id, element, options || {}, this._renderer);
+    };
+    return BrowserAnimationFactory;
+}(_angular_animations__WEBPACK_IMPORTED_MODULE_3__["AnimationFactory"]));
+var RendererAnimationPlayer = /** @class */ (function () {
+    function RendererAnimationPlayer(id, element, options, _renderer) {
+        this.id = id;
+        this.element = element;
+        this._renderer = _renderer;
+        this.parentPlayer = null;
+        this._started = false;
+        this.totalTime = 0;
+        this._command('create', options);
+    }
+    RendererAnimationPlayer.prototype._listen = function (eventName, callback) {
+        return this._renderer.listen(this.element, "@@" + this.id + ":" + eventName, callback);
+    };
+    RendererAnimationPlayer.prototype._command = function (command) {
+        var args = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            args[_i - 1] = arguments[_i];
+        }
+        return issueAnimationCommand(this._renderer, this.element, this.id, command, args);
+    };
+    RendererAnimationPlayer.prototype.onDone = function (fn) { this._listen('done', fn); };
+    RendererAnimationPlayer.prototype.onStart = function (fn) { this._listen('start', fn); };
+    RendererAnimationPlayer.prototype.onDestroy = function (fn) { this._listen('destroy', fn); };
+    RendererAnimationPlayer.prototype.init = function () { this._command('init'); };
+    RendererAnimationPlayer.prototype.hasStarted = function () { return this._started; };
+    RendererAnimationPlayer.prototype.play = function () {
+        this._command('play');
+        this._started = true;
+    };
+    RendererAnimationPlayer.prototype.pause = function () { this._command('pause'); };
+    RendererAnimationPlayer.prototype.restart = function () { this._command('restart'); };
+    RendererAnimationPlayer.prototype.finish = function () { this._command('finish'); };
+    RendererAnimationPlayer.prototype.destroy = function () { this._command('destroy'); };
+    RendererAnimationPlayer.prototype.reset = function () { this._command('reset'); };
+    RendererAnimationPlayer.prototype.setPosition = function (p) { this._command('setPosition', p); };
+    RendererAnimationPlayer.prototype.getPosition = function () { return 0; };
+    return RendererAnimationPlayer;
+}());
+function issueAnimationCommand(renderer, element, id, command, args) {
+    return renderer.setProperty(element, "@@" + id + ":" + command, args);
+}
+
+var ANIMATION_PREFIX = '@';
+var DISABLE_ANIMATIONS_FLAG = '@.disabled';
+var AnimationRendererFactory = /** @class */ (function () {
+    function AnimationRendererFactory(delegate, engine, _zone) {
+        this.delegate = delegate;
+        this.engine = engine;
+        this._zone = _zone;
+        this._currentId = 0;
+        this._microtaskId = 1;
+        this._animationCallbacksBuffer = [];
+        this._rendererCache = new Map();
+        this._cdRecurDepth = 0;
+        this.promise = Promise.resolve(0);
+        engine.onRemovalComplete = function (element, delegate) {
+            // Note: if an component element has a leave animation, and the component
+            // a host leave animation, the view engine will call `removeChild` for the parent
+            // component renderer as well as for the child component renderer.
+            // Therefore, we need to check if we already removed the element.
+            if (delegate && delegate.parentNode(element)) {
+                delegate.removeChild(element.parentNode, element);
+            }
+        };
+    }
+    AnimationRendererFactory.prototype.createRenderer = function (hostElement, type) {
+        var _this = this;
+        var EMPTY_NAMESPACE_ID = '';
+        // cache the delegates to find out which cached delegate can
+        // be used by which cached renderer
+        var delegate = this.delegate.createRenderer(hostElement, type);
+        if (!hostElement || !type || !type.data || !type.data['animation']) {
+            var renderer = this._rendererCache.get(delegate);
+            if (!renderer) {
+                renderer = new BaseAnimationRenderer(EMPTY_NAMESPACE_ID, delegate, this.engine);
+                // only cache this result when the base renderer is used
+                this._rendererCache.set(delegate, renderer);
+            }
+            return renderer;
+        }
+        var componentId = type.id;
+        var namespaceId = type.id + '-' + this._currentId;
+        this._currentId++;
+        this.engine.register(namespaceId, hostElement);
+        var animationTriggers = type.data['animation'];
+        animationTriggers.forEach(function (trigger) { return _this.engine.registerTrigger(componentId, namespaceId, hostElement, trigger.name, trigger); });
+        return new AnimationRenderer(this, namespaceId, delegate, this.engine);
+    };
+    AnimationRendererFactory.prototype.begin = function () {
+        this._cdRecurDepth++;
+        if (this.delegate.begin) {
+            this.delegate.begin();
+        }
+    };
+    AnimationRendererFactory.prototype._scheduleCountTask = function () {
+        var _this = this;
+        // always use promise to schedule microtask instead of use Zone
+        this.promise.then(function () { _this._microtaskId++; });
+    };
+    /** @internal */
+    AnimationRendererFactory.prototype.scheduleListenerCallback = function (count, fn, data) {
+        var _this = this;
+        if (count >= 0 && count < this._microtaskId) {
+            this._zone.run(function () { return fn(data); });
+            return;
+        }
+        if (this._animationCallbacksBuffer.length == 0) {
+            Promise.resolve(null).then(function () {
+                _this._zone.run(function () {
+                    _this._animationCallbacksBuffer.forEach(function (tuple) {
+                        var _a = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__read"])(tuple, 2), fn = _a[0], data = _a[1];
+                        fn(data);
+                    });
+                    _this._animationCallbacksBuffer = [];
+                });
+            });
+        }
+        this._animationCallbacksBuffer.push([fn, data]);
+    };
+    AnimationRendererFactory.prototype.end = function () {
+        var _this = this;
+        this._cdRecurDepth--;
+        // this is to prevent animations from running twice when an inner
+        // component does CD when a parent component instead has inserted it
+        if (this._cdRecurDepth == 0) {
+            this._zone.runOutsideAngular(function () {
+                _this._scheduleCountTask();
+                _this.engine.flush(_this._microtaskId);
+            });
+        }
+        if (this.delegate.end) {
+            this.delegate.end();
+        }
+    };
+    AnimationRendererFactory.prototype.whenRenderingDone = function () { return this.engine.whenRenderingDone(); };
+    AnimationRendererFactory = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])(),
+        Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [_angular_core__WEBPACK_IMPORTED_MODULE_1__["RendererFactory2"], _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["ɵAnimationEngine"], _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgZone"]])
+    ], AnimationRendererFactory);
+    return AnimationRendererFactory;
+}());
+var BaseAnimationRenderer = /** @class */ (function () {
+    function BaseAnimationRenderer(namespaceId, delegate, engine) {
+        this.namespaceId = namespaceId;
+        this.delegate = delegate;
+        this.engine = engine;
+        this.destroyNode = this.delegate.destroyNode ? function (n) { return delegate.destroyNode(n); } : null;
+    }
+    Object.defineProperty(BaseAnimationRenderer.prototype, "data", {
+        get: function () { return this.delegate.data; },
+        enumerable: true,
+        configurable: true
+    });
+    BaseAnimationRenderer.prototype.destroy = function () {
+        this.engine.destroy(this.namespaceId, this.delegate);
+        this.delegate.destroy();
+    };
+    BaseAnimationRenderer.prototype.createElement = function (name, namespace) {
+        return this.delegate.createElement(name, namespace);
+    };
+    BaseAnimationRenderer.prototype.createComment = function (value) { return this.delegate.createComment(value); };
+    BaseAnimationRenderer.prototype.createText = function (value) { return this.delegate.createText(value); };
+    BaseAnimationRenderer.prototype.appendChild = function (parent, newChild) {
+        this.delegate.appendChild(parent, newChild);
+        this.engine.onInsert(this.namespaceId, newChild, parent, false);
+    };
+    BaseAnimationRenderer.prototype.insertBefore = function (parent, newChild, refChild) {
+        this.delegate.insertBefore(parent, newChild, refChild);
+        this.engine.onInsert(this.namespaceId, newChild, parent, true);
+    };
+    BaseAnimationRenderer.prototype.removeChild = function (parent, oldChild) {
+        this.engine.onRemove(this.namespaceId, oldChild, this.delegate);
+    };
+    BaseAnimationRenderer.prototype.selectRootElement = function (selectorOrNode, preserveContent) {
+        return this.delegate.selectRootElement(selectorOrNode, preserveContent);
+    };
+    BaseAnimationRenderer.prototype.parentNode = function (node) { return this.delegate.parentNode(node); };
+    BaseAnimationRenderer.prototype.nextSibling = function (node) { return this.delegate.nextSibling(node); };
+    BaseAnimationRenderer.prototype.setAttribute = function (el, name, value, namespace) {
+        this.delegate.setAttribute(el, name, value, namespace);
+    };
+    BaseAnimationRenderer.prototype.removeAttribute = function (el, name, namespace) {
+        this.delegate.removeAttribute(el, name, namespace);
+    };
+    BaseAnimationRenderer.prototype.addClass = function (el, name) { this.delegate.addClass(el, name); };
+    BaseAnimationRenderer.prototype.removeClass = function (el, name) { this.delegate.removeClass(el, name); };
+    BaseAnimationRenderer.prototype.setStyle = function (el, style, value, flags) {
+        this.delegate.setStyle(el, style, value, flags);
+    };
+    BaseAnimationRenderer.prototype.removeStyle = function (el, style, flags) {
+        this.delegate.removeStyle(el, style, flags);
+    };
+    BaseAnimationRenderer.prototype.setProperty = function (el, name, value) {
+        if (name.charAt(0) == ANIMATION_PREFIX && name == DISABLE_ANIMATIONS_FLAG) {
+            this.disableAnimations(el, !!value);
+        }
+        else {
+            this.delegate.setProperty(el, name, value);
+        }
+    };
+    BaseAnimationRenderer.prototype.setValue = function (node, value) { this.delegate.setValue(node, value); };
+    BaseAnimationRenderer.prototype.listen = function (target, eventName, callback) {
+        return this.delegate.listen(target, eventName, callback);
+    };
+    BaseAnimationRenderer.prototype.disableAnimations = function (element, value) {
+        this.engine.disableAnimations(element, value);
+    };
+    return BaseAnimationRenderer;
+}());
+var AnimationRenderer = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(AnimationRenderer, _super);
+    function AnimationRenderer(factory, namespaceId, delegate, engine) {
+        var _this = _super.call(this, namespaceId, delegate, engine) || this;
+        _this.factory = factory;
+        _this.namespaceId = namespaceId;
+        return _this;
+    }
+    AnimationRenderer.prototype.setProperty = function (el, name, value) {
+        if (name.charAt(0) == ANIMATION_PREFIX) {
+            if (name.charAt(1) == '.' && name == DISABLE_ANIMATIONS_FLAG) {
+                value = value === undefined ? true : !!value;
+                this.disableAnimations(el, value);
+            }
+            else {
+                this.engine.process(this.namespaceId, el, name.substr(1), value);
+            }
+        }
+        else {
+            this.delegate.setProperty(el, name, value);
+        }
+    };
+    AnimationRenderer.prototype.listen = function (target, eventName, callback) {
+        var _this = this;
+        var _a;
+        if (eventName.charAt(0) == ANIMATION_PREFIX) {
+            var element = resolveElementFromTarget(target);
+            var name_1 = eventName.substr(1);
+            var phase = '';
+            // @listener.phase is for trigger animation callbacks
+            // @@listener is for animation builder callbacks
+            if (name_1.charAt(0) != ANIMATION_PREFIX) {
+                _a = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__read"])(parseTriggerCallbackName(name_1), 2), name_1 = _a[0], phase = _a[1];
+            }
+            return this.engine.listen(this.namespaceId, element, name_1, phase, function (event) {
+                var countId = event['_data'] || -1;
+                _this.factory.scheduleListenerCallback(countId, callback, event);
+            });
+        }
+        return this.delegate.listen(target, eventName, callback);
+    };
+    return AnimationRenderer;
+}(BaseAnimationRenderer));
+function resolveElementFromTarget(target) {
+    switch (target) {
+        case 'body':
+            return document.body;
+        case 'document':
+            return document;
+        case 'window':
+            return window;
+        default:
+            return target;
+    }
+}
+function parseTriggerCallbackName(triggerName) {
+    var dotIndex = triggerName.indexOf('.');
+    var trigger = triggerName.substring(0, dotIndex);
+    var phase = triggerName.substr(dotIndex + 1);
+    return [trigger, phase];
+}
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var InjectableAnimationEngine = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(InjectableAnimationEngine, _super);
+    function InjectableAnimationEngine(doc, driver, normalizer) {
+        return _super.call(this, doc.body, driver, normalizer) || this;
+    }
+    InjectableAnimationEngine = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])(),
+        Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__param"])(0, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Inject"])(_angular_common__WEBPACK_IMPORTED_MODULE_5__["DOCUMENT"])),
+        Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [Object, _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["AnimationDriver"], _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["ɵAnimationStyleNormalizer"]])
+    ], InjectableAnimationEngine);
+    return InjectableAnimationEngine;
+}(_angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["ɵAnimationEngine"]));
+function instantiateSupportedAnimationDriver() {
+    return Object(_angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["ɵsupportsWebAnimations"])() ? new _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["ɵWebAnimationsDriver"]() : new _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["ɵCssKeyframesDriver"]();
+}
+function instantiateDefaultStyleNormalizer() {
+    return new _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["ɵWebAnimationsStyleNormalizer"]();
+}
+function instantiateRendererFactory(renderer, engine, zone) {
+    return new AnimationRendererFactory(renderer, engine, zone);
+}
+/**
+ * @publicApi
+ */
+var ANIMATION_MODULE_TYPE = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["InjectionToken"]('AnimationModuleType');
+var SHARED_ANIMATION_PROVIDERS = [
+    { provide: _angular_animations__WEBPACK_IMPORTED_MODULE_3__["AnimationBuilder"], useClass: BrowserAnimationBuilder },
+    { provide: _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["ɵAnimationStyleNormalizer"], useFactory: instantiateDefaultStyleNormalizer },
+    { provide: _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["ɵAnimationEngine"], useClass: InjectableAnimationEngine }, {
+        provide: _angular_core__WEBPACK_IMPORTED_MODULE_1__["RendererFactory2"],
+        useFactory: instantiateRendererFactory,
+        deps: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__["ɵDomRendererFactory2"], _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["ɵAnimationEngine"], _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgZone"]]
+    }
+];
+/**
+ * Separate providers from the actual module so that we can do a local modification in Google3 to
+ * include them in the BrowserModule.
+ */
+var BROWSER_ANIMATIONS_PROVIDERS = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__spread"])([
+    { provide: _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["AnimationDriver"], useFactory: instantiateSupportedAnimationDriver },
+    { provide: ANIMATION_MODULE_TYPE, useValue: 'BrowserAnimations' }
+], SHARED_ANIMATION_PROVIDERS);
+/**
+ * Separate providers from the actual module so that we can do a local modification in Google3 to
+ * include them in the BrowserTestingModule.
+ */
+var BROWSER_NOOP_ANIMATIONS_PROVIDERS = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__spread"])([
+    { provide: _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["AnimationDriver"], useClass: _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["ɵNoopAnimationDriver"] },
+    { provide: ANIMATION_MODULE_TYPE, useValue: 'NoopAnimations' }
+], SHARED_ANIMATION_PROVIDERS);
+
+/**
+ * Exports `BrowserModule` with additional [dependency-injection providers](guide/glossary#provider)
+ * for use with animations. See [Animations](guide/animations).
+ * @publicApi
+ */
+var BrowserAnimationsModule = /** @class */ (function () {
+    function BrowserAnimationsModule() {
+    }
+    BrowserAnimationsModule = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
+            exports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__["BrowserModule"]],
+            providers: BROWSER_ANIMATIONS_PROVIDERS,
+        })
+    ], BrowserAnimationsModule);
+    return BrowserAnimationsModule;
+}());
+/**
+ * A null player that must be imported to allow disabling of animations.
+ * @publicApi
+ */
+var NoopAnimationsModule = /** @class */ (function () {
+    function NoopAnimationsModule() {
+    }
+    NoopAnimationsModule = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
+            exports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__["BrowserModule"]],
+            providers: BROWSER_NOOP_ANIMATIONS_PROVIDERS,
+        })
+    ], NoopAnimationsModule);
+    return NoopAnimationsModule;
+}());
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * Generated bundle index. Do not edit.
+ */
+
+
+//# sourceMappingURL=animations.js.map
+
+
+/***/ }),
+
 /***/ "./node_modules/@angular/platform-browser/fesm5/platform-browser.js":
 /*!**************************************************************************!*\
   !*** ./node_modules/@angular/platform-browser/fesm5/platform-browser.js ***!
@@ -61213,6 +74827,2657 @@ var VERSION = new _angular_core__WEBPACK_IMPORTED_MODULE_2__["Version"]('7.2.2')
 
 
 //# sourceMappingURL=platform-browser.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/hammerjs/hammer.js":
+/*!*****************************************!*\
+  !*** ./node_modules/hammerjs/hammer.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_RESULT__;/*! Hammer.JS - v2.0.7 - 2016-04-22
+ * http://hammerjs.github.io/
+ *
+ * Copyright (c) 2016 Jorik Tangelder;
+ * Licensed under the MIT license */
+(function(window, document, exportName, undefined) {
+  'use strict';
+
+var VENDOR_PREFIXES = ['', 'webkit', 'Moz', 'MS', 'ms', 'o'];
+var TEST_ELEMENT = document.createElement('div');
+
+var TYPE_FUNCTION = 'function';
+
+var round = Math.round;
+var abs = Math.abs;
+var now = Date.now;
+
+/**
+ * set a timeout with a given scope
+ * @param {Function} fn
+ * @param {Number} timeout
+ * @param {Object} context
+ * @returns {number}
+ */
+function setTimeoutContext(fn, timeout, context) {
+    return setTimeout(bindFn(fn, context), timeout);
+}
+
+/**
+ * if the argument is an array, we want to execute the fn on each entry
+ * if it aint an array we don't want to do a thing.
+ * this is used by all the methods that accept a single and array argument.
+ * @param {*|Array} arg
+ * @param {String} fn
+ * @param {Object} [context]
+ * @returns {Boolean}
+ */
+function invokeArrayArg(arg, fn, context) {
+    if (Array.isArray(arg)) {
+        each(arg, context[fn], context);
+        return true;
+    }
+    return false;
+}
+
+/**
+ * walk objects and arrays
+ * @param {Object} obj
+ * @param {Function} iterator
+ * @param {Object} context
+ */
+function each(obj, iterator, context) {
+    var i;
+
+    if (!obj) {
+        return;
+    }
+
+    if (obj.forEach) {
+        obj.forEach(iterator, context);
+    } else if (obj.length !== undefined) {
+        i = 0;
+        while (i < obj.length) {
+            iterator.call(context, obj[i], i, obj);
+            i++;
+        }
+    } else {
+        for (i in obj) {
+            obj.hasOwnProperty(i) && iterator.call(context, obj[i], i, obj);
+        }
+    }
+}
+
+/**
+ * wrap a method with a deprecation warning and stack trace
+ * @param {Function} method
+ * @param {String} name
+ * @param {String} message
+ * @returns {Function} A new function wrapping the supplied method.
+ */
+function deprecate(method, name, message) {
+    var deprecationMessage = 'DEPRECATED METHOD: ' + name + '\n' + message + ' AT \n';
+    return function() {
+        var e = new Error('get-stack-trace');
+        var stack = e && e.stack ? e.stack.replace(/^[^\(]+?[\n$]/gm, '')
+            .replace(/^\s+at\s+/gm, '')
+            .replace(/^Object.<anonymous>\s*\(/gm, '{anonymous}()@') : 'Unknown Stack Trace';
+
+        var log = window.console && (window.console.warn || window.console.log);
+        if (log) {
+            log.call(window.console, deprecationMessage, stack);
+        }
+        return method.apply(this, arguments);
+    };
+}
+
+/**
+ * extend object.
+ * means that properties in dest will be overwritten by the ones in src.
+ * @param {Object} target
+ * @param {...Object} objects_to_assign
+ * @returns {Object} target
+ */
+var assign;
+if (typeof Object.assign !== 'function') {
+    assign = function assign(target) {
+        if (target === undefined || target === null) {
+            throw new TypeError('Cannot convert undefined or null to object');
+        }
+
+        var output = Object(target);
+        for (var index = 1; index < arguments.length; index++) {
+            var source = arguments[index];
+            if (source !== undefined && source !== null) {
+                for (var nextKey in source) {
+                    if (source.hasOwnProperty(nextKey)) {
+                        output[nextKey] = source[nextKey];
+                    }
+                }
+            }
+        }
+        return output;
+    };
+} else {
+    assign = Object.assign;
+}
+
+/**
+ * extend object.
+ * means that properties in dest will be overwritten by the ones in src.
+ * @param {Object} dest
+ * @param {Object} src
+ * @param {Boolean} [merge=false]
+ * @returns {Object} dest
+ */
+var extend = deprecate(function extend(dest, src, merge) {
+    var keys = Object.keys(src);
+    var i = 0;
+    while (i < keys.length) {
+        if (!merge || (merge && dest[keys[i]] === undefined)) {
+            dest[keys[i]] = src[keys[i]];
+        }
+        i++;
+    }
+    return dest;
+}, 'extend', 'Use `assign`.');
+
+/**
+ * merge the values from src in the dest.
+ * means that properties that exist in dest will not be overwritten by src
+ * @param {Object} dest
+ * @param {Object} src
+ * @returns {Object} dest
+ */
+var merge = deprecate(function merge(dest, src) {
+    return extend(dest, src, true);
+}, 'merge', 'Use `assign`.');
+
+/**
+ * simple class inheritance
+ * @param {Function} child
+ * @param {Function} base
+ * @param {Object} [properties]
+ */
+function inherit(child, base, properties) {
+    var baseP = base.prototype,
+        childP;
+
+    childP = child.prototype = Object.create(baseP);
+    childP.constructor = child;
+    childP._super = baseP;
+
+    if (properties) {
+        assign(childP, properties);
+    }
+}
+
+/**
+ * simple function bind
+ * @param {Function} fn
+ * @param {Object} context
+ * @returns {Function}
+ */
+function bindFn(fn, context) {
+    return function boundFn() {
+        return fn.apply(context, arguments);
+    };
+}
+
+/**
+ * let a boolean value also be a function that must return a boolean
+ * this first item in args will be used as the context
+ * @param {Boolean|Function} val
+ * @param {Array} [args]
+ * @returns {Boolean}
+ */
+function boolOrFn(val, args) {
+    if (typeof val == TYPE_FUNCTION) {
+        return val.apply(args ? args[0] || undefined : undefined, args);
+    }
+    return val;
+}
+
+/**
+ * use the val2 when val1 is undefined
+ * @param {*} val1
+ * @param {*} val2
+ * @returns {*}
+ */
+function ifUndefined(val1, val2) {
+    return (val1 === undefined) ? val2 : val1;
+}
+
+/**
+ * addEventListener with multiple events at once
+ * @param {EventTarget} target
+ * @param {String} types
+ * @param {Function} handler
+ */
+function addEventListeners(target, types, handler) {
+    each(splitStr(types), function(type) {
+        target.addEventListener(type, handler, false);
+    });
+}
+
+/**
+ * removeEventListener with multiple events at once
+ * @param {EventTarget} target
+ * @param {String} types
+ * @param {Function} handler
+ */
+function removeEventListeners(target, types, handler) {
+    each(splitStr(types), function(type) {
+        target.removeEventListener(type, handler, false);
+    });
+}
+
+/**
+ * find if a node is in the given parent
+ * @method hasParent
+ * @param {HTMLElement} node
+ * @param {HTMLElement} parent
+ * @return {Boolean} found
+ */
+function hasParent(node, parent) {
+    while (node) {
+        if (node == parent) {
+            return true;
+        }
+        node = node.parentNode;
+    }
+    return false;
+}
+
+/**
+ * small indexOf wrapper
+ * @param {String} str
+ * @param {String} find
+ * @returns {Boolean} found
+ */
+function inStr(str, find) {
+    return str.indexOf(find) > -1;
+}
+
+/**
+ * split string on whitespace
+ * @param {String} str
+ * @returns {Array} words
+ */
+function splitStr(str) {
+    return str.trim().split(/\s+/g);
+}
+
+/**
+ * find if a array contains the object using indexOf or a simple polyFill
+ * @param {Array} src
+ * @param {String} find
+ * @param {String} [findByKey]
+ * @return {Boolean|Number} false when not found, or the index
+ */
+function inArray(src, find, findByKey) {
+    if (src.indexOf && !findByKey) {
+        return src.indexOf(find);
+    } else {
+        var i = 0;
+        while (i < src.length) {
+            if ((findByKey && src[i][findByKey] == find) || (!findByKey && src[i] === find)) {
+                return i;
+            }
+            i++;
+        }
+        return -1;
+    }
+}
+
+/**
+ * convert array-like objects to real arrays
+ * @param {Object} obj
+ * @returns {Array}
+ */
+function toArray(obj) {
+    return Array.prototype.slice.call(obj, 0);
+}
+
+/**
+ * unique array with objects based on a key (like 'id') or just by the array's value
+ * @param {Array} src [{id:1},{id:2},{id:1}]
+ * @param {String} [key]
+ * @param {Boolean} [sort=False]
+ * @returns {Array} [{id:1},{id:2}]
+ */
+function uniqueArray(src, key, sort) {
+    var results = [];
+    var values = [];
+    var i = 0;
+
+    while (i < src.length) {
+        var val = key ? src[i][key] : src[i];
+        if (inArray(values, val) < 0) {
+            results.push(src[i]);
+        }
+        values[i] = val;
+        i++;
+    }
+
+    if (sort) {
+        if (!key) {
+            results = results.sort();
+        } else {
+            results = results.sort(function sortUniqueArray(a, b) {
+                return a[key] > b[key];
+            });
+        }
+    }
+
+    return results;
+}
+
+/**
+ * get the prefixed property
+ * @param {Object} obj
+ * @param {String} property
+ * @returns {String|Undefined} prefixed
+ */
+function prefixed(obj, property) {
+    var prefix, prop;
+    var camelProp = property[0].toUpperCase() + property.slice(1);
+
+    var i = 0;
+    while (i < VENDOR_PREFIXES.length) {
+        prefix = VENDOR_PREFIXES[i];
+        prop = (prefix) ? prefix + camelProp : property;
+
+        if (prop in obj) {
+            return prop;
+        }
+        i++;
+    }
+    return undefined;
+}
+
+/**
+ * get a unique id
+ * @returns {number} uniqueId
+ */
+var _uniqueId = 1;
+function uniqueId() {
+    return _uniqueId++;
+}
+
+/**
+ * get the window object of an element
+ * @param {HTMLElement} element
+ * @returns {DocumentView|Window}
+ */
+function getWindowForElement(element) {
+    var doc = element.ownerDocument || element;
+    return (doc.defaultView || doc.parentWindow || window);
+}
+
+var MOBILE_REGEX = /mobile|tablet|ip(ad|hone|od)|android/i;
+
+var SUPPORT_TOUCH = ('ontouchstart' in window);
+var SUPPORT_POINTER_EVENTS = prefixed(window, 'PointerEvent') !== undefined;
+var SUPPORT_ONLY_TOUCH = SUPPORT_TOUCH && MOBILE_REGEX.test(navigator.userAgent);
+
+var INPUT_TYPE_TOUCH = 'touch';
+var INPUT_TYPE_PEN = 'pen';
+var INPUT_TYPE_MOUSE = 'mouse';
+var INPUT_TYPE_KINECT = 'kinect';
+
+var COMPUTE_INTERVAL = 25;
+
+var INPUT_START = 1;
+var INPUT_MOVE = 2;
+var INPUT_END = 4;
+var INPUT_CANCEL = 8;
+
+var DIRECTION_NONE = 1;
+var DIRECTION_LEFT = 2;
+var DIRECTION_RIGHT = 4;
+var DIRECTION_UP = 8;
+var DIRECTION_DOWN = 16;
+
+var DIRECTION_HORIZONTAL = DIRECTION_LEFT | DIRECTION_RIGHT;
+var DIRECTION_VERTICAL = DIRECTION_UP | DIRECTION_DOWN;
+var DIRECTION_ALL = DIRECTION_HORIZONTAL | DIRECTION_VERTICAL;
+
+var PROPS_XY = ['x', 'y'];
+var PROPS_CLIENT_XY = ['clientX', 'clientY'];
+
+/**
+ * create new input type manager
+ * @param {Manager} manager
+ * @param {Function} callback
+ * @returns {Input}
+ * @constructor
+ */
+function Input(manager, callback) {
+    var self = this;
+    this.manager = manager;
+    this.callback = callback;
+    this.element = manager.element;
+    this.target = manager.options.inputTarget;
+
+    // smaller wrapper around the handler, for the scope and the enabled state of the manager,
+    // so when disabled the input events are completely bypassed.
+    this.domHandler = function(ev) {
+        if (boolOrFn(manager.options.enable, [manager])) {
+            self.handler(ev);
+        }
+    };
+
+    this.init();
+
+}
+
+Input.prototype = {
+    /**
+     * should handle the inputEvent data and trigger the callback
+     * @virtual
+     */
+    handler: function() { },
+
+    /**
+     * bind the events
+     */
+    init: function() {
+        this.evEl && addEventListeners(this.element, this.evEl, this.domHandler);
+        this.evTarget && addEventListeners(this.target, this.evTarget, this.domHandler);
+        this.evWin && addEventListeners(getWindowForElement(this.element), this.evWin, this.domHandler);
+    },
+
+    /**
+     * unbind the events
+     */
+    destroy: function() {
+        this.evEl && removeEventListeners(this.element, this.evEl, this.domHandler);
+        this.evTarget && removeEventListeners(this.target, this.evTarget, this.domHandler);
+        this.evWin && removeEventListeners(getWindowForElement(this.element), this.evWin, this.domHandler);
+    }
+};
+
+/**
+ * create new input type manager
+ * called by the Manager constructor
+ * @param {Hammer} manager
+ * @returns {Input}
+ */
+function createInputInstance(manager) {
+    var Type;
+    var inputClass = manager.options.inputClass;
+
+    if (inputClass) {
+        Type = inputClass;
+    } else if (SUPPORT_POINTER_EVENTS) {
+        Type = PointerEventInput;
+    } else if (SUPPORT_ONLY_TOUCH) {
+        Type = TouchInput;
+    } else if (!SUPPORT_TOUCH) {
+        Type = MouseInput;
+    } else {
+        Type = TouchMouseInput;
+    }
+    return new (Type)(manager, inputHandler);
+}
+
+/**
+ * handle input events
+ * @param {Manager} manager
+ * @param {String} eventType
+ * @param {Object} input
+ */
+function inputHandler(manager, eventType, input) {
+    var pointersLen = input.pointers.length;
+    var changedPointersLen = input.changedPointers.length;
+    var isFirst = (eventType & INPUT_START && (pointersLen - changedPointersLen === 0));
+    var isFinal = (eventType & (INPUT_END | INPUT_CANCEL) && (pointersLen - changedPointersLen === 0));
+
+    input.isFirst = !!isFirst;
+    input.isFinal = !!isFinal;
+
+    if (isFirst) {
+        manager.session = {};
+    }
+
+    // source event is the normalized value of the domEvents
+    // like 'touchstart, mouseup, pointerdown'
+    input.eventType = eventType;
+
+    // compute scale, rotation etc
+    computeInputData(manager, input);
+
+    // emit secret event
+    manager.emit('hammer.input', input);
+
+    manager.recognize(input);
+    manager.session.prevInput = input;
+}
+
+/**
+ * extend the data with some usable properties like scale, rotate, velocity etc
+ * @param {Object} manager
+ * @param {Object} input
+ */
+function computeInputData(manager, input) {
+    var session = manager.session;
+    var pointers = input.pointers;
+    var pointersLength = pointers.length;
+
+    // store the first input to calculate the distance and direction
+    if (!session.firstInput) {
+        session.firstInput = simpleCloneInputData(input);
+    }
+
+    // to compute scale and rotation we need to store the multiple touches
+    if (pointersLength > 1 && !session.firstMultiple) {
+        session.firstMultiple = simpleCloneInputData(input);
+    } else if (pointersLength === 1) {
+        session.firstMultiple = false;
+    }
+
+    var firstInput = session.firstInput;
+    var firstMultiple = session.firstMultiple;
+    var offsetCenter = firstMultiple ? firstMultiple.center : firstInput.center;
+
+    var center = input.center = getCenter(pointers);
+    input.timeStamp = now();
+    input.deltaTime = input.timeStamp - firstInput.timeStamp;
+
+    input.angle = getAngle(offsetCenter, center);
+    input.distance = getDistance(offsetCenter, center);
+
+    computeDeltaXY(session, input);
+    input.offsetDirection = getDirection(input.deltaX, input.deltaY);
+
+    var overallVelocity = getVelocity(input.deltaTime, input.deltaX, input.deltaY);
+    input.overallVelocityX = overallVelocity.x;
+    input.overallVelocityY = overallVelocity.y;
+    input.overallVelocity = (abs(overallVelocity.x) > abs(overallVelocity.y)) ? overallVelocity.x : overallVelocity.y;
+
+    input.scale = firstMultiple ? getScale(firstMultiple.pointers, pointers) : 1;
+    input.rotation = firstMultiple ? getRotation(firstMultiple.pointers, pointers) : 0;
+
+    input.maxPointers = !session.prevInput ? input.pointers.length : ((input.pointers.length >
+        session.prevInput.maxPointers) ? input.pointers.length : session.prevInput.maxPointers);
+
+    computeIntervalInputData(session, input);
+
+    // find the correct target
+    var target = manager.element;
+    if (hasParent(input.srcEvent.target, target)) {
+        target = input.srcEvent.target;
+    }
+    input.target = target;
+}
+
+function computeDeltaXY(session, input) {
+    var center = input.center;
+    var offset = session.offsetDelta || {};
+    var prevDelta = session.prevDelta || {};
+    var prevInput = session.prevInput || {};
+
+    if (input.eventType === INPUT_START || prevInput.eventType === INPUT_END) {
+        prevDelta = session.prevDelta = {
+            x: prevInput.deltaX || 0,
+            y: prevInput.deltaY || 0
+        };
+
+        offset = session.offsetDelta = {
+            x: center.x,
+            y: center.y
+        };
+    }
+
+    input.deltaX = prevDelta.x + (center.x - offset.x);
+    input.deltaY = prevDelta.y + (center.y - offset.y);
+}
+
+/**
+ * velocity is calculated every x ms
+ * @param {Object} session
+ * @param {Object} input
+ */
+function computeIntervalInputData(session, input) {
+    var last = session.lastInterval || input,
+        deltaTime = input.timeStamp - last.timeStamp,
+        velocity, velocityX, velocityY, direction;
+
+    if (input.eventType != INPUT_CANCEL && (deltaTime > COMPUTE_INTERVAL || last.velocity === undefined)) {
+        var deltaX = input.deltaX - last.deltaX;
+        var deltaY = input.deltaY - last.deltaY;
+
+        var v = getVelocity(deltaTime, deltaX, deltaY);
+        velocityX = v.x;
+        velocityY = v.y;
+        velocity = (abs(v.x) > abs(v.y)) ? v.x : v.y;
+        direction = getDirection(deltaX, deltaY);
+
+        session.lastInterval = input;
+    } else {
+        // use latest velocity info if it doesn't overtake a minimum period
+        velocity = last.velocity;
+        velocityX = last.velocityX;
+        velocityY = last.velocityY;
+        direction = last.direction;
+    }
+
+    input.velocity = velocity;
+    input.velocityX = velocityX;
+    input.velocityY = velocityY;
+    input.direction = direction;
+}
+
+/**
+ * create a simple clone from the input used for storage of firstInput and firstMultiple
+ * @param {Object} input
+ * @returns {Object} clonedInputData
+ */
+function simpleCloneInputData(input) {
+    // make a simple copy of the pointers because we will get a reference if we don't
+    // we only need clientXY for the calculations
+    var pointers = [];
+    var i = 0;
+    while (i < input.pointers.length) {
+        pointers[i] = {
+            clientX: round(input.pointers[i].clientX),
+            clientY: round(input.pointers[i].clientY)
+        };
+        i++;
+    }
+
+    return {
+        timeStamp: now(),
+        pointers: pointers,
+        center: getCenter(pointers),
+        deltaX: input.deltaX,
+        deltaY: input.deltaY
+    };
+}
+
+/**
+ * get the center of all the pointers
+ * @param {Array} pointers
+ * @return {Object} center contains `x` and `y` properties
+ */
+function getCenter(pointers) {
+    var pointersLength = pointers.length;
+
+    // no need to loop when only one touch
+    if (pointersLength === 1) {
+        return {
+            x: round(pointers[0].clientX),
+            y: round(pointers[0].clientY)
+        };
+    }
+
+    var x = 0, y = 0, i = 0;
+    while (i < pointersLength) {
+        x += pointers[i].clientX;
+        y += pointers[i].clientY;
+        i++;
+    }
+
+    return {
+        x: round(x / pointersLength),
+        y: round(y / pointersLength)
+    };
+}
+
+/**
+ * calculate the velocity between two points. unit is in px per ms.
+ * @param {Number} deltaTime
+ * @param {Number} x
+ * @param {Number} y
+ * @return {Object} velocity `x` and `y`
+ */
+function getVelocity(deltaTime, x, y) {
+    return {
+        x: x / deltaTime || 0,
+        y: y / deltaTime || 0
+    };
+}
+
+/**
+ * get the direction between two points
+ * @param {Number} x
+ * @param {Number} y
+ * @return {Number} direction
+ */
+function getDirection(x, y) {
+    if (x === y) {
+        return DIRECTION_NONE;
+    }
+
+    if (abs(x) >= abs(y)) {
+        return x < 0 ? DIRECTION_LEFT : DIRECTION_RIGHT;
+    }
+    return y < 0 ? DIRECTION_UP : DIRECTION_DOWN;
+}
+
+/**
+ * calculate the absolute distance between two points
+ * @param {Object} p1 {x, y}
+ * @param {Object} p2 {x, y}
+ * @param {Array} [props] containing x and y keys
+ * @return {Number} distance
+ */
+function getDistance(p1, p2, props) {
+    if (!props) {
+        props = PROPS_XY;
+    }
+    var x = p2[props[0]] - p1[props[0]],
+        y = p2[props[1]] - p1[props[1]];
+
+    return Math.sqrt((x * x) + (y * y));
+}
+
+/**
+ * calculate the angle between two coordinates
+ * @param {Object} p1
+ * @param {Object} p2
+ * @param {Array} [props] containing x and y keys
+ * @return {Number} angle
+ */
+function getAngle(p1, p2, props) {
+    if (!props) {
+        props = PROPS_XY;
+    }
+    var x = p2[props[0]] - p1[props[0]],
+        y = p2[props[1]] - p1[props[1]];
+    return Math.atan2(y, x) * 180 / Math.PI;
+}
+
+/**
+ * calculate the rotation degrees between two pointersets
+ * @param {Array} start array of pointers
+ * @param {Array} end array of pointers
+ * @return {Number} rotation
+ */
+function getRotation(start, end) {
+    return getAngle(end[1], end[0], PROPS_CLIENT_XY) + getAngle(start[1], start[0], PROPS_CLIENT_XY);
+}
+
+/**
+ * calculate the scale factor between two pointersets
+ * no scale is 1, and goes down to 0 when pinched together, and bigger when pinched out
+ * @param {Array} start array of pointers
+ * @param {Array} end array of pointers
+ * @return {Number} scale
+ */
+function getScale(start, end) {
+    return getDistance(end[0], end[1], PROPS_CLIENT_XY) / getDistance(start[0], start[1], PROPS_CLIENT_XY);
+}
+
+var MOUSE_INPUT_MAP = {
+    mousedown: INPUT_START,
+    mousemove: INPUT_MOVE,
+    mouseup: INPUT_END
+};
+
+var MOUSE_ELEMENT_EVENTS = 'mousedown';
+var MOUSE_WINDOW_EVENTS = 'mousemove mouseup';
+
+/**
+ * Mouse events input
+ * @constructor
+ * @extends Input
+ */
+function MouseInput() {
+    this.evEl = MOUSE_ELEMENT_EVENTS;
+    this.evWin = MOUSE_WINDOW_EVENTS;
+
+    this.pressed = false; // mousedown state
+
+    Input.apply(this, arguments);
+}
+
+inherit(MouseInput, Input, {
+    /**
+     * handle mouse events
+     * @param {Object} ev
+     */
+    handler: function MEhandler(ev) {
+        var eventType = MOUSE_INPUT_MAP[ev.type];
+
+        // on start we want to have the left mouse button down
+        if (eventType & INPUT_START && ev.button === 0) {
+            this.pressed = true;
+        }
+
+        if (eventType & INPUT_MOVE && ev.which !== 1) {
+            eventType = INPUT_END;
+        }
+
+        // mouse must be down
+        if (!this.pressed) {
+            return;
+        }
+
+        if (eventType & INPUT_END) {
+            this.pressed = false;
+        }
+
+        this.callback(this.manager, eventType, {
+            pointers: [ev],
+            changedPointers: [ev],
+            pointerType: INPUT_TYPE_MOUSE,
+            srcEvent: ev
+        });
+    }
+});
+
+var POINTER_INPUT_MAP = {
+    pointerdown: INPUT_START,
+    pointermove: INPUT_MOVE,
+    pointerup: INPUT_END,
+    pointercancel: INPUT_CANCEL,
+    pointerout: INPUT_CANCEL
+};
+
+// in IE10 the pointer types is defined as an enum
+var IE10_POINTER_TYPE_ENUM = {
+    2: INPUT_TYPE_TOUCH,
+    3: INPUT_TYPE_PEN,
+    4: INPUT_TYPE_MOUSE,
+    5: INPUT_TYPE_KINECT // see https://twitter.com/jacobrossi/status/480596438489890816
+};
+
+var POINTER_ELEMENT_EVENTS = 'pointerdown';
+var POINTER_WINDOW_EVENTS = 'pointermove pointerup pointercancel';
+
+// IE10 has prefixed support, and case-sensitive
+if (window.MSPointerEvent && !window.PointerEvent) {
+    POINTER_ELEMENT_EVENTS = 'MSPointerDown';
+    POINTER_WINDOW_EVENTS = 'MSPointerMove MSPointerUp MSPointerCancel';
+}
+
+/**
+ * Pointer events input
+ * @constructor
+ * @extends Input
+ */
+function PointerEventInput() {
+    this.evEl = POINTER_ELEMENT_EVENTS;
+    this.evWin = POINTER_WINDOW_EVENTS;
+
+    Input.apply(this, arguments);
+
+    this.store = (this.manager.session.pointerEvents = []);
+}
+
+inherit(PointerEventInput, Input, {
+    /**
+     * handle mouse events
+     * @param {Object} ev
+     */
+    handler: function PEhandler(ev) {
+        var store = this.store;
+        var removePointer = false;
+
+        var eventTypeNormalized = ev.type.toLowerCase().replace('ms', '');
+        var eventType = POINTER_INPUT_MAP[eventTypeNormalized];
+        var pointerType = IE10_POINTER_TYPE_ENUM[ev.pointerType] || ev.pointerType;
+
+        var isTouch = (pointerType == INPUT_TYPE_TOUCH);
+
+        // get index of the event in the store
+        var storeIndex = inArray(store, ev.pointerId, 'pointerId');
+
+        // start and mouse must be down
+        if (eventType & INPUT_START && (ev.button === 0 || isTouch)) {
+            if (storeIndex < 0) {
+                store.push(ev);
+                storeIndex = store.length - 1;
+            }
+        } else if (eventType & (INPUT_END | INPUT_CANCEL)) {
+            removePointer = true;
+        }
+
+        // it not found, so the pointer hasn't been down (so it's probably a hover)
+        if (storeIndex < 0) {
+            return;
+        }
+
+        // update the event in the store
+        store[storeIndex] = ev;
+
+        this.callback(this.manager, eventType, {
+            pointers: store,
+            changedPointers: [ev],
+            pointerType: pointerType,
+            srcEvent: ev
+        });
+
+        if (removePointer) {
+            // remove from the store
+            store.splice(storeIndex, 1);
+        }
+    }
+});
+
+var SINGLE_TOUCH_INPUT_MAP = {
+    touchstart: INPUT_START,
+    touchmove: INPUT_MOVE,
+    touchend: INPUT_END,
+    touchcancel: INPUT_CANCEL
+};
+
+var SINGLE_TOUCH_TARGET_EVENTS = 'touchstart';
+var SINGLE_TOUCH_WINDOW_EVENTS = 'touchstart touchmove touchend touchcancel';
+
+/**
+ * Touch events input
+ * @constructor
+ * @extends Input
+ */
+function SingleTouchInput() {
+    this.evTarget = SINGLE_TOUCH_TARGET_EVENTS;
+    this.evWin = SINGLE_TOUCH_WINDOW_EVENTS;
+    this.started = false;
+
+    Input.apply(this, arguments);
+}
+
+inherit(SingleTouchInput, Input, {
+    handler: function TEhandler(ev) {
+        var type = SINGLE_TOUCH_INPUT_MAP[ev.type];
+
+        // should we handle the touch events?
+        if (type === INPUT_START) {
+            this.started = true;
+        }
+
+        if (!this.started) {
+            return;
+        }
+
+        var touches = normalizeSingleTouches.call(this, ev, type);
+
+        // when done, reset the started state
+        if (type & (INPUT_END | INPUT_CANCEL) && touches[0].length - touches[1].length === 0) {
+            this.started = false;
+        }
+
+        this.callback(this.manager, type, {
+            pointers: touches[0],
+            changedPointers: touches[1],
+            pointerType: INPUT_TYPE_TOUCH,
+            srcEvent: ev
+        });
+    }
+});
+
+/**
+ * @this {TouchInput}
+ * @param {Object} ev
+ * @param {Number} type flag
+ * @returns {undefined|Array} [all, changed]
+ */
+function normalizeSingleTouches(ev, type) {
+    var all = toArray(ev.touches);
+    var changed = toArray(ev.changedTouches);
+
+    if (type & (INPUT_END | INPUT_CANCEL)) {
+        all = uniqueArray(all.concat(changed), 'identifier', true);
+    }
+
+    return [all, changed];
+}
+
+var TOUCH_INPUT_MAP = {
+    touchstart: INPUT_START,
+    touchmove: INPUT_MOVE,
+    touchend: INPUT_END,
+    touchcancel: INPUT_CANCEL
+};
+
+var TOUCH_TARGET_EVENTS = 'touchstart touchmove touchend touchcancel';
+
+/**
+ * Multi-user touch events input
+ * @constructor
+ * @extends Input
+ */
+function TouchInput() {
+    this.evTarget = TOUCH_TARGET_EVENTS;
+    this.targetIds = {};
+
+    Input.apply(this, arguments);
+}
+
+inherit(TouchInput, Input, {
+    handler: function MTEhandler(ev) {
+        var type = TOUCH_INPUT_MAP[ev.type];
+        var touches = getTouches.call(this, ev, type);
+        if (!touches) {
+            return;
+        }
+
+        this.callback(this.manager, type, {
+            pointers: touches[0],
+            changedPointers: touches[1],
+            pointerType: INPUT_TYPE_TOUCH,
+            srcEvent: ev
+        });
+    }
+});
+
+/**
+ * @this {TouchInput}
+ * @param {Object} ev
+ * @param {Number} type flag
+ * @returns {undefined|Array} [all, changed]
+ */
+function getTouches(ev, type) {
+    var allTouches = toArray(ev.touches);
+    var targetIds = this.targetIds;
+
+    // when there is only one touch, the process can be simplified
+    if (type & (INPUT_START | INPUT_MOVE) && allTouches.length === 1) {
+        targetIds[allTouches[0].identifier] = true;
+        return [allTouches, allTouches];
+    }
+
+    var i,
+        targetTouches,
+        changedTouches = toArray(ev.changedTouches),
+        changedTargetTouches = [],
+        target = this.target;
+
+    // get target touches from touches
+    targetTouches = allTouches.filter(function(touch) {
+        return hasParent(touch.target, target);
+    });
+
+    // collect touches
+    if (type === INPUT_START) {
+        i = 0;
+        while (i < targetTouches.length) {
+            targetIds[targetTouches[i].identifier] = true;
+            i++;
+        }
+    }
+
+    // filter changed touches to only contain touches that exist in the collected target ids
+    i = 0;
+    while (i < changedTouches.length) {
+        if (targetIds[changedTouches[i].identifier]) {
+            changedTargetTouches.push(changedTouches[i]);
+        }
+
+        // cleanup removed touches
+        if (type & (INPUT_END | INPUT_CANCEL)) {
+            delete targetIds[changedTouches[i].identifier];
+        }
+        i++;
+    }
+
+    if (!changedTargetTouches.length) {
+        return;
+    }
+
+    return [
+        // merge targetTouches with changedTargetTouches so it contains ALL touches, including 'end' and 'cancel'
+        uniqueArray(targetTouches.concat(changedTargetTouches), 'identifier', true),
+        changedTargetTouches
+    ];
+}
+
+/**
+ * Combined touch and mouse input
+ *
+ * Touch has a higher priority then mouse, and while touching no mouse events are allowed.
+ * This because touch devices also emit mouse events while doing a touch.
+ *
+ * @constructor
+ * @extends Input
+ */
+
+var DEDUP_TIMEOUT = 2500;
+var DEDUP_DISTANCE = 25;
+
+function TouchMouseInput() {
+    Input.apply(this, arguments);
+
+    var handler = bindFn(this.handler, this);
+    this.touch = new TouchInput(this.manager, handler);
+    this.mouse = new MouseInput(this.manager, handler);
+
+    this.primaryTouch = null;
+    this.lastTouches = [];
+}
+
+inherit(TouchMouseInput, Input, {
+    /**
+     * handle mouse and touch events
+     * @param {Hammer} manager
+     * @param {String} inputEvent
+     * @param {Object} inputData
+     */
+    handler: function TMEhandler(manager, inputEvent, inputData) {
+        var isTouch = (inputData.pointerType == INPUT_TYPE_TOUCH),
+            isMouse = (inputData.pointerType == INPUT_TYPE_MOUSE);
+
+        if (isMouse && inputData.sourceCapabilities && inputData.sourceCapabilities.firesTouchEvents) {
+            return;
+        }
+
+        // when we're in a touch event, record touches to  de-dupe synthetic mouse event
+        if (isTouch) {
+            recordTouches.call(this, inputEvent, inputData);
+        } else if (isMouse && isSyntheticEvent.call(this, inputData)) {
+            return;
+        }
+
+        this.callback(manager, inputEvent, inputData);
+    },
+
+    /**
+     * remove the event listeners
+     */
+    destroy: function destroy() {
+        this.touch.destroy();
+        this.mouse.destroy();
+    }
+});
+
+function recordTouches(eventType, eventData) {
+    if (eventType & INPUT_START) {
+        this.primaryTouch = eventData.changedPointers[0].identifier;
+        setLastTouch.call(this, eventData);
+    } else if (eventType & (INPUT_END | INPUT_CANCEL)) {
+        setLastTouch.call(this, eventData);
+    }
+}
+
+function setLastTouch(eventData) {
+    var touch = eventData.changedPointers[0];
+
+    if (touch.identifier === this.primaryTouch) {
+        var lastTouch = {x: touch.clientX, y: touch.clientY};
+        this.lastTouches.push(lastTouch);
+        var lts = this.lastTouches;
+        var removeLastTouch = function() {
+            var i = lts.indexOf(lastTouch);
+            if (i > -1) {
+                lts.splice(i, 1);
+            }
+        };
+        setTimeout(removeLastTouch, DEDUP_TIMEOUT);
+    }
+}
+
+function isSyntheticEvent(eventData) {
+    var x = eventData.srcEvent.clientX, y = eventData.srcEvent.clientY;
+    for (var i = 0; i < this.lastTouches.length; i++) {
+        var t = this.lastTouches[i];
+        var dx = Math.abs(x - t.x), dy = Math.abs(y - t.y);
+        if (dx <= DEDUP_DISTANCE && dy <= DEDUP_DISTANCE) {
+            return true;
+        }
+    }
+    return false;
+}
+
+var PREFIXED_TOUCH_ACTION = prefixed(TEST_ELEMENT.style, 'touchAction');
+var NATIVE_TOUCH_ACTION = PREFIXED_TOUCH_ACTION !== undefined;
+
+// magical touchAction value
+var TOUCH_ACTION_COMPUTE = 'compute';
+var TOUCH_ACTION_AUTO = 'auto';
+var TOUCH_ACTION_MANIPULATION = 'manipulation'; // not implemented
+var TOUCH_ACTION_NONE = 'none';
+var TOUCH_ACTION_PAN_X = 'pan-x';
+var TOUCH_ACTION_PAN_Y = 'pan-y';
+var TOUCH_ACTION_MAP = getTouchActionProps();
+
+/**
+ * Touch Action
+ * sets the touchAction property or uses the js alternative
+ * @param {Manager} manager
+ * @param {String} value
+ * @constructor
+ */
+function TouchAction(manager, value) {
+    this.manager = manager;
+    this.set(value);
+}
+
+TouchAction.prototype = {
+    /**
+     * set the touchAction value on the element or enable the polyfill
+     * @param {String} value
+     */
+    set: function(value) {
+        // find out the touch-action by the event handlers
+        if (value == TOUCH_ACTION_COMPUTE) {
+            value = this.compute();
+        }
+
+        if (NATIVE_TOUCH_ACTION && this.manager.element.style && TOUCH_ACTION_MAP[value]) {
+            this.manager.element.style[PREFIXED_TOUCH_ACTION] = value;
+        }
+        this.actions = value.toLowerCase().trim();
+    },
+
+    /**
+     * just re-set the touchAction value
+     */
+    update: function() {
+        this.set(this.manager.options.touchAction);
+    },
+
+    /**
+     * compute the value for the touchAction property based on the recognizer's settings
+     * @returns {String} value
+     */
+    compute: function() {
+        var actions = [];
+        each(this.manager.recognizers, function(recognizer) {
+            if (boolOrFn(recognizer.options.enable, [recognizer])) {
+                actions = actions.concat(recognizer.getTouchAction());
+            }
+        });
+        return cleanTouchActions(actions.join(' '));
+    },
+
+    /**
+     * this method is called on each input cycle and provides the preventing of the browser behavior
+     * @param {Object} input
+     */
+    preventDefaults: function(input) {
+        var srcEvent = input.srcEvent;
+        var direction = input.offsetDirection;
+
+        // if the touch action did prevented once this session
+        if (this.manager.session.prevented) {
+            srcEvent.preventDefault();
+            return;
+        }
+
+        var actions = this.actions;
+        var hasNone = inStr(actions, TOUCH_ACTION_NONE) && !TOUCH_ACTION_MAP[TOUCH_ACTION_NONE];
+        var hasPanY = inStr(actions, TOUCH_ACTION_PAN_Y) && !TOUCH_ACTION_MAP[TOUCH_ACTION_PAN_Y];
+        var hasPanX = inStr(actions, TOUCH_ACTION_PAN_X) && !TOUCH_ACTION_MAP[TOUCH_ACTION_PAN_X];
+
+        if (hasNone) {
+            //do not prevent defaults if this is a tap gesture
+
+            var isTapPointer = input.pointers.length === 1;
+            var isTapMovement = input.distance < 2;
+            var isTapTouchTime = input.deltaTime < 250;
+
+            if (isTapPointer && isTapMovement && isTapTouchTime) {
+                return;
+            }
+        }
+
+        if (hasPanX && hasPanY) {
+            // `pan-x pan-y` means browser handles all scrolling/panning, do not prevent
+            return;
+        }
+
+        if (hasNone ||
+            (hasPanY && direction & DIRECTION_HORIZONTAL) ||
+            (hasPanX && direction & DIRECTION_VERTICAL)) {
+            return this.preventSrc(srcEvent);
+        }
+    },
+
+    /**
+     * call preventDefault to prevent the browser's default behavior (scrolling in most cases)
+     * @param {Object} srcEvent
+     */
+    preventSrc: function(srcEvent) {
+        this.manager.session.prevented = true;
+        srcEvent.preventDefault();
+    }
+};
+
+/**
+ * when the touchActions are collected they are not a valid value, so we need to clean things up. *
+ * @param {String} actions
+ * @returns {*}
+ */
+function cleanTouchActions(actions) {
+    // none
+    if (inStr(actions, TOUCH_ACTION_NONE)) {
+        return TOUCH_ACTION_NONE;
+    }
+
+    var hasPanX = inStr(actions, TOUCH_ACTION_PAN_X);
+    var hasPanY = inStr(actions, TOUCH_ACTION_PAN_Y);
+
+    // if both pan-x and pan-y are set (different recognizers
+    // for different directions, e.g. horizontal pan but vertical swipe?)
+    // we need none (as otherwise with pan-x pan-y combined none of these
+    // recognizers will work, since the browser would handle all panning
+    if (hasPanX && hasPanY) {
+        return TOUCH_ACTION_NONE;
+    }
+
+    // pan-x OR pan-y
+    if (hasPanX || hasPanY) {
+        return hasPanX ? TOUCH_ACTION_PAN_X : TOUCH_ACTION_PAN_Y;
+    }
+
+    // manipulation
+    if (inStr(actions, TOUCH_ACTION_MANIPULATION)) {
+        return TOUCH_ACTION_MANIPULATION;
+    }
+
+    return TOUCH_ACTION_AUTO;
+}
+
+function getTouchActionProps() {
+    if (!NATIVE_TOUCH_ACTION) {
+        return false;
+    }
+    var touchMap = {};
+    var cssSupports = window.CSS && window.CSS.supports;
+    ['auto', 'manipulation', 'pan-y', 'pan-x', 'pan-x pan-y', 'none'].forEach(function(val) {
+
+        // If css.supports is not supported but there is native touch-action assume it supports
+        // all values. This is the case for IE 10 and 11.
+        touchMap[val] = cssSupports ? window.CSS.supports('touch-action', val) : true;
+    });
+    return touchMap;
+}
+
+/**
+ * Recognizer flow explained; *
+ * All recognizers have the initial state of POSSIBLE when a input session starts.
+ * The definition of a input session is from the first input until the last input, with all it's movement in it. *
+ * Example session for mouse-input: mousedown -> mousemove -> mouseup
+ *
+ * On each recognizing cycle (see Manager.recognize) the .recognize() method is executed
+ * which determines with state it should be.
+ *
+ * If the recognizer has the state FAILED, CANCELLED or RECOGNIZED (equals ENDED), it is reset to
+ * POSSIBLE to give it another change on the next cycle.
+ *
+ *               Possible
+ *                  |
+ *            +-----+---------------+
+ *            |                     |
+ *      +-----+-----+               |
+ *      |           |               |
+ *   Failed      Cancelled          |
+ *                          +-------+------+
+ *                          |              |
+ *                      Recognized       Began
+ *                                         |
+ *                                      Changed
+ *                                         |
+ *                                  Ended/Recognized
+ */
+var STATE_POSSIBLE = 1;
+var STATE_BEGAN = 2;
+var STATE_CHANGED = 4;
+var STATE_ENDED = 8;
+var STATE_RECOGNIZED = STATE_ENDED;
+var STATE_CANCELLED = 16;
+var STATE_FAILED = 32;
+
+/**
+ * Recognizer
+ * Every recognizer needs to extend from this class.
+ * @constructor
+ * @param {Object} options
+ */
+function Recognizer(options) {
+    this.options = assign({}, this.defaults, options || {});
+
+    this.id = uniqueId();
+
+    this.manager = null;
+
+    // default is enable true
+    this.options.enable = ifUndefined(this.options.enable, true);
+
+    this.state = STATE_POSSIBLE;
+
+    this.simultaneous = {};
+    this.requireFail = [];
+}
+
+Recognizer.prototype = {
+    /**
+     * @virtual
+     * @type {Object}
+     */
+    defaults: {},
+
+    /**
+     * set options
+     * @param {Object} options
+     * @return {Recognizer}
+     */
+    set: function(options) {
+        assign(this.options, options);
+
+        // also update the touchAction, in case something changed about the directions/enabled state
+        this.manager && this.manager.touchAction.update();
+        return this;
+    },
+
+    /**
+     * recognize simultaneous with an other recognizer.
+     * @param {Recognizer} otherRecognizer
+     * @returns {Recognizer} this
+     */
+    recognizeWith: function(otherRecognizer) {
+        if (invokeArrayArg(otherRecognizer, 'recognizeWith', this)) {
+            return this;
+        }
+
+        var simultaneous = this.simultaneous;
+        otherRecognizer = getRecognizerByNameIfManager(otherRecognizer, this);
+        if (!simultaneous[otherRecognizer.id]) {
+            simultaneous[otherRecognizer.id] = otherRecognizer;
+            otherRecognizer.recognizeWith(this);
+        }
+        return this;
+    },
+
+    /**
+     * drop the simultaneous link. it doesnt remove the link on the other recognizer.
+     * @param {Recognizer} otherRecognizer
+     * @returns {Recognizer} this
+     */
+    dropRecognizeWith: function(otherRecognizer) {
+        if (invokeArrayArg(otherRecognizer, 'dropRecognizeWith', this)) {
+            return this;
+        }
+
+        otherRecognizer = getRecognizerByNameIfManager(otherRecognizer, this);
+        delete this.simultaneous[otherRecognizer.id];
+        return this;
+    },
+
+    /**
+     * recognizer can only run when an other is failing
+     * @param {Recognizer} otherRecognizer
+     * @returns {Recognizer} this
+     */
+    requireFailure: function(otherRecognizer) {
+        if (invokeArrayArg(otherRecognizer, 'requireFailure', this)) {
+            return this;
+        }
+
+        var requireFail = this.requireFail;
+        otherRecognizer = getRecognizerByNameIfManager(otherRecognizer, this);
+        if (inArray(requireFail, otherRecognizer) === -1) {
+            requireFail.push(otherRecognizer);
+            otherRecognizer.requireFailure(this);
+        }
+        return this;
+    },
+
+    /**
+     * drop the requireFailure link. it does not remove the link on the other recognizer.
+     * @param {Recognizer} otherRecognizer
+     * @returns {Recognizer} this
+     */
+    dropRequireFailure: function(otherRecognizer) {
+        if (invokeArrayArg(otherRecognizer, 'dropRequireFailure', this)) {
+            return this;
+        }
+
+        otherRecognizer = getRecognizerByNameIfManager(otherRecognizer, this);
+        var index = inArray(this.requireFail, otherRecognizer);
+        if (index > -1) {
+            this.requireFail.splice(index, 1);
+        }
+        return this;
+    },
+
+    /**
+     * has require failures boolean
+     * @returns {boolean}
+     */
+    hasRequireFailures: function() {
+        return this.requireFail.length > 0;
+    },
+
+    /**
+     * if the recognizer can recognize simultaneous with an other recognizer
+     * @param {Recognizer} otherRecognizer
+     * @returns {Boolean}
+     */
+    canRecognizeWith: function(otherRecognizer) {
+        return !!this.simultaneous[otherRecognizer.id];
+    },
+
+    /**
+     * You should use `tryEmit` instead of `emit` directly to check
+     * that all the needed recognizers has failed before emitting.
+     * @param {Object} input
+     */
+    emit: function(input) {
+        var self = this;
+        var state = this.state;
+
+        function emit(event) {
+            self.manager.emit(event, input);
+        }
+
+        // 'panstart' and 'panmove'
+        if (state < STATE_ENDED) {
+            emit(self.options.event + stateStr(state));
+        }
+
+        emit(self.options.event); // simple 'eventName' events
+
+        if (input.additionalEvent) { // additional event(panleft, panright, pinchin, pinchout...)
+            emit(input.additionalEvent);
+        }
+
+        // panend and pancancel
+        if (state >= STATE_ENDED) {
+            emit(self.options.event + stateStr(state));
+        }
+    },
+
+    /**
+     * Check that all the require failure recognizers has failed,
+     * if true, it emits a gesture event,
+     * otherwise, setup the state to FAILED.
+     * @param {Object} input
+     */
+    tryEmit: function(input) {
+        if (this.canEmit()) {
+            return this.emit(input);
+        }
+        // it's failing anyway
+        this.state = STATE_FAILED;
+    },
+
+    /**
+     * can we emit?
+     * @returns {boolean}
+     */
+    canEmit: function() {
+        var i = 0;
+        while (i < this.requireFail.length) {
+            if (!(this.requireFail[i].state & (STATE_FAILED | STATE_POSSIBLE))) {
+                return false;
+            }
+            i++;
+        }
+        return true;
+    },
+
+    /**
+     * update the recognizer
+     * @param {Object} inputData
+     */
+    recognize: function(inputData) {
+        // make a new copy of the inputData
+        // so we can change the inputData without messing up the other recognizers
+        var inputDataClone = assign({}, inputData);
+
+        // is is enabled and allow recognizing?
+        if (!boolOrFn(this.options.enable, [this, inputDataClone])) {
+            this.reset();
+            this.state = STATE_FAILED;
+            return;
+        }
+
+        // reset when we've reached the end
+        if (this.state & (STATE_RECOGNIZED | STATE_CANCELLED | STATE_FAILED)) {
+            this.state = STATE_POSSIBLE;
+        }
+
+        this.state = this.process(inputDataClone);
+
+        // the recognizer has recognized a gesture
+        // so trigger an event
+        if (this.state & (STATE_BEGAN | STATE_CHANGED | STATE_ENDED | STATE_CANCELLED)) {
+            this.tryEmit(inputDataClone);
+        }
+    },
+
+    /**
+     * return the state of the recognizer
+     * the actual recognizing happens in this method
+     * @virtual
+     * @param {Object} inputData
+     * @returns {Const} STATE
+     */
+    process: function(inputData) { }, // jshint ignore:line
+
+    /**
+     * return the preferred touch-action
+     * @virtual
+     * @returns {Array}
+     */
+    getTouchAction: function() { },
+
+    /**
+     * called when the gesture isn't allowed to recognize
+     * like when another is being recognized or it is disabled
+     * @virtual
+     */
+    reset: function() { }
+};
+
+/**
+ * get a usable string, used as event postfix
+ * @param {Const} state
+ * @returns {String} state
+ */
+function stateStr(state) {
+    if (state & STATE_CANCELLED) {
+        return 'cancel';
+    } else if (state & STATE_ENDED) {
+        return 'end';
+    } else if (state & STATE_CHANGED) {
+        return 'move';
+    } else if (state & STATE_BEGAN) {
+        return 'start';
+    }
+    return '';
+}
+
+/**
+ * direction cons to string
+ * @param {Const} direction
+ * @returns {String}
+ */
+function directionStr(direction) {
+    if (direction == DIRECTION_DOWN) {
+        return 'down';
+    } else if (direction == DIRECTION_UP) {
+        return 'up';
+    } else if (direction == DIRECTION_LEFT) {
+        return 'left';
+    } else if (direction == DIRECTION_RIGHT) {
+        return 'right';
+    }
+    return '';
+}
+
+/**
+ * get a recognizer by name if it is bound to a manager
+ * @param {Recognizer|String} otherRecognizer
+ * @param {Recognizer} recognizer
+ * @returns {Recognizer}
+ */
+function getRecognizerByNameIfManager(otherRecognizer, recognizer) {
+    var manager = recognizer.manager;
+    if (manager) {
+        return manager.get(otherRecognizer);
+    }
+    return otherRecognizer;
+}
+
+/**
+ * This recognizer is just used as a base for the simple attribute recognizers.
+ * @constructor
+ * @extends Recognizer
+ */
+function AttrRecognizer() {
+    Recognizer.apply(this, arguments);
+}
+
+inherit(AttrRecognizer, Recognizer, {
+    /**
+     * @namespace
+     * @memberof AttrRecognizer
+     */
+    defaults: {
+        /**
+         * @type {Number}
+         * @default 1
+         */
+        pointers: 1
+    },
+
+    /**
+     * Used to check if it the recognizer receives valid input, like input.distance > 10.
+     * @memberof AttrRecognizer
+     * @param {Object} input
+     * @returns {Boolean} recognized
+     */
+    attrTest: function(input) {
+        var optionPointers = this.options.pointers;
+        return optionPointers === 0 || input.pointers.length === optionPointers;
+    },
+
+    /**
+     * Process the input and return the state for the recognizer
+     * @memberof AttrRecognizer
+     * @param {Object} input
+     * @returns {*} State
+     */
+    process: function(input) {
+        var state = this.state;
+        var eventType = input.eventType;
+
+        var isRecognized = state & (STATE_BEGAN | STATE_CHANGED);
+        var isValid = this.attrTest(input);
+
+        // on cancel input and we've recognized before, return STATE_CANCELLED
+        if (isRecognized && (eventType & INPUT_CANCEL || !isValid)) {
+            return state | STATE_CANCELLED;
+        } else if (isRecognized || isValid) {
+            if (eventType & INPUT_END) {
+                return state | STATE_ENDED;
+            } else if (!(state & STATE_BEGAN)) {
+                return STATE_BEGAN;
+            }
+            return state | STATE_CHANGED;
+        }
+        return STATE_FAILED;
+    }
+});
+
+/**
+ * Pan
+ * Recognized when the pointer is down and moved in the allowed direction.
+ * @constructor
+ * @extends AttrRecognizer
+ */
+function PanRecognizer() {
+    AttrRecognizer.apply(this, arguments);
+
+    this.pX = null;
+    this.pY = null;
+}
+
+inherit(PanRecognizer, AttrRecognizer, {
+    /**
+     * @namespace
+     * @memberof PanRecognizer
+     */
+    defaults: {
+        event: 'pan',
+        threshold: 10,
+        pointers: 1,
+        direction: DIRECTION_ALL
+    },
+
+    getTouchAction: function() {
+        var direction = this.options.direction;
+        var actions = [];
+        if (direction & DIRECTION_HORIZONTAL) {
+            actions.push(TOUCH_ACTION_PAN_Y);
+        }
+        if (direction & DIRECTION_VERTICAL) {
+            actions.push(TOUCH_ACTION_PAN_X);
+        }
+        return actions;
+    },
+
+    directionTest: function(input) {
+        var options = this.options;
+        var hasMoved = true;
+        var distance = input.distance;
+        var direction = input.direction;
+        var x = input.deltaX;
+        var y = input.deltaY;
+
+        // lock to axis?
+        if (!(direction & options.direction)) {
+            if (options.direction & DIRECTION_HORIZONTAL) {
+                direction = (x === 0) ? DIRECTION_NONE : (x < 0) ? DIRECTION_LEFT : DIRECTION_RIGHT;
+                hasMoved = x != this.pX;
+                distance = Math.abs(input.deltaX);
+            } else {
+                direction = (y === 0) ? DIRECTION_NONE : (y < 0) ? DIRECTION_UP : DIRECTION_DOWN;
+                hasMoved = y != this.pY;
+                distance = Math.abs(input.deltaY);
+            }
+        }
+        input.direction = direction;
+        return hasMoved && distance > options.threshold && direction & options.direction;
+    },
+
+    attrTest: function(input) {
+        return AttrRecognizer.prototype.attrTest.call(this, input) &&
+            (this.state & STATE_BEGAN || (!(this.state & STATE_BEGAN) && this.directionTest(input)));
+    },
+
+    emit: function(input) {
+
+        this.pX = input.deltaX;
+        this.pY = input.deltaY;
+
+        var direction = directionStr(input.direction);
+
+        if (direction) {
+            input.additionalEvent = this.options.event + direction;
+        }
+        this._super.emit.call(this, input);
+    }
+});
+
+/**
+ * Pinch
+ * Recognized when two or more pointers are moving toward (zoom-in) or away from each other (zoom-out).
+ * @constructor
+ * @extends AttrRecognizer
+ */
+function PinchRecognizer() {
+    AttrRecognizer.apply(this, arguments);
+}
+
+inherit(PinchRecognizer, AttrRecognizer, {
+    /**
+     * @namespace
+     * @memberof PinchRecognizer
+     */
+    defaults: {
+        event: 'pinch',
+        threshold: 0,
+        pointers: 2
+    },
+
+    getTouchAction: function() {
+        return [TOUCH_ACTION_NONE];
+    },
+
+    attrTest: function(input) {
+        return this._super.attrTest.call(this, input) &&
+            (Math.abs(input.scale - 1) > this.options.threshold || this.state & STATE_BEGAN);
+    },
+
+    emit: function(input) {
+        if (input.scale !== 1) {
+            var inOut = input.scale < 1 ? 'in' : 'out';
+            input.additionalEvent = this.options.event + inOut;
+        }
+        this._super.emit.call(this, input);
+    }
+});
+
+/**
+ * Press
+ * Recognized when the pointer is down for x ms without any movement.
+ * @constructor
+ * @extends Recognizer
+ */
+function PressRecognizer() {
+    Recognizer.apply(this, arguments);
+
+    this._timer = null;
+    this._input = null;
+}
+
+inherit(PressRecognizer, Recognizer, {
+    /**
+     * @namespace
+     * @memberof PressRecognizer
+     */
+    defaults: {
+        event: 'press',
+        pointers: 1,
+        time: 251, // minimal time of the pointer to be pressed
+        threshold: 9 // a minimal movement is ok, but keep it low
+    },
+
+    getTouchAction: function() {
+        return [TOUCH_ACTION_AUTO];
+    },
+
+    process: function(input) {
+        var options = this.options;
+        var validPointers = input.pointers.length === options.pointers;
+        var validMovement = input.distance < options.threshold;
+        var validTime = input.deltaTime > options.time;
+
+        this._input = input;
+
+        // we only allow little movement
+        // and we've reached an end event, so a tap is possible
+        if (!validMovement || !validPointers || (input.eventType & (INPUT_END | INPUT_CANCEL) && !validTime)) {
+            this.reset();
+        } else if (input.eventType & INPUT_START) {
+            this.reset();
+            this._timer = setTimeoutContext(function() {
+                this.state = STATE_RECOGNIZED;
+                this.tryEmit();
+            }, options.time, this);
+        } else if (input.eventType & INPUT_END) {
+            return STATE_RECOGNIZED;
+        }
+        return STATE_FAILED;
+    },
+
+    reset: function() {
+        clearTimeout(this._timer);
+    },
+
+    emit: function(input) {
+        if (this.state !== STATE_RECOGNIZED) {
+            return;
+        }
+
+        if (input && (input.eventType & INPUT_END)) {
+            this.manager.emit(this.options.event + 'up', input);
+        } else {
+            this._input.timeStamp = now();
+            this.manager.emit(this.options.event, this._input);
+        }
+    }
+});
+
+/**
+ * Rotate
+ * Recognized when two or more pointer are moving in a circular motion.
+ * @constructor
+ * @extends AttrRecognizer
+ */
+function RotateRecognizer() {
+    AttrRecognizer.apply(this, arguments);
+}
+
+inherit(RotateRecognizer, AttrRecognizer, {
+    /**
+     * @namespace
+     * @memberof RotateRecognizer
+     */
+    defaults: {
+        event: 'rotate',
+        threshold: 0,
+        pointers: 2
+    },
+
+    getTouchAction: function() {
+        return [TOUCH_ACTION_NONE];
+    },
+
+    attrTest: function(input) {
+        return this._super.attrTest.call(this, input) &&
+            (Math.abs(input.rotation) > this.options.threshold || this.state & STATE_BEGAN);
+    }
+});
+
+/**
+ * Swipe
+ * Recognized when the pointer is moving fast (velocity), with enough distance in the allowed direction.
+ * @constructor
+ * @extends AttrRecognizer
+ */
+function SwipeRecognizer() {
+    AttrRecognizer.apply(this, arguments);
+}
+
+inherit(SwipeRecognizer, AttrRecognizer, {
+    /**
+     * @namespace
+     * @memberof SwipeRecognizer
+     */
+    defaults: {
+        event: 'swipe',
+        threshold: 10,
+        velocity: 0.3,
+        direction: DIRECTION_HORIZONTAL | DIRECTION_VERTICAL,
+        pointers: 1
+    },
+
+    getTouchAction: function() {
+        return PanRecognizer.prototype.getTouchAction.call(this);
+    },
+
+    attrTest: function(input) {
+        var direction = this.options.direction;
+        var velocity;
+
+        if (direction & (DIRECTION_HORIZONTAL | DIRECTION_VERTICAL)) {
+            velocity = input.overallVelocity;
+        } else if (direction & DIRECTION_HORIZONTAL) {
+            velocity = input.overallVelocityX;
+        } else if (direction & DIRECTION_VERTICAL) {
+            velocity = input.overallVelocityY;
+        }
+
+        return this._super.attrTest.call(this, input) &&
+            direction & input.offsetDirection &&
+            input.distance > this.options.threshold &&
+            input.maxPointers == this.options.pointers &&
+            abs(velocity) > this.options.velocity && input.eventType & INPUT_END;
+    },
+
+    emit: function(input) {
+        var direction = directionStr(input.offsetDirection);
+        if (direction) {
+            this.manager.emit(this.options.event + direction, input);
+        }
+
+        this.manager.emit(this.options.event, input);
+    }
+});
+
+/**
+ * A tap is ecognized when the pointer is doing a small tap/click. Multiple taps are recognized if they occur
+ * between the given interval and position. The delay option can be used to recognize multi-taps without firing
+ * a single tap.
+ *
+ * The eventData from the emitted event contains the property `tapCount`, which contains the amount of
+ * multi-taps being recognized.
+ * @constructor
+ * @extends Recognizer
+ */
+function TapRecognizer() {
+    Recognizer.apply(this, arguments);
+
+    // previous time and center,
+    // used for tap counting
+    this.pTime = false;
+    this.pCenter = false;
+
+    this._timer = null;
+    this._input = null;
+    this.count = 0;
+}
+
+inherit(TapRecognizer, Recognizer, {
+    /**
+     * @namespace
+     * @memberof PinchRecognizer
+     */
+    defaults: {
+        event: 'tap',
+        pointers: 1,
+        taps: 1,
+        interval: 300, // max time between the multi-tap taps
+        time: 250, // max time of the pointer to be down (like finger on the screen)
+        threshold: 9, // a minimal movement is ok, but keep it low
+        posThreshold: 10 // a multi-tap can be a bit off the initial position
+    },
+
+    getTouchAction: function() {
+        return [TOUCH_ACTION_MANIPULATION];
+    },
+
+    process: function(input) {
+        var options = this.options;
+
+        var validPointers = input.pointers.length === options.pointers;
+        var validMovement = input.distance < options.threshold;
+        var validTouchTime = input.deltaTime < options.time;
+
+        this.reset();
+
+        if ((input.eventType & INPUT_START) && (this.count === 0)) {
+            return this.failTimeout();
+        }
+
+        // we only allow little movement
+        // and we've reached an end event, so a tap is possible
+        if (validMovement && validTouchTime && validPointers) {
+            if (input.eventType != INPUT_END) {
+                return this.failTimeout();
+            }
+
+            var validInterval = this.pTime ? (input.timeStamp - this.pTime < options.interval) : true;
+            var validMultiTap = !this.pCenter || getDistance(this.pCenter, input.center) < options.posThreshold;
+
+            this.pTime = input.timeStamp;
+            this.pCenter = input.center;
+
+            if (!validMultiTap || !validInterval) {
+                this.count = 1;
+            } else {
+                this.count += 1;
+            }
+
+            this._input = input;
+
+            // if tap count matches we have recognized it,
+            // else it has began recognizing...
+            var tapCount = this.count % options.taps;
+            if (tapCount === 0) {
+                // no failing requirements, immediately trigger the tap event
+                // or wait as long as the multitap interval to trigger
+                if (!this.hasRequireFailures()) {
+                    return STATE_RECOGNIZED;
+                } else {
+                    this._timer = setTimeoutContext(function() {
+                        this.state = STATE_RECOGNIZED;
+                        this.tryEmit();
+                    }, options.interval, this);
+                    return STATE_BEGAN;
+                }
+            }
+        }
+        return STATE_FAILED;
+    },
+
+    failTimeout: function() {
+        this._timer = setTimeoutContext(function() {
+            this.state = STATE_FAILED;
+        }, this.options.interval, this);
+        return STATE_FAILED;
+    },
+
+    reset: function() {
+        clearTimeout(this._timer);
+    },
+
+    emit: function() {
+        if (this.state == STATE_RECOGNIZED) {
+            this._input.tapCount = this.count;
+            this.manager.emit(this.options.event, this._input);
+        }
+    }
+});
+
+/**
+ * Simple way to create a manager with a default set of recognizers.
+ * @param {HTMLElement} element
+ * @param {Object} [options]
+ * @constructor
+ */
+function Hammer(element, options) {
+    options = options || {};
+    options.recognizers = ifUndefined(options.recognizers, Hammer.defaults.preset);
+    return new Manager(element, options);
+}
+
+/**
+ * @const {string}
+ */
+Hammer.VERSION = '2.0.7';
+
+/**
+ * default settings
+ * @namespace
+ */
+Hammer.defaults = {
+    /**
+     * set if DOM events are being triggered.
+     * But this is slower and unused by simple implementations, so disabled by default.
+     * @type {Boolean}
+     * @default false
+     */
+    domEvents: false,
+
+    /**
+     * The value for the touchAction property/fallback.
+     * When set to `compute` it will magically set the correct value based on the added recognizers.
+     * @type {String}
+     * @default compute
+     */
+    touchAction: TOUCH_ACTION_COMPUTE,
+
+    /**
+     * @type {Boolean}
+     * @default true
+     */
+    enable: true,
+
+    /**
+     * EXPERIMENTAL FEATURE -- can be removed/changed
+     * Change the parent input target element.
+     * If Null, then it is being set the to main element.
+     * @type {Null|EventTarget}
+     * @default null
+     */
+    inputTarget: null,
+
+    /**
+     * force an input class
+     * @type {Null|Function}
+     * @default null
+     */
+    inputClass: null,
+
+    /**
+     * Default recognizer setup when calling `Hammer()`
+     * When creating a new Manager these will be skipped.
+     * @type {Array}
+     */
+    preset: [
+        // RecognizerClass, options, [recognizeWith, ...], [requireFailure, ...]
+        [RotateRecognizer, {enable: false}],
+        [PinchRecognizer, {enable: false}, ['rotate']],
+        [SwipeRecognizer, {direction: DIRECTION_HORIZONTAL}],
+        [PanRecognizer, {direction: DIRECTION_HORIZONTAL}, ['swipe']],
+        [TapRecognizer],
+        [TapRecognizer, {event: 'doubletap', taps: 2}, ['tap']],
+        [PressRecognizer]
+    ],
+
+    /**
+     * Some CSS properties can be used to improve the working of Hammer.
+     * Add them to this method and they will be set when creating a new Manager.
+     * @namespace
+     */
+    cssProps: {
+        /**
+         * Disables text selection to improve the dragging gesture. Mainly for desktop browsers.
+         * @type {String}
+         * @default 'none'
+         */
+        userSelect: 'none',
+
+        /**
+         * Disable the Windows Phone grippers when pressing an element.
+         * @type {String}
+         * @default 'none'
+         */
+        touchSelect: 'none',
+
+        /**
+         * Disables the default callout shown when you touch and hold a touch target.
+         * On iOS, when you touch and hold a touch target such as a link, Safari displays
+         * a callout containing information about the link. This property allows you to disable that callout.
+         * @type {String}
+         * @default 'none'
+         */
+        touchCallout: 'none',
+
+        /**
+         * Specifies whether zooming is enabled. Used by IE10>
+         * @type {String}
+         * @default 'none'
+         */
+        contentZooming: 'none',
+
+        /**
+         * Specifies that an entire element should be draggable instead of its contents. Mainly for desktop browsers.
+         * @type {String}
+         * @default 'none'
+         */
+        userDrag: 'none',
+
+        /**
+         * Overrides the highlight color shown when the user taps a link or a JavaScript
+         * clickable element in iOS. This property obeys the alpha value, if specified.
+         * @type {String}
+         * @default 'rgba(0,0,0,0)'
+         */
+        tapHighlightColor: 'rgba(0,0,0,0)'
+    }
+};
+
+var STOP = 1;
+var FORCED_STOP = 2;
+
+/**
+ * Manager
+ * @param {HTMLElement} element
+ * @param {Object} [options]
+ * @constructor
+ */
+function Manager(element, options) {
+    this.options = assign({}, Hammer.defaults, options || {});
+
+    this.options.inputTarget = this.options.inputTarget || element;
+
+    this.handlers = {};
+    this.session = {};
+    this.recognizers = [];
+    this.oldCssProps = {};
+
+    this.element = element;
+    this.input = createInputInstance(this);
+    this.touchAction = new TouchAction(this, this.options.touchAction);
+
+    toggleCssProps(this, true);
+
+    each(this.options.recognizers, function(item) {
+        var recognizer = this.add(new (item[0])(item[1]));
+        item[2] && recognizer.recognizeWith(item[2]);
+        item[3] && recognizer.requireFailure(item[3]);
+    }, this);
+}
+
+Manager.prototype = {
+    /**
+     * set options
+     * @param {Object} options
+     * @returns {Manager}
+     */
+    set: function(options) {
+        assign(this.options, options);
+
+        // Options that need a little more setup
+        if (options.touchAction) {
+            this.touchAction.update();
+        }
+        if (options.inputTarget) {
+            // Clean up existing event listeners and reinitialize
+            this.input.destroy();
+            this.input.target = options.inputTarget;
+            this.input.init();
+        }
+        return this;
+    },
+
+    /**
+     * stop recognizing for this session.
+     * This session will be discarded, when a new [input]start event is fired.
+     * When forced, the recognizer cycle is stopped immediately.
+     * @param {Boolean} [force]
+     */
+    stop: function(force) {
+        this.session.stopped = force ? FORCED_STOP : STOP;
+    },
+
+    /**
+     * run the recognizers!
+     * called by the inputHandler function on every movement of the pointers (touches)
+     * it walks through all the recognizers and tries to detect the gesture that is being made
+     * @param {Object} inputData
+     */
+    recognize: function(inputData) {
+        var session = this.session;
+        if (session.stopped) {
+            return;
+        }
+
+        // run the touch-action polyfill
+        this.touchAction.preventDefaults(inputData);
+
+        var recognizer;
+        var recognizers = this.recognizers;
+
+        // this holds the recognizer that is being recognized.
+        // so the recognizer's state needs to be BEGAN, CHANGED, ENDED or RECOGNIZED
+        // if no recognizer is detecting a thing, it is set to `null`
+        var curRecognizer = session.curRecognizer;
+
+        // reset when the last recognizer is recognized
+        // or when we're in a new session
+        if (!curRecognizer || (curRecognizer && curRecognizer.state & STATE_RECOGNIZED)) {
+            curRecognizer = session.curRecognizer = null;
+        }
+
+        var i = 0;
+        while (i < recognizers.length) {
+            recognizer = recognizers[i];
+
+            // find out if we are allowed try to recognize the input for this one.
+            // 1.   allow if the session is NOT forced stopped (see the .stop() method)
+            // 2.   allow if we still haven't recognized a gesture in this session, or the this recognizer is the one
+            //      that is being recognized.
+            // 3.   allow if the recognizer is allowed to run simultaneous with the current recognized recognizer.
+            //      this can be setup with the `recognizeWith()` method on the recognizer.
+            if (session.stopped !== FORCED_STOP && ( // 1
+                    !curRecognizer || recognizer == curRecognizer || // 2
+                    recognizer.canRecognizeWith(curRecognizer))) { // 3
+                recognizer.recognize(inputData);
+            } else {
+                recognizer.reset();
+            }
+
+            // if the recognizer has been recognizing the input as a valid gesture, we want to store this one as the
+            // current active recognizer. but only if we don't already have an active recognizer
+            if (!curRecognizer && recognizer.state & (STATE_BEGAN | STATE_CHANGED | STATE_ENDED)) {
+                curRecognizer = session.curRecognizer = recognizer;
+            }
+            i++;
+        }
+    },
+
+    /**
+     * get a recognizer by its event name.
+     * @param {Recognizer|String} recognizer
+     * @returns {Recognizer|Null}
+     */
+    get: function(recognizer) {
+        if (recognizer instanceof Recognizer) {
+            return recognizer;
+        }
+
+        var recognizers = this.recognizers;
+        for (var i = 0; i < recognizers.length; i++) {
+            if (recognizers[i].options.event == recognizer) {
+                return recognizers[i];
+            }
+        }
+        return null;
+    },
+
+    /**
+     * add a recognizer to the manager
+     * existing recognizers with the same event name will be removed
+     * @param {Recognizer} recognizer
+     * @returns {Recognizer|Manager}
+     */
+    add: function(recognizer) {
+        if (invokeArrayArg(recognizer, 'add', this)) {
+            return this;
+        }
+
+        // remove existing
+        var existing = this.get(recognizer.options.event);
+        if (existing) {
+            this.remove(existing);
+        }
+
+        this.recognizers.push(recognizer);
+        recognizer.manager = this;
+
+        this.touchAction.update();
+        return recognizer;
+    },
+
+    /**
+     * remove a recognizer by name or instance
+     * @param {Recognizer|String} recognizer
+     * @returns {Manager}
+     */
+    remove: function(recognizer) {
+        if (invokeArrayArg(recognizer, 'remove', this)) {
+            return this;
+        }
+
+        recognizer = this.get(recognizer);
+
+        // let's make sure this recognizer exists
+        if (recognizer) {
+            var recognizers = this.recognizers;
+            var index = inArray(recognizers, recognizer);
+
+            if (index !== -1) {
+                recognizers.splice(index, 1);
+                this.touchAction.update();
+            }
+        }
+
+        return this;
+    },
+
+    /**
+     * bind event
+     * @param {String} events
+     * @param {Function} handler
+     * @returns {EventEmitter} this
+     */
+    on: function(events, handler) {
+        if (events === undefined) {
+            return;
+        }
+        if (handler === undefined) {
+            return;
+        }
+
+        var handlers = this.handlers;
+        each(splitStr(events), function(event) {
+            handlers[event] = handlers[event] || [];
+            handlers[event].push(handler);
+        });
+        return this;
+    },
+
+    /**
+     * unbind event, leave emit blank to remove all handlers
+     * @param {String} events
+     * @param {Function} [handler]
+     * @returns {EventEmitter} this
+     */
+    off: function(events, handler) {
+        if (events === undefined) {
+            return;
+        }
+
+        var handlers = this.handlers;
+        each(splitStr(events), function(event) {
+            if (!handler) {
+                delete handlers[event];
+            } else {
+                handlers[event] && handlers[event].splice(inArray(handlers[event], handler), 1);
+            }
+        });
+        return this;
+    },
+
+    /**
+     * emit event to the listeners
+     * @param {String} event
+     * @param {Object} data
+     */
+    emit: function(event, data) {
+        // we also want to trigger dom events
+        if (this.options.domEvents) {
+            triggerDomEvent(event, data);
+        }
+
+        // no handlers, so skip it all
+        var handlers = this.handlers[event] && this.handlers[event].slice();
+        if (!handlers || !handlers.length) {
+            return;
+        }
+
+        data.type = event;
+        data.preventDefault = function() {
+            data.srcEvent.preventDefault();
+        };
+
+        var i = 0;
+        while (i < handlers.length) {
+            handlers[i](data);
+            i++;
+        }
+    },
+
+    /**
+     * destroy the manager and unbinds all events
+     * it doesn't unbind dom events, that is the user own responsibility
+     */
+    destroy: function() {
+        this.element && toggleCssProps(this, false);
+
+        this.handlers = {};
+        this.session = {};
+        this.input.destroy();
+        this.element = null;
+    }
+};
+
+/**
+ * add/remove the css properties as defined in manager.options.cssProps
+ * @param {Manager} manager
+ * @param {Boolean} add
+ */
+function toggleCssProps(manager, add) {
+    var element = manager.element;
+    if (!element.style) {
+        return;
+    }
+    var prop;
+    each(manager.options.cssProps, function(value, name) {
+        prop = prefixed(element.style, name);
+        if (add) {
+            manager.oldCssProps[prop] = element.style[prop];
+            element.style[prop] = value;
+        } else {
+            element.style[prop] = manager.oldCssProps[prop] || '';
+        }
+    });
+    if (!add) {
+        manager.oldCssProps = {};
+    }
+}
+
+/**
+ * trigger dom event
+ * @param {String} event
+ * @param {Object} data
+ */
+function triggerDomEvent(event, data) {
+    var gestureEvent = document.createEvent('Event');
+    gestureEvent.initEvent(event, true, true);
+    gestureEvent.gesture = data;
+    data.target.dispatchEvent(gestureEvent);
+}
+
+assign(Hammer, {
+    INPUT_START: INPUT_START,
+    INPUT_MOVE: INPUT_MOVE,
+    INPUT_END: INPUT_END,
+    INPUT_CANCEL: INPUT_CANCEL,
+
+    STATE_POSSIBLE: STATE_POSSIBLE,
+    STATE_BEGAN: STATE_BEGAN,
+    STATE_CHANGED: STATE_CHANGED,
+    STATE_ENDED: STATE_ENDED,
+    STATE_RECOGNIZED: STATE_RECOGNIZED,
+    STATE_CANCELLED: STATE_CANCELLED,
+    STATE_FAILED: STATE_FAILED,
+
+    DIRECTION_NONE: DIRECTION_NONE,
+    DIRECTION_LEFT: DIRECTION_LEFT,
+    DIRECTION_RIGHT: DIRECTION_RIGHT,
+    DIRECTION_UP: DIRECTION_UP,
+    DIRECTION_DOWN: DIRECTION_DOWN,
+    DIRECTION_HORIZONTAL: DIRECTION_HORIZONTAL,
+    DIRECTION_VERTICAL: DIRECTION_VERTICAL,
+    DIRECTION_ALL: DIRECTION_ALL,
+
+    Manager: Manager,
+    Input: Input,
+    TouchAction: TouchAction,
+
+    TouchInput: TouchInput,
+    MouseInput: MouseInput,
+    PointerEventInput: PointerEventInput,
+    TouchMouseInput: TouchMouseInput,
+    SingleTouchInput: SingleTouchInput,
+
+    Recognizer: Recognizer,
+    AttrRecognizer: AttrRecognizer,
+    Tap: TapRecognizer,
+    Pan: PanRecognizer,
+    Swipe: SwipeRecognizer,
+    Pinch: PinchRecognizer,
+    Rotate: RotateRecognizer,
+    Press: PressRecognizer,
+
+    on: addEventListeners,
+    off: removeEventListeners,
+    each: each,
+    merge: merge,
+    extend: extend,
+    assign: assign,
+    inherit: inherit,
+    bindFn: bindFn,
+    prefixed: prefixed
+});
+
+// this prevents errors when Hammer is loaded in the presence of an AMD
+//  style loader but by script tag, not by the loader.
+var freeGlobal = (typeof window !== 'undefined' ? window : (typeof self !== 'undefined' ? self : {})); // jshint ignore:line
+freeGlobal.Hammer = Hammer;
+
+if (true) {
+    !(__WEBPACK_AMD_DEFINE_RESULT__ = (function() {
+        return Hammer;
+    }).call(exports, __webpack_require__, exports, module),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+} else {}
+
+})(window, document, 'Hammer');
 
 
 /***/ }),
