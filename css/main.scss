@@ -1,0 +1,304 @@
+@import './variables';
+
+@mixin center {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+@mixin slide-text($fontSize) {
+    position:relative;
+    overflow:hidden;
+    height: $fontSize + 50px;
+    font-size: $fontSize;
+
+    span {
+        opacity: 0;
+        position: absolute;
+        z-index: 200;
+        top: $fontSize + 50px;
+        left: 50%;
+        transform: translate(-50%, 0);
+    }
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+*,*:before,*:after{
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+    body {
+        overflow: hidden;
+        height: 100vh;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        font-family: "Lato", sans-serif;
+        background: $black;
+    }
+}
+
+.no-select {
+    user-select: none;
+}
+
+.logo {
+    position:fixed;
+    top: 0;
+    left: 0;
+    transform: translateY(-100%);
+    z-index: 200;
+    &__image {
+        width: 15rem;
+
+        &--black {
+            position:fixed;
+            z-index:201;
+            transform: translateY(-100%);
+        }
+    }
+}
+
+
+.contact__button {
+    z-index: 4;
+    transform: translateY(-100%);
+    position:fixed;
+    top:1rem;
+    right: 2rem;
+    $contactButtonWidth:  10em;
+    $contactButtonHeight: 2.8em;
+    text-decoration: none;
+    cursor: pointer;
+    //border: 1px solid $white;
+    height: $contactButtonHeight;
+    width:$contactButtonWidth;
+    padding:0;
+    outline:none;
+    overflow:hidden;
+    color: $white;
+    transition: color 0.3s 0.1s ease-out;
+    text-align: center;
+    line-height: 250%;
+    font-weight: 700;
+    font-size: 1.1rem;
+
+    &::before {
+        @include center;
+        content: '';
+        display: block;
+        border-radius: 50%;
+        width: $contactButtonWidth * 2;
+        height: $contactButtonWidth * 2;
+        line-height:  $contactButtonWidth * 2;
+        left: -$contactButtonWidth / 2;
+        text-align: center;
+        transition: box-shadow 0.4s ease-out;
+        z-index: -1;
+    }
+
+    &:hover {
+        color: $black;
+        &::before {
+            box-shadow: inset 0 0 0 $contactButtonWidth rgba($white,1);
+        }
+    }
+}
+
+.main__canvas {
+    width: 100%;
+    height: 100%;
+    position:fixed;
+    top:0;
+    left: 0;
+}
+
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translate(-50%, 200%);
+
+    svg {
+        height: 46px;
+        width: 1rem;
+    }
+
+    .st0 {
+        fill: none;
+    }
+    
+    .st1 {
+        fill: url(#grad2);
+    }
+}
+
+.header {
+    height: 100vh;
+    width:100%;
+    display:flex;
+    justify-content: center;
+    
+    #particles{
+        background: $black;
+        width: 100%;
+        height: 100vh;
+        position:absolute;
+        z-index: -1;
+    }
+
+    .hero {
+        position: absolute;
+        color: $white;
+        letter-spacing: .7rem;
+        text-align: center;
+        width:100%;
+        top: 50%;
+        transform: translateY(-50%);
+
+        &__text {
+            text-transform: uppercase;
+            margin: 0;
+
+            @include slide-text(150px);
+
+            &:first-child {
+                margin-top: 0;
+            }
+
+            &:last-child {
+            }
+        }
+
+        &__subtext {
+            @include slide-text(25px);
+        }
+    }
+
+    .intro {
+        width: 100%;
+        position:relative;
+        top: 20%;
+
+        &__text {
+            @include slide-text(20px);
+        }
+    }
+}
+
+.projects {
+    height: 100vh;
+    width: 100%;
+    position:relative;
+
+    .project {
+        height: 100%;
+        width: 100%;
+        
+
+
+        &__title {
+            font-size: 128px;
+            @include slide-text(128px);
+            margin-bottom: 0;
+            text-transform: uppercase;
+            text-align: center;
+            width: 100%;
+
+            span {
+                width: 90%;
+            }
+        }
+
+        &__links {
+            font-size: .8rem;
+            font-weight: normal;
+            display: flex;
+            justify-content: space-around;
+
+            a {
+                text-decoration: none;
+                color: $white;
+                font-size: 1.4rem;
+                font-weight: bold;
+                @include slide-text(24px);
+                width: 100%;
+                text-align: center;
+
+                span {
+                    width: 100%;
+                }
+            }
+        }
+
+
+        &.project--1 {
+            .project__content {
+                color: $white;
+                z-index: 1;
+                position:absolute;
+                top: 3%;
+                left: 10%;
+
+                width: 500px;
+            }
+        }
+    }
+}
+
+
+.contact {
+    height: 100vh;
+    width: 100%;
+    color: $white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    &__links {
+        font-size: .8rem;
+        font-weight: normal;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+
+        a {
+            text-decoration: none;
+            color: $white;
+            font-size: 1.4rem;
+            font-weight: bold;
+            @include slide-text(24px);
+            width: 15%;
+            text-align: center;
+
+            span {
+                width: 100%;
+            }
+        }
+    }
+
+    &__header {
+        width: 100%;
+        font-size: 10rem;
+        color: $white;
+        text-transform: uppercase;
+        text-shadow: -1px -1px 0 $white, 1px -1px 0 $white, -1px 1px 0 $white, 1px 1px 0 $white;
+        @include slide-text(160px);
+        span {
+            color: $black;
+        }
+    }
+
+}
+
